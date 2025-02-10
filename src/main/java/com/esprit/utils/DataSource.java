@@ -9,14 +9,14 @@ public class DataSource {
     private static DataSource instance;
     private Connection connection;
 
-    private final String URL = "jdbc:mysql://localhost:3306/circuit";
+    private final String URL = "jdbc:mysql://localhost:3306/contrat";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
 
     private DataSource() {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Connected to DB");
+            System.out.println("Connected to DataBase");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

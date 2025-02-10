@@ -13,13 +13,14 @@ public class MainProg {
     public MainProg() {
     }
 
-    //Gestion Users
+    /* ------------------------------------------- Gestion Users ------------------------------------ */
+
     public static void main(String[] args) throws ParseException {
         Client clientajout1 = new Client( "yaakoubi", "Ben Ali", "ahmed.benali@example.com", "password123", 98765432, 2, 1, "ahmed_profile.jpg");
 
         Client clientajout2 = new Client( "Sophie", "Dupont", "sophie.dupont@example.com", "securePass!", 92345678, 2, 1, "sophie_avatar.png");
 
-        Client clientajout3 = new Client( "Karim", "Jlassi", "karim.jlassi@example.com", "karim2024", 96543210, 2, 1, "karim_profile.png");
+        Client clientajout3 = new Client( "Karim", "Jlassi","karim.jlassi@example.com", "karim2024", 96543210, 2, 1, "karim_profile.png");
 
         Client clientupdate1 = new Client( 1,"yaakoubi", "Ben Ali", "ahmed.benali@example.com", "password123", 98765432, 2, 1, "ahmed_profile.jpg");
 
@@ -78,7 +79,7 @@ public class MainProg {
         System.out.println("Moderators:");
         System.out.println(s3.rechercherUser());
 
-        //Gestion Contrat
+        /* ------------------------------------------- Gestion Contrat ------------------------------------ */
 
 
         ContratService contratService = new ContratService();
@@ -173,6 +174,66 @@ public class MainProg {
             }
             System.out.println("---------------------------------");
         }
+        /* ------------------------------------------- Gestion vol ------------------------------------ */
+
+        // Initialize VolService
+        VolService volService = new VolService();
+
+        /*
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        Vol volToAdd = new Vol(
+                "Tunis",
+                "Morocco",
+                LocalDateTime.parse("12/12/2025 10:00", formatter),
+                LocalDateTime.parse("12/12/2025 14:00", formatter),
+                ClasseChaise.ECONOMY,  // Use the Enum here
+                "Air Morocco",
+                1800,
+                24,
+                "Test flight"
+        );
+        volService.ajouterVol(volToAdd);
+        System.out.println("Vol ajouté: " + volToAdd);*/
+
+
+        /*Vol volToModify = new Vol(
+                1,
+                "Tunis",
+                "Italy",
+                LocalDateTime.parse("12/12/2025 15:00", formatter),
+                LocalDateTime.parse("12/12/2025 17:00", formatter),
+                ClasseChaise.BUSINESS,  // Use the Enum here
+                "Tunisair",
+                2000,
+                10,
+                "Modified flight"
+        );
+        volService.modifierVol(volToModify);
+        System.out.println("Vol modifié: " + volToModify);*/
+
+        /*
+        Vol volToDelete = new Vol(4, "", "", null, null, null, null, 0, 0, "");
+        volService.supprimerVol(volToDelete);
+        System.out.println("Vol supprimé: " + volToDelete);*/
+
+        List<Vol> vols = volService.rechercherVol();
+        System.out.println("-----------------------------------");
+        System.out.println("List of Flights");
+        System.out.println("-----------------------------------");
+        for (Vol vol : vols) {
+            System.out.println("Flight ID: " + vol.getFlightID());
+            System.out.println("Departure: " + vol.getDeparture());
+            System.out.println("Destination: " + vol.getDestination());
+            System.out.println("Departure Time: " + vol.getDepartureTime());
+            System.out.println("Arrival Time: " + vol.getArrivalTime());
+            System.out.println("Classe Chaise: " + vol.getClasseChaise());
+            System.out.println("Airline: " + vol.getAirline());
+            System.out.println("Price: " + vol.getFlightPrice());
+            System.out.println("Available Seats: " + vol.getAvailableSeats());
+            System.out.println("Description: " + vol.getDescription());
+            System.out.println("-----------------------------------");
+        }
+
     }
 
 

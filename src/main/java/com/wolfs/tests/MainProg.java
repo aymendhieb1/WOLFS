@@ -234,6 +234,19 @@ public class MainProg {
             System.out.println("-----------------------------------");
         }
 
+
+        /* ------------------------------------------- Gestion Hotel ------------------------------------ */
+
+        HotelService hot = new HotelService();
+        // hot.ajouter(new Hotel("Mouradi5", "xx","23456789","mouradi.mnayka@gmail.com","url","t7eb tetnak fi flousek reservi 3anaaa"));
+        //  hot.modifier(new Hotel(1,"MouradiHubb", "xx","23456789","mouradi.mnayka@gmail.com","url","t7eb tetnak fi flousek reservi 3anaaa"));
+        //  hot.supprimer(new Hotel(1,"","","","","","" ));
+        System.out.println(hot.rechercher());
+
+        // ChambreService ch = new ChambreService();
+        //ch.ajouter(new Chambre(1,"exclusive",300,true,1));
+        // System.out.println(ch.afficher());
+
     }
 
 

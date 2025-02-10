@@ -50,7 +50,25 @@ public class Activite {
         return prix_act;
     }
 
+    public void setNom_act(String nom_act) {
+        this.nom_act = nom_act;
+    }
 
+    public void setDescript(String descript) {
+        this.descript = descript;
+    }
+
+    public void setLacalisation(String lacalisation) {
+        this.lacalisation = lacalisation;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPrix_act(float prix_act) {
+        this.prix_act = prix_act;
+    }
 
     @Override
     public String toString() {

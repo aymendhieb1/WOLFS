@@ -13,7 +13,7 @@ public class ActiviteService2 implements IService<Activite> {
 
     @Override
     public void ajouter(Activite Activite) {
-        String req = "INSERT INTO Activite ( nom_act,  descript,  lacalisation,  type, prix_act) VALUES (?,?,?,?,?)";
+        String req = "INSERT INTO Activite ( nom_act,  descript,  localisation,  type, prix_act) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, Activite.getNom_act());
@@ -30,7 +30,7 @@ public class ActiviteService2 implements IService<Activite> {
 
     @Override
     public void modifier(Activite Activite) {
-        String req = "UPDATE personne SET nom_act=? ,descript=?,lacalisation=?,type=?,prix_act=? WHERE id_act=?";
+        String req = "UPDATE activite SET nom_act=? ,descript=?,localisation=?,type=?,prix_act=? WHERE id_act=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setString(1, Activite.getNom_act());
@@ -48,7 +48,7 @@ public class ActiviteService2 implements IService<Activite> {
 
     @Override
     public void supprimer(Activite Activite) {
-        String req = "DELETE FROM personne WHERE id_act=?";
+        String req = "DELETE FROM activite WHERE id_act=?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);
             pst.setInt(1, Activite.getId_act());
@@ -68,7 +68,7 @@ public class ActiviteService2 implements IService<Activite> {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Activites.add(new Activite(rs.getInt("id_act"), rs.getString("nom_act"), rs.getString("descript"),rs.getString("type"), rs.getString("lacalisation"), rs.getInt("prix_act")));
+                Activites.add(new Activite(rs.getInt("id_act"), rs.getString("nom_act"), rs.getString("descript"),rs.getString("type"), rs.getString("localisation"), rs.getInt("prix_act")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

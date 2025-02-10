@@ -7,6 +7,8 @@ import com.wolfs.models.Contrat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class MainProg {
@@ -235,7 +237,7 @@ public class MainProg {
         }
 
 
-        /* ------------------------------------------- Gestion Hotel ------------------------------------ */
+        /* ------------------------------------------- Gestion Hotels ------------------------------------ */
 
         HotelService hot = new HotelService();
         // hot.ajouter(new Hotel("Mouradi5", "xx","23456789","mouradi.mnayka@gmail.com","url","t7eb tetnak fi flousek reservi 3anaaa"));
@@ -246,6 +248,44 @@ public class MainProg {
         // ChambreService ch = new ChambreService();
         //ch.ajouter(new Chambre(1,"exclusive",300,true,1));
         // System.out.println(ch.afficher());
+
+        /* ------------------------------------------- Gestion Circuis ------------------------------------ */
+
+        ActiviteService2 activiteService = new ActiviteService2();
+        SessionService sessionService = new SessionService();
+
+         Activite activite1 = new Activite("Yoga", "A relaxing activity", "Beach", "Fitness", 20);
+         //activiteService.ajouter(activite1);
+         Activite activite2= new Activite(1,"Yoga", "A relaxing activity", "Beach", "Fitness", 20);
+
+
+        //activite2.setNom_act("Advanced Yoga");
+        //activiteService.modifier(activite2);
+
+
+         //activiteService.supprimer(activite2);
+
+
+           LocalDate date = LocalDate.now(); // Current date
+           LocalTime time = LocalTime.now(); // Current time
+           Session session1 = new Session(date, time, 50, 100);
+           Session session2 = new Session(1,date, time, 50, 100);
+
+        //sessionService.ajouter(session1);
+
+
+
+          //session2.setNbr_places_sess(120);
+          //sessionService.modifier(session2);
+
+          //    sessionService.supprimer(session2);
+
+
+
+        System.out.println(activiteService.rechercher());
+
+        System.out.println(sessionService.rechercher());
+
 
     }
 

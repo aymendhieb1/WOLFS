@@ -49,6 +49,22 @@ public class Session {
         return nbr_places_sess;
     }
 
+    public void setDate_sess(LocalDate date_sess) {
+        this.date_sess = date_sess;
+    }
+
+    public void setTime_sess(LocalTime time_sess) {
+        this.time_sess = time_sess;
+    }
+
+    public void setCap_sess(int cap_sess) {
+        this.cap_sess = cap_sess;
+    }
+
+    public void setNbr_places_sess(int nbr_places_sess) {
+        this.nbr_places_sess = nbr_places_sess;
+    }
+
     @Override
     public String toString() {
         return "Session{" +

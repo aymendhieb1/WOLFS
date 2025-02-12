@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<TabPane prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.ForumController">
+    <tabs>
+        <!-- Tab for Adding a Forum -->
+        <Tab text="Add">
+            <content>
+                <VBox alignment="CENTER" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <children>
+                        <Label text="Create Forum" />
+                        <GridPane hgap="10" vgap="10">
+                            <children>
+                                <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                <Label text="Created By (User ID):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <TextField fx:id="createdByField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                <Label text="Is Private:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <CheckBox fx:id="isPrivateCheckBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Label text="Members:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                <HBox alignment="CENTER" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <children>
+                                        <ListView fx:id="membersListView" disable="true" prefHeight="115.0" prefWidth="283.0" />
+                                    </children>
+                                </HBox>
+                                <TextField fx:id="memberEmailField" disable="true" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Button fx:id="addMemberButton" disable="true" text="+" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                        <Button fx:id="addForumButton" text="Add Forum" />
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+
+        <!-- Tab for Modifying a Forum -->
+        <Tab text="Modify">
+            <content>
+                <VBox alignment="CENTER" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <children>
+                        <Label text="Modify Forum" />
+                        <GridPane hgap="10" vgap="10">
+                            <children>
+                                <Label text="Forum ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <TextField fx:id="forumIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                <Label text="New Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <TextField fx:id="newNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                <Label text="New Description:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <TextField fx:id="newDescriptionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                <Label text="Is Private:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <CheckBox fx:id="modifyIsPrivateCheckBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            </children>
+                            <columnConstraints>
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                        <HBox alignment="CENTER" spacing="10">
+                            <children>
+                                <Button fx:id="modifyForumButton" text="Modify Forum" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+
+        <!-- Tab for Deleting a Forum -->
+        <Tab text="Delete">
+            <content>
+                <VBox alignment="CENTER" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <children>
+                        <Label text="Delete Forum" />
+                        <HBox alignment="CENTER" spacing="10">
+                            <children>
+                                <Label text="Forum ID:" />
+                                <TextField fx:id="deleteForumIdField" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10">
+                            <children>
+                                <Button fx:id="deleteForumButton" text="Delete Forum" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+
+        <!-- Tab for Displaying Forums -->
+        <Tab text="Display">
+            <content>
+                <VBox alignment="CENTER" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <children>
+                        <Label text="Forums" />
+                        <ListView fx:id="forumListView" prefHeight="250.0" prefWidth="350.0" />
+                        <Button fx:id="refreshForumsButton" text="Refresh Forums" />
+                    </children>
+                </VBox>
+            </content>
+        </Tab>
+
+    </tabs>
+</TabPane>

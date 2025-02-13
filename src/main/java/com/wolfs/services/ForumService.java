@@ -122,4 +122,41 @@ public class ForumService implements IService<Forum> {
             System.out.println(e.getMessage());
         }
     }
+
+    public int getUserByEmail(String email) {
+        String sql = "SELECT id_user FROM User WHERE mail = ?";
+        int userId = -1;
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                userId = rs.getInt("id_user");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user by email: " + e.getMessage());
+        }
+
+        return userId;
+    }
+
+    public String getEmailById(int userId) {
+        String sql = "SELECT mail FROM User WHERE id_user = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("mail");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving email by user ID: " + e.getMessage());
+        }
+        return "Unknown User";
+    }
+
 }

@@ -1,0 +1,24 @@
+.text-field {
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-border-color: #cccccc;
+    -fx-background-color: white;
+}
+
+.text-field-error {
+    -fx-border-color: #dc3545 !important;
+    -fx-border-width: 2px;
+}
+
+.error-label {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 12px;
+    -fx-padding: 2 0 0 0;
+    -fx-opacity: 0.9;
+}
+
+.valid-field {
+    -fx-border-color: #28a745 !important;
+    -fx-border-width: 2px;
+} 

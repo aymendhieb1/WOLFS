@@ -21,4 +21,42 @@
 .valid-field {
     -fx-border-color: #28a745 !important;
     -fx-border-width: 2px;
+}
+
+.post-box {
+    -fx-padding: 10;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5;
+    -fx-background-color: white;
+}
+
+.post-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.post-content {
+    -fx-wrap-text: true;
+}
+
+.post-tags {
+    -fx-text-fill: #666;
+    -fx-font-style: italic;
+}
+
+.comment-box {
+    -fx-padding: 5;
+    -fx-border-color: #eee;
+    -fx-border-radius: 3;
+    -fx-background-color: #f8f9fa;
+}
+
+.comment-date {
+    -fx-text-fill: #666;
+    -fx-font-size: 11px;
+}
+
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
 } 

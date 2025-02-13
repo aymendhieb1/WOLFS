@@ -1,1 +1,131 @@
- 
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<SplitPane dividerPositions="0.7" prefHeight="751.0" prefWidth="1390.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.PostController">
+
+    <!-- Left side - Posts List and Comments -->
+    <TabPane fx:id="leftTabPane" tabClosingPolicy="UNAVAILABLE" visible="true">
+        <Tab text="Posts">
+            <VBox spacing="10">
+                <padding><Insets /></padding>
+
+                <!-- Posts CZontainer -->
+                <ScrollPane fx:id="postsContainer" fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="postsVBox" spacing="15">
+                        <!-- Posts will be added here dynamically -->
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </Tab>
+
+        <Tab text="Comments">
+            <VBox spacing="10">
+
+                <!-- Back button -->
+                <Button fx:id="backButton" onAction="#handleBackButton" snapToPixel="false" text="← Back to Posts">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding></Button>
+                <!-- Post Details Section -->
+                <VBox fx:id="postDetailsBox" spacing="5">
+                    <Label fx:id="postTitleLabel" styleClass="post-title" />
+                    <Text fx:id="postContentText" styleClass="post-content" />
+                    <Label fx:id="postTagsLabel" styleClass="post-tags" />
+                    <!-- Survey specific -->
+                    <VBox fx:id="surveyChoicesBox" spacing="5" visible="false">
+                        <!-- Choices will be added here -->
+                    </VBox>
+                    <Button fx:id="viewVotersButton" onAction="#handleViewVoters" text="View Voters" visible="false" />
+                </VBox>
+
+                <!-- Comments Section -->
+                <ScrollPane prefHeight="400.0">
+                    <VBox fx:id="commentsVBox" spacing="10" />
+                </ScrollPane>
+
+                <!-- Add Comment Section -->
+                <VBox spacing="5">
+                    <TextArea fx:id="newCommentField" promptText="Write a comment..." />
+                    <Label fx:id="commentErrorLabel" styleClass="error-label" />
+                    <Button fx:id="addCommentButton" onAction="#handleAddComment" text="Add Comment" />
+                </VBox>
+            </VBox>
+        </Tab>
+    </TabPane>
+
+    <!-- Right side -->
+    <TabPane>
+        <Tab text="Forum Info">
+            <VBox spacing="10">
+                <!-- Existing forum info content -->
+                <ComboBox fx:id="forumComboBox" maxWidth="Infinity" promptText="Select Forum" />
+                <VBox fx:id="forumInfoBox" spacing="5">
+                    <TextArea fx:id="forumDescription" editable="false" wrapText="true" />
+                    <HBox spacing="10">
+                        <Label fx:id="forumPrivacyLabel" />
+                        <Label fx:id="forumDateLabel" />
+                    </HBox>
+                    <Label fx:id="memberCountLabel" />
+
+                    <!-- Members List (for private forums) -->
+                    <VBox fx:id="membersSection" visible="false">
+                        <Label text="Members:" />
+                        <ListView fx:id="membersListView" prefHeight="100" />
+                    </VBox>
+                </VBox>
+            </VBox>
+        </Tab>
+
+        <Tab text="Add Post">
+            <VBox spacing="10">
+                <ComboBox fx:id="postTypeComboBox" promptText="Select Post Type" />
+
+                <!-- Post Fields Container -->
+                <StackPane>
+                    <!-- Announcement Fields -->
+                    <VBox fx:id="announcementFields" spacing="5" visible="false">
+                        <TextField fx:id="announcementTitleField" promptText="Title" />
+                        <Label fx:id="titleErrorLabel" styleClass="error-label" />
+                        <TextArea fx:id="announcementContentField" promptText="Content" />
+                        <Label fx:id="contentErrorLabel" styleClass="error-label" />
+                        <TextField fx:id="announcementTagsField" promptText="Tags (comma-separated)" />
+                        <Label fx:id="tagsErrorLabel" styleClass="error-label" />
+                    </VBox>
+
+                    <!-- Survey Fields -->
+                    <VBox fx:id="surveyFields" spacing="5" visible="false">
+                        <TextField fx:id="surveyQuestionField" promptText="Question" />
+                        <Label fx:id="questionErrorLabel" styleClass="error-label" />
+                        <TextField fx:id="surveyTagsField" promptText="Tags (comma-separated)" />
+                        <Label fx:id="surveyTagsErrorLabel" styleClass="error-label" />
+
+                        <!-- Choice input section -->
+                        <HBox spacing="5">
+                            <TextField fx:id="choiceField" promptText="Enter choice" />
+                            <Button fx:id="addChoiceButton" disable="true" onAction="#handleAddChoice" text="+" />
+                        </HBox>
+                        <Label fx:id="choiceErrorLabel" styleClass="error-label" />
+                        <ListView fx:id="choicesListView" prefHeight="100" />
+                    </VBox>
+                </StackPane>
+
+                <Button fx:id="submitPostButton" onAction="#handleSubmitPost" text="Submit Post" />
+            </VBox>
+        </Tab>
+    </TabPane>
+</SplitPane>

@@ -15,7 +15,7 @@ public class MainProgGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Forum.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Post.fxml"));
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("Forum App");
             primaryStage.show();

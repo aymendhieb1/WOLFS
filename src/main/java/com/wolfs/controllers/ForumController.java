@@ -102,7 +102,7 @@ public class ForumController {
         String email = memberEmailField.getText().trim();
         if (!email.isEmpty() && !membersListView.getItems().contains(email)) {
             if (forumService.getUserByEmail(email) != -1) {
-                membersListView.getItems().add(email);
+            membersListView.getItems().add(email);
                 memberEmailField.clear();
                 hideError(memberEmailField, memberEmailErrorLabel);
                 isMemberEmailValid = true;

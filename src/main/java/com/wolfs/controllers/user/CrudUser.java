@@ -1,17 +1,22 @@
 package com.wolfs.controllers.user;
 
+import com.wolfs.models.Activite;
+import com.wolfs.services.ActiviteService2;
 import com.wolfs.models.Client;
 import com.wolfs.models.Hotel;
+import com.wolfs.services.ActiviteService2;
 import com.wolfs.services.HotelService;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -24,6 +29,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class CrudUser {
     @FXML
@@ -277,12 +283,199 @@ private Button page_hotel_bt_go_to_hotel;
 
     private ObservableList<Hotel> HotelData = FXCollections.observableArrayList();
 
+
     private boolean isPasswordVisible = false;
 
+    //fxml activite
+
+    private  Button page_activite_refresh;
+    @FXML
+    private Button activite_bt_ajouter;
+    @FXML
+    private Button activite_bt_modifier;
+    @FXML
+    private TextField nom_activite;
+    @FXML
+    private  TextField description_activite;
+    @FXML
+    private TextField localisation_activite;
+    @FXML
+    private TextField type_activite;
+    @FXML
+    private TextField prix_activite;
+    @FXML
+    private TextField fixed_nom;
+    //tabelview activite
+    @FXML
+    private TableView<Activite> TableView_Activite;
+    @FXML
+    private TableColumn<Activite, Integer> act_col_nom;
+    @FXML
+    private TableColumn<Activite, String> act_col_desc;
+    @FXML
+    private TableColumn<Activite, String> act_col_loc;
+    @FXML
+    private TableColumn<Activite, String> act_col_type;
+    @FXML
+    private TableColumn<Activite, String> act_col_prix;
+    @FXML
+    private TableColumn<Activite, Void> act_col_mod;
+
+    @FXML
+    private TableColumn<Activite, Void> act_col_supp    ;
+
+
+
+
+
+
+
+    private ObservableList<Activite> ActiviteData = FXCollections.observableArrayList();
 
     //Animation part
     public void initialize() {
         startAnimation();
+        // Initialize table columns
+        act_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom_act"));
+        act_col_desc.setCellValueFactory(new PropertyValueFactory<>("descript"));
+        act_col_loc.setCellValueFactory(new PropertyValueFactory<>("localisation"));
+        act_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        act_col_prix.setCellValueFactory(new PropertyValueFactory<>("prix_act"));
+
+        act_col_mod.setCellFactory(column -> {
+            return new TableCell<Activite, Void>() {
+                private final Button btn = new Button("Modifier");
+
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+
+
+
+                    btn.setOnAction(event -> {
+                        Activite activite = getTableView().getItems().get(getIndex());
+
+                        nom_activite.setText(activite.getNom_act());
+                        description_activite.setText(activite.getDescript());
+                        localisation_activite.setText(activite.getLocalisation());
+                        type_activite.setText(activite.getType());
+                        prix_activite.setText(String.valueOf(activite.getPrix_act()));
+                        fixed_nom.setText(activite.getNom_act());
+                        page_ajouter_activite.setVisible(true);
+                        page_activite.setVisible(false);
+
+
+
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        act_col_supp.setCellFactory(column -> {
+            return new TableCell<Activite, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        // Récupérer l'activité associée à la ligne actuelle
+                        Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
+
+                        if (activiteSelectionnee == null) {
+                            showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
+                            return;
+                        }
+
+                        // Demander confirmation avant suppression
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation de suppression");
+                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette activité ?");
+                        confirmationAlert.setContentText("Cette action est irréversible.");
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Supprimer l'activité via l'objet Activite
+                            ActiviteService2 activiteService = new ActiviteService2();
+                            activiteService.supprimer(activiteSelectionnee);
+
+                            showAlert("Confirmation", "L'Activité a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                            // Mettre à jour la TableView
+                            getTableView().getItems().remove(activiteSelectionnee);
+                        }
+                    });
+                }
+
+
+
+
+
+        @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+
+
+
+
+
+
+
+
+
+        ActiviteService2 ActiviteService2= new ActiviteService2();
+        List<Activite> acitviteliste = ActiviteService2.rechercher();
+        ObservableList<Activite> observableAcitviteListt = FXCollections.observableArrayList(acitviteliste);
+
+        TableView_Activite.setItems(observableAcitviteListt);
     }
 
     private void startAnimation() {
@@ -668,7 +861,8 @@ private Button page_hotel_bt_go_to_hotel;
             page_acceuil_gestion_circuit.setVisible(true);
         }  else if (actionEvent.getSource() == page_activite_bt_ajouter) {
 
-
+            activite_bt_modifier.setVisible(false);
+            activite_bt_ajouter.setVisible(true);
             page_activite .setVisible(false);
             page_ajouter_activite.setVisible(true);
         }
@@ -952,7 +1146,7 @@ private Button page_hotel_bt_go_to_hotel;
         //RefreshTableView();
     }
 
-    @FXML
+   @FXML
     private void RefreshTableView() {
         try {
             HotelService hotelService = new HotelService();
@@ -1003,7 +1197,198 @@ private Button page_hotel_bt_go_to_hotel;
 
         TableView_Hotel.setItems(observableHotelList);
     }*/
+  @FXML
+  private void AddActivte(ActionEvent event) throws IOException {
+
+
+      if (nom_activite.getText().isEmpty() ||
+              description_activite.getText().isEmpty() ||
+              localisation_activite.getText().isEmpty() ||
+              type_activite.getText().isEmpty() ||
+              prix_activite.getText().isEmpty()) {
+
+          showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+          return;
+      }
+
+        float prix;
+        try {
+
+
+            prix = Float.parseFloat(prix_activite.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }
+
+      // Si toutes les vérifications passentA
+        ActiviteService2 A= new ActiviteService2();
+      A.ajouter(new Activite(nom_activite.getText(),
+              description_activite.getText(),
+              localisation_activite.getText(),
+              type_activite.getText(),
+              prix));
+
+
+      showAlert("Confirmation", "L'Activité a été ajoutée avec succès", Alert.AlertType.INFORMATION);
+
+      // Réinitialisation des champs
+      nom_activite.setText("");
+      description_activite.setText("");
+      localisation_activite.setText("");
+      type_activite.setText("");
+      prix_activite.setText("");
+
+      RefreshTableView_Activite();
+      page_ajouter_activite.setVisible(false);
+      page_activite.setVisible(true);
+  }
+    @FXML
+    public void initialize_table_hotel_acitivte() {
+        // Initialize table columns
+        act_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom_act"));
+        act_col_desc.setCellValueFactory(new PropertyValueFactory<>("descript"));
+        act_col_loc.setCellValueFactory(new PropertyValueFactory<>("localisation"));
+        act_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        act_col_prix.setCellValueFactory(new PropertyValueFactory<>("prix_act"));
+
+
+        TableView_Activite.setItems(ActiviteData);
+
+
+        RefreshTableView_Activite();   }
+
+    @FXML
+    private void RefreshTableView_Activite() {
+        try {
+            ActiviteService2 ACTAFF = new ActiviteService2();
+            List<Activite> activites = ACTAFF.rechercher(); // Fetch hotels from DB
+
+            if (activites != null) {
+                // Clear and update ObservableList
+                ActiviteData.clear();
+                ActiviteData.addAll(activites);
+
+
+                System.out.println("Number of activites " + activites.size());
+                System.out.println("ActiviteData: " +ActiviteData.size());
+                TableView_Activite.setItems(ActiviteData);
+                TableView_Activite.refresh(); // Force update
+
+            } else {
+                showAlert("Information", "Aucun activite", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+
+    }
+@FXML
+    private void Mod_act(ActionEvent event) throws IOException{
+        activite_bt_modifier.setVisible(true);
+        activite_bt_ajouter.setVisible(false);
+
+        if (nom_activite.getText().isEmpty() ||
+                description_activite.getText().isEmpty() ||
+                localisation_activite.getText().isEmpty() ||
+                type_activite.getText().isEmpty() ||
+                prix_activite.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+        float prix;
+        try {
+
+
+            prix = Float.parseFloat(prix_activite.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }
+    ActiviteService2 activiteService = new ActiviteService2();
+    int idAct = activiteService.getIdByNom(fixed_nom.getText());
+    if (idAct == -1) {
+        showAlert("Erreur", "Activité non trouvée dans la base de données", Alert.AlertType.ERROR);
+        return;
+    }
+
+    Activite activite = new Activite(
+            idAct,
+            nom_activite.getText(),
+            description_activite.getText(),
+            localisation_activite.getText(),
+            type_activite.getText(),
+            prix
+    );
+
+    // Modification de l'activité
+    activiteService.modifier(activite);
+
+    showAlert("Confirmation", "L'Activité a été modifiée avec succès", Alert.AlertType.INFORMATION);
+
+
+
+        // Réinitialisation des champs
+        nom_activite.setText("");
+        description_activite.setText("");
+        localisation_activite.setText("");
+        type_activite.setText("");
+        prix_activite.setText("");
+
+        RefreshTableView_Activite();
+        page_ajouter_activite.setVisible(false);
+        page_activite.setVisible(true);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
+
+
+
+
+
+
+
+
+
 

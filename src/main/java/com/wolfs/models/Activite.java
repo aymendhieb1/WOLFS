@@ -5,23 +5,23 @@ public class Activite {
     private int id_act;
     private String nom_act;
     private String descript;
-    private String lacalisation;
+    private String localisation;
     private String type;
     private float prix_act;
 
-    public Activite(int id_act, String nom_act, String descript, String lacalisation, String type,float prix_act) {
+    public Activite(int id_act, String nom_act, String descript, String localisation, String type,float prix_act) {
         this.id_act = id_act;
         this.nom_act = nom_act;
         this.descript = descript;
-        this.lacalisation = lacalisation;
+        this.localisation = localisation;
         this.type = type;
         this.prix_act = prix_act;
     }
 
-    public Activite( String nom_act, String descript, String lacalisation, String type,float prix_act) {
+    public Activite( String nom_act, String descript, String localisation, String type,float prix_act) {
         this.nom_act = nom_act;
         this.descript = descript;
-        this.lacalisation = lacalisation;
+        this.localisation = localisation;
         this.type = type;
         this.prix_act = prix_act;
     }
@@ -38,8 +38,8 @@ public class Activite {
         return descript;
     }
 
-    public String getLacalisation() {
-        return lacalisation;
+    public String getLocalisation() {
+        return localisation;
     }
 
     public String getType() {
@@ -58,8 +58,8 @@ public class Activite {
         this.descript = descript;
     }
 
-    public void setLacalisation(String lacalisation) {
-        this.lacalisation = lacalisation;
+    public void setLocalisation(String localisation) {
+        this.localisation = localisation;
     }
 
     public void setType(String type) {
@@ -76,7 +76,7 @@ public class Activite {
                 "id_act=" + id_act +
                 ", nom_act='" + nom_act + '\'' +
                 ", descript='" + descript + '\'' +
-                ", lacalisation='" + lacalisation + '\'' +
+                ", localisation='" + localisation + '\'' +
                 ", type='" + type + '\'' +
                 ", prix_act=" + prix_act +
                 '}';

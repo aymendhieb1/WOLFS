@@ -49,6 +49,35 @@
 *.button-hover:hover {
     -fx-underline: true; }
 
+.error-field {
+    -fx-border-color: red;
+    -fx-border-width: 1px;
+}
+
+
+.button-front_office-hover {
+    -fx-font-family: 'SansSerif';
+    -fx-font-size: 20px;
+    -fx-background-color: transparent;
+    -fx-border: none;
+    -fx-text-fill: grey;
+    -fx-cursor: hand;
+}
+
+.button-front_office-hover:hover {
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
+    -fx-border-color: transparent transparent #E78D1E transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-color: #E78D1E;
+}
+
+
 
 
 

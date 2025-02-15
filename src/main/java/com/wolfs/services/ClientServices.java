@@ -1,3 +1,9 @@
+package com.wolfs.services;
+
+import com.wolfs.models.Client;
+import com.wolfs.utils.DataSource;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +12,7 @@ public class ClientServices implements IUserServices<Client> {
     Connection connection = DataSource.getInstance().getConnection();
 
     public ClientServices() {
+
     }
 
     public void ajouterUser(Client client) {
@@ -88,4 +95,43 @@ public class ClientServices implements IUserServices<Client> {
 
         return clients;
     }
+
+    public Client verifierUser(String email, String password) {
+        String req = "SELECT id_user, nom, prenom, mail, mdp, num_tel, role, status, photo_profil FROM user WHERE mail=?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(req);
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            if (rs.next()) {
+                System.out.println("Utilisateur trouvé : " + rs.getString("mail"));
+
+
+
+
+                    System.out.println("Mot de passe correct !");
+                    return new Client(
+                            rs.getInt("id_user"),
+                            rs.getString("nom"),
+                            rs.getString("prenom"),
+                            rs.getString("mail"),
+                            password,
+                            rs.getInt("num_tel"),
+                            rs.getInt("role"),
+                            rs.getInt("status"),
+                            rs.getString("photo_profil"));}
+            else {
+                System.out.println("Email non trouvé !");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+        return null;
+    }
+
+
+
 }

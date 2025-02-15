@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,12 +15,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1900.0" spacing="20.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.user.CrudUser">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1900.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.user.CrudUser">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <children>
-        <StackPane prefHeight="150.0" prefWidth="1860.0">
+        <StackPane prefHeight="150.0" prefWidth="1860.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);">
             <children>
                 <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
                     <children>
@@ -91,6 +93,55 @@
                         <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
                         <TextField fx:id="number_field" layoutX="152.0" layoutY="410.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />               </children>
                 </AnchorPane>
+            <AnchorPane fx:id="background_front" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" prefWidth="1900.0" visible="false">
+               <children>
+                  <ImageView fitHeight="1000.0" fitWidth="1900.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/front_background.png" />
+                     </image>
+                  </ImageView>
+                  <TableView fx:id="userTableView" layoutX="397.0" layoutY="278.0" prefHeight="70.0" prefWidth="1006.0" style="-fx-border-color: #E78D1E;" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                    <columns>
+                            <TableColumn fx:id="nomColumn" prefWidth="200.0" text="Nom" />
+                            <TableColumn fx:id="prenomColumn" prefWidth="200.0" text="Prénom" />
+                            <TableColumn fx:id="emailColumn" prefWidth="200.0" text="Email" />
+                            <TableColumn fx:id="telColumn" prefWidth="200.0" text="Téléphone" />
+                        <TableColumn id="button-modifier" fx:id="actionColumn" prefWidth="200.0" text="Mis a jour" />
+
+                    </columns>
+                  </TableView>
+                  <Button layoutX="414.0" layoutY="81.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Acceuil" />
+                  <Button layoutX="656.0" layoutY="81.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Nos offres" />
+                  <Button layoutX="882.0" layoutY="81.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Forum" />
+                  <Button layoutX="1121.0" layoutY="81.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Support" />
+                  <Button layoutX="1359.0" layoutY="81.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="161.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Mon profile" />
+                  <ImageView fitHeight="70.0" fitWidth="67.0" layoutX="1715.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/logout-512.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="1690.0" layoutY="71.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="90.0" prefWidth="117.0" style="-fx-background-color: transparent;" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </AnchorPane>
+            <AnchorPane fx:id="Modifier_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
+               <children>
+                  <ImageView fitHeight="162.0" fitWidth="179.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="243.0">
+                     <image>
+                        <Image url="@/images/secondry.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="lastName_field_update" layoutX="152.0" layoutY="191.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <PasswordField fx:id="password_field_update" layoutX="152.0" layoutY="591.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre mot de passe" stylesheets="@/styles/style.css" />
+                  <Button layoutX="209.0" layoutY="814.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Confirmer" textFill="#d31818" />
+                  <TextField fx:id="firstName_field_update" layoutX="152.0" layoutY="291.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <TextField fx:id="email_field_update" layoutX="152.0" layoutY="391.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <PasswordField fx:id="password_field_match_update" layoutX="152.0" layoutY="691.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
+                  <TextField fx:id="number_field_update" layoutX="152.0" layoutY="491.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />
+               </children>
+            </AnchorPane>
             </children>
         </StackPane>
     </children>

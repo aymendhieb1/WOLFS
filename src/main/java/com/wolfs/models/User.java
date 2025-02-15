@@ -1,3 +1,5 @@
+package com.wolfs.models;
+
 public class User {
     protected int id;
     protected String nom;

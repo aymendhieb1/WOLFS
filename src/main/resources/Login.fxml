@@ -20,15 +20,15 @@
     <children>
         <StackPane prefHeight="150.0" prefWidth="1860.0">
             <children>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
                                 <Image url="@/images/secondry.png" />
                             </image>
                         </ImageView>
-                        <TextField fx:id="email_field1" layoutX="152.0" layoutY="225.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer email" styleClass="text-field" stylesheets="@/styles/style.css" />
-                        <PasswordField fx:id="password_field1" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" stylesheets="@/styles/style.css" />
+                        <TextField fx:id="email_field_signin" layoutX="152.0" layoutY="225.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                        <PasswordField fx:id="password_field_signin" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" stylesheets="@/styles/style.css" />
                         <ImageView fx:id="eye_icon1" fitHeight="33.0" fitWidth="29.0" layoutX="538.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@/images/eye_icon.png" />
@@ -40,7 +40,7 @@
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
                         </Button>
-                        <Button fx:id="submit_button1" layoutX="209.0" layoutY="451.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Se connecter" textFill="#d31818" />
+                        <Button fx:id="submit_button1" layoutX="209.0" layoutY="451.0" mnemonicParsing="false" onAction="#UserRole" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Se connecter" textFill="#d31818" />
                         <Line endX="250.0" layoutX="331.0" layoutY="558.0" startX="-250.0" stroke="#e1d8ce" />
                         <Text fill="#e78d1e" layoutX="193.0" layoutY="599.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Devenez membre dès maintenant&#10;">
                             <font>
@@ -57,9 +57,10 @@
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
                         </Button>
+                  <Button layoutX="527.0" layoutY="311.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" prefHeight="35.0" prefWidth="52.0" style="-fx-background-color: transparent;" />
                     </children>
                 </AnchorPane>
-                <AnchorPane fx:id="Sinscrire_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;">
+                <AnchorPane fx:id="Sinscrire_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -87,7 +88,7 @@
                         </Button>
                         <TextField fx:id="firstName_field" layoutX="152.0" layoutY="270.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field" stylesheets="@/styles/style.css" />
                         <TextField fx:id="email_field_signup" layoutX="152.0" layoutY="340.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
-                        <PasswordField layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
+                        <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
                         <TextField fx:id="number_field" layoutX="152.0" layoutY="410.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />               </children>
                 </AnchorPane>
             </children>

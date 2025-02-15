@@ -1,5 +1,6 @@
 package com.wolfs.services;
 
+import com.wolfs.models.Client;
 import com.wolfs.models.Moderator;
 import com.wolfs.utils.DataSource;
 
@@ -86,4 +87,9 @@ public class ModeratorServices implements IUserServices <Moderator> {
         }
 
         return Moderators;    }
+
+    @Override
+    public Moderator verifierUser(String email, String password) {
+        return null;
+    }
 }

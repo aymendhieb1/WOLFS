@@ -1,6 +1,7 @@
 package com.wolfs.services;
 
 import com.wolfs.models.Admin;
+import com.wolfs.models.Client;
 import com.wolfs.utils.DataSource;
 
 import java.sql.*;
@@ -89,5 +90,10 @@ public class AdminServices implements IUserServices<Admin> {
         }
 
         return Admins;
+    }
+
+    @Override
+    public Admin verifierUser(String email, String password) {
+        return null;
     }
 }

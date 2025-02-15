@@ -2,7 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,9 +22,9 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <children>
-        <StackPane prefHeight="150.0" prefWidth="1860.0">
+        <StackPane prefHeight="150.0" prefWidth="1860.0" visible="false">
             <children>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -91,6 +95,439 @@
                         <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
                         <TextField fx:id="number_field" layoutX="152.0" layoutY="410.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />               </children>
                 </AnchorPane>
+            <AnchorPane>
+               <children>
+                  <VBox layoutX="-19.4" layoutY="-3.0" prefHeight="920.0" prefWidth="248.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-19.4">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;&#10;&#10;&#10;" wrappingWidth="248.5367546081543" />
+                        <ImageView fitHeight="175.0" fitWidth="234.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/secondry.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="50.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <VBox prefHeight="665.0" prefWidth="266.0">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="249.0" style="-fx-background-color: transparent;" stylesheets="@styles/style.css" text="Dashboard" textAlignment="CENTER" textFill="WHITE" underline="true">
+                                 <graphic>
+                                 </graphic>
+                                 <font>
+                                    <Font name="Arial" size="25.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="220.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="User" textAlignment="CENTER" textFill="WHITE">
+                                 <graphic>
+                                 </graphic>
+                                 <font>
+                                    <Font name="Bell MT Bold" size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Hotel" textFill="WHITE">
+                                 <graphic>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="  Circuit" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <graphic>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="     Vol" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <graphic>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="10.0" layoutY="209.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="    Location" textFill="WHITE">
+                                 <graphic>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="10.0" layoutY="256.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Forum" textFill="WHITE">
+                                 <graphic>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="10.0" layoutY="302.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Offre" textFill="WHITE">
+                                 <font>
+                                    <Font name="Bell MT" size="20.0" />
+                                 </font>
+                                 <graphic>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <StackPane layoutX="230.0" layoutY="230.0" prefHeight="630.0" prefWidth="1305.0">
+                     <children>
+                        <AnchorPane prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="DEMANDE DE &#10;RECLAMATION" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="COMPTE BLOQUER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="TOTALE DES CLIENTS" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                <columns>
+                                  <TableColumn prefWidth="100.0" text="Nom" />
+                                  <TableColumn prefWidth="100.0" text="Localisation" />
+                                    <TableColumn prefWidth="100.0" text="Num_telephone" />
+                                    <TableColumn prefWidth="100.0" text="Email" />
+                                    <TableColumn prefWidth="100.0" text="Image" />
+                                    <TableColumn prefWidth="100.0" text="Description" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Type" />
+                                    <TableColumn prefWidth="100.0" text="Prix" />
+                                    <TableColumn prefWidth="100.0" text="Disponibilite" />
+                                    <TableColumn prefWidth="100.0" text="Hotel" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="CHAMBRE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="HOTELS" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="SESSION" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="ACTIVITE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="NOM" />
+                                    <TableColumn prefWidth="100.0" text="DESCRIPTION" />
+                                    <TableColumn prefWidth="100.0" text="LOCALISATION" />
+                                    <TableColumn prefWidth="100.0" text="TYPE" />
+                                    <TableColumn prefWidth="100.0" text="PRIX" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="DATE" />
+                                    <TableColumn prefWidth="100.0" text="TIME" />
+                                    <TableColumn prefWidth="100.0" text="CAPACITE" />
+                                    <TableColumn prefWidth="100.0" text="NBR_PLACE" />
+                                    <TableColumn prefWidth="100.0" text="NOM ACTIVITE" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="CONTRAT" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="VEHICULE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="MATRICULE" />
+                                    <TableColumn prefWidth="100.0" text="STATUS" />
+                                    <TableColumn prefWidth="100.0" text="NBR_PLACE" />
+                                    <TableColumn prefWidth="100.0" text="CYLINDRE" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Date de debut" />
+                                    <TableColumn prefWidth="100.0" text="Date de fin" />
+                                    <TableColumn prefWidth="100.0" text="CIN Locateur" />
+                                    <TableColumn prefWidth="100.0" text="Photo de permit" />
+                                    <TableColumn prefWidth="100.0" text="Matricule du vehicule" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="CHECKOUT VOL" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="VOL" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Departure" />
+                                    <TableColumn prefWidth="100.0" text="Destination" />
+                                    <TableColumn prefWidth="100.0" text="Date de Departure" />
+                                    <TableColumn prefWidth="100.0" text="Date d'arrivée" />
+                                    <TableColumn prefWidth="100.0" text="ClasseChaise" />
+                                    <TableColumn prefWidth="100.0" text="Compagnie aérienne" />
+                                    <TableColumn prefWidth="100.0" text="Prix" />
+                                    <TableColumn prefWidth="100.0" text="Places disponibles" />
+                                    <TableColumn prefWidth="100.0" text="Description" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Date de reservation" />
+                                    <TableColumn prefWidth="100.0" text="Nb total de passagers" />
+                                    <TableColumn prefWidth="100.0" text="Statut de la réservation" />
+                                    <TableColumn prefWidth="100.0" text="Prix ​​total" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
             </children>
         </StackPane>
     </children>

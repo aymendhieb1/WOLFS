@@ -7,20 +7,22 @@ public class Chambre {
     private int prix_Chambre;
     private boolean disponibilite_Chambre;
     private int id_hotel_Chambre; // Association avec l'hôtel (clé étrangère)
-
+private String description_Chambre;
     // Constructeur
-    public Chambre(int id_Chambre, String type_Chambre, int prix_Chambre, boolean disponibilite_Chambre, int id_hotel_Chambre) {
+    public Chambre(int id_Chambre, String type_Chambre, int prix_Chambre, boolean disponibilite_Chambre,String description_Chambre, int id_hotel_Chambre) {
         this.id_Chambre = id_Chambre;
         this.type_Chambre = type_Chambre;
         this.prix_Chambre = prix_Chambre;
         this.disponibilite_Chambre = disponibilite_Chambre;
+        this.description_Chambre = description_Chambre;
         this.id_hotel_Chambre = id_hotel_Chambre;
     }
 
-    public Chambre(String type_Chambre, int prix_Chambre, boolean disponibilite_Chambre, int id_hotel_Chambre) {
+    public Chambre(String type_Chambre, int prix_Chambre, boolean disponibilite_Chambre,String description_Chambre, int id_hotel_Chambre) {
         this.type_Chambre = type_Chambre;
         this.prix_Chambre = prix_Chambre;
         this.disponibilite_Chambre = disponibilite_Chambre;
+        this.description_Chambre = description_Chambre;
         this.id_hotel_Chambre = id_hotel_Chambre;
     }
 // Getters et Setters
@@ -44,13 +46,19 @@ public class Chambre {
     public String getType_Chambre() {
         return type_Chambre;
     }
+    public String getdescription_Chambre() {
+        return description_Chambre;
+    }
 
     public void setDisponibilite_Chambre(boolean disponibilite_Chambre) {
         this.disponibilite_Chambre = disponibilite_Chambre;
     }
-
     public void setType_Chambre(String type_Chambre) {
         this.type_Chambre = type_Chambre;
+    }
+
+    public void setdescription_Chambre(String description_Chambre) {
+        this.description_Chambre = description_Chambre;
     }
 
     public void setId_hotel_Chambre(int id_hotel_Chambre) {
@@ -72,6 +80,7 @@ public class Chambre {
                 ", id_Chambre=" + id_Chambre +
                 ", type_Chambre='" + type_Chambre + '\'' +
                 ", prix_Chambre=" + prix_Chambre +
+                ",Description_Chambre='" + description_Chambre + '\'' +
                 ", id_hotel_chambre=" + id_hotel_Chambre +
                 '}';
     }

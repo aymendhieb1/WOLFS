@@ -1,13 +1,15 @@
 package com.wolfs.controllers.user;
 
 import com.wolfs.models.Client;
+import com.wolfs.models.Hotel;
+import com.wolfs.services.HotelService;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
@@ -19,6 +21,7 @@ import com.wolfs.services.ClientServices;
 import javafx.event.ActionEvent;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -228,6 +231,48 @@ private Button page_hotel_bt_go_to_hotel;
     private Button     gestion_acceuil_bt_go_to_checkout;
     @FXML
     private  Button page_utilisateur_retour;
+
+    @FXML
+    private Button hotel_bt_ajouter;
+
+    @FXML
+    private Button hotel_bt_modifier;
+
+    @FXML
+    private TextField hotel_description;
+
+    @FXML
+    private TextField hotel_email;
+
+    @FXML
+    private TextField hotel_image;
+
+    @FXML
+    private TextField hotel_localisation;
+
+    @FXML
+    private TextField hotel_nom;
+
+    @FXML
+    private TextField hotel_num_tel;
+
+
+    @FXML
+    private TableView<Hotel> tableView_Hotel;
+    @FXML
+    private TableColumn<Hotel, Integer> hotel_col_id;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_name;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_location;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_phone;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_email;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_image;
+    @FXML
+    private TableColumn<Hotel, String> hotel_col_description;
 
 
     private boolean isPasswordVisible = false;
@@ -798,5 +843,112 @@ private Button page_hotel_bt_go_to_hotel;
             page_dashboard.setVisible(true);
         }
     }
+
+    @FXML
+    private void AddHotel(ActionEvent event) throws IOException {
+        if (hotel_nom.getText().isEmpty() || hotel_num_tel.getText().isEmpty() ||
+                hotel_email.getText().isEmpty() || hotel_description.getText().isEmpty() ) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification du format de l'email
+        if (!hotel_email.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showAlert("Erreur", "Veuillez entrer un email valide", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification du numéro de téléphone
+        /*try {
+            Integer.parseInt(number_field.getText());  // Essaye de convertir en entier
+            if (number_field.getText().length() != 8) {
+                showAlert("Erreur", "Le numéro de téléphone doit être composé de 8 chiffres", Alert.AlertType.ERROR);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le numéro de téléphone doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }*/
+
+
+        // Si toutes les vérifications passent
+        HotelService H = new HotelService();
+        H.ajouter(new Hotel(hotel_nom.getText(), hotel_localisation.getText(),hotel_num_tel.getText(), hotel_email.getText(),hotel_image.getText(),hotel_description.getText()));
+
+        // Affichage de l'alerte de confirmation
+        showAlert("Confirmation", "L'Hotel a été ajouté", Alert.AlertType.INFORMATION);
+        hotel_nom.setText("");
+        hotel_localisation.setText("");
+        hotel_num_tel.setText("");
+        hotel_email.setText("");
+        hotel_image.setText("");
+        hotel_description.setText("");
+        page_ajouter_hotel.setVisible(false);
+        page_hotel.setVisible(true);
+    }
+
+    @FXML
+    private void UPDATEHotel(ActionEvent event) throws IOException {
+        if (hotel_nom.getText().isEmpty() || hotel_num_tel.getText().isEmpty() ||
+                hotel_email.getText().isEmpty() || hotel_description.getText().isEmpty() ) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification du format de l'email
+        if (!hotel_email.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showAlert("Erreur", "Veuillez entrer un email valide", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification du numéro de téléphone
+        /*try {
+            Integer.parseInt(number_field.getText());  // Essaye de convertir en entier
+            if (number_field.getText().length() != 8) {
+                showAlert("Erreur", "Le numéro de téléphone doit être composé de 8 chiffres", Alert.AlertType.ERROR);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le numéro de téléphone doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }*/
+
+
+        // Si toutes les vérifications passent
+        HotelService H = new HotelService();
+        H.modifier(new Hotel(5,hotel_nom.getText(), hotel_localisation.getText(),hotel_num_tel.getText(), hotel_email.getText(),hotel_image.getText(),hotel_description.getText()));
+
+        // Affichage de l'alerte de confirmation
+        showAlert("Confirmation", "L'Hotel a été modifié", Alert.AlertType.INFORMATION);
+        hotel_nom.setText("");
+        hotel_localisation.setText("");
+        hotel_num_tel.setText("");
+        hotel_email.setText("");
+        hotel_image.setText("");
+        hotel_description.setText("");
+        page_ajouter_hotel.setVisible(false);
+        page_hotel.setVisible(true);
+    }
+
+    public void initialize_tableview_hotel() {
+        // Initialize table columns
+       // hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("location"));
+        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image"));
+        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        HotelService hotelService = new HotelService();
+        List<Hotel> hotelList = hotelService.rechercher(); // Fetch hotel list from DB
+        ObservableList<Hotel> observableHotelList = FXCollections.observableArrayList(hotelList);
+
+        tableView_Hotel.setItems(observableHotelList);
+    }
+
+
 }
 

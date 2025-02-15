@@ -274,16 +274,16 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_hotel" prefHeight="200.0" prefWidth="200.0" visible="false">
+                        <AnchorPane fx:id="page_hotel" prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                              <TableView fx:id="TableView_Hotel" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
                                 <columns>
-                                  <TableColumn prefWidth="100.0" text="Nom" />
-                                  <TableColumn prefWidth="100.0" text="Localisation" />
-                                    <TableColumn prefWidth="100.0" text="Num_telephone" />
-                                    <TableColumn prefWidth="100.0" text="Email" />
-                                    <TableColumn prefWidth="100.0" text="Image" />
-                                    <TableColumn prefWidth="100.0" text="Description" />
+                                  <TableColumn fx:id="hotel_col_name" prefWidth="100.0" text="Nom" />
+                                  <TableColumn fx:id="hotel_col_location" prefWidth="100.0" text="Localisation" />
+                                    <TableColumn fx:id="hotel_col_phone" prefWidth="100.0" text="Num_telephone" />
+                                    <TableColumn fx:id="hotel_col_email" prefWidth="100.0" text="Email" />
+                                    <TableColumn fx:id="hotel_col_image" prefWidth="100.0" text="Image" />
+                                    <TableColumn fx:id="hotel_col_description" prefWidth="100.0" text="Description" />
                                     <TableColumn prefWidth="100.0" text="Modifier" />
                                     <TableColumn prefWidth="100.0" text="Supprimer" />
                                 </columns>
@@ -873,8 +873,8 @@
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
-                              <TextField fx:id="email_field_signup1" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="hotel_bt_ajouter" layoutX="324.0" layoutY="528.0" mnemonicParsing="false" onAction="#AddHotel" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="hotel_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le nom" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <Button fx:id="page_ajouter_hotel_return" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -884,12 +884,17 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Button fx:id="hotel_bt_modifier" layoutX="622.0" layoutY="528.0" mnemonicParsing="false" onAction="#UPDATEHotel" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="377.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel" wrappingWidth="126.800048828125">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
                                  </font>
                               </Text>
+                              <TextField fx:id="hotel_localisation" layoutX="324.0" layoutY="161.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le localisation" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_num_tel" layoutX="324.0" layoutY="237.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le numero de telephone" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_email" layoutX="324.0" layoutY="309.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_image" layoutX="324.0" layoutY="384.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_description" layoutX="324.0" layoutY="447.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_chambre" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">

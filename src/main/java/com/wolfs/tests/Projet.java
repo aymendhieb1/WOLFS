@@ -1,5 +1,6 @@
 package com.wolfs.tests;
 
+import com.wolfs.controllers.user.CrudUser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,15 +20,11 @@ public class Projet extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
         Parent root = loader.load();
 
-        // Create a scene with fixed width and height (800x600)
+
+        // Create a scene with fixed width and height (1900x1000)
         Scene scene = new Scene(root, 1900, 1000);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Projet");
-
-        // Disable window resizing
-        primaryStage.setResizable(false);
-        primaryStage.setFullScreen(false);
-        primaryStage.setMaximized(false);
+        primaryStage.setTitle("TripToGo");
         primaryStage.show();
     }
 }

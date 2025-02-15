@@ -1,0 +1,63 @@
+.text-field {
+    -fx-padding: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-color: #f9f9f9;
+    -fx-font-size: 16px;
+}
+.text-field:hover {
+    -fx-underline: true;
+}
+.submit-button {
+    -fx-padding: 16px;
+    -fx-border-width: 0;
+    -fx-background-color: #e78d1e;
+    -fx-text-fill: #e8e8e8;
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+    -fx-background-radius: 5px;
+}
+
+.submit-button:hover {
+    -fx-background-color: linear-gradient(#132a3e, #e78d1e);
+}
+.btnConnexion {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #e78d1e;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.3s ease;
+    -fx-opacity: 1;
+}
+
+.btnConnexion:hover{
+    -fx-border-color: #e78d1e;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.button-hover {
+    -fx-background-color: transparent;
+    -fx-border: none;
+    -fx-text-fill: #e78d1e;
+    -fx-cursor: hand;
+}
+
+*.button-hover:hover {
+    -fx-underline: true; }
+
+
+
+
+
+
+
+
+
+
+
+
+

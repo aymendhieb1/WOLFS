@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="793.0" prefWidth="1684.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.test_v1.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <StackPane prefHeight="641.0" prefWidth="721.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);">
+      <children>
+         <AnchorPane fx:id="page_login" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <children>
+               <TextField fx:id="login_username" layoutX="224.0" layoutY="236.0" promptText="entrez votre username" />
+               <Label fx:id="welcomeText" layoutX="146.0" layoutY="240.0" text="Username" />
+               <PasswordField fx:id="login_password" layoutX="224.0" layoutY="288.0" promptText="entrez votre mdp" />
+               <Label layoutX="131.0" layoutY="291.0" prefHeight="18.0" prefWidth="87.0" text="Password" />
+               <Button id="bt_login" fx:id="login_bt_login" layoutX="260.0" layoutY="356.0" mnemonicParsing="false" onAction="#on_bt_login_clicked" text="Login" />
+               <Hyperlink fx:id="login_to_account" layoutX="328.0" layoutY="443.0" onAction="#changeForum" text="S'inscrire" />
+               <Label layoutX="224.0" layoutY="94.0" prefHeight="37.0" prefWidth="190.0" text="LOGIN ACCOUNT" textFill="#050202">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane fx:id="page_account" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <children>
+               <TextField fx:id="account_email" layoutX="223.0" layoutY="187.0" promptText="entrez votre email" />
+               <TextField fx:id="account_username" layoutX="224.0" layoutY="236.0" promptText="entrez votre username" />
+               <Label layoutX="146.0" layoutY="191.0" text="Email" />
+               <Label layoutX="146.0" layoutY="240.0" text="Username" />
+               <PasswordField fx:id="account_password" layoutX="224.0" layoutY="288.0" promptText="entrez votre mdp" />
+               <Label layoutX="131.0" layoutY="291.0" prefHeight="18.0" prefWidth="87.0" text="Password" />
+               <Button fx:id="account_bt_enregistrer" layoutX="238.0" layoutY="348.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="120.0" text="Enregistrer" />
+               <Hyperlink fx:id="account_to_login" layoutX="328.0" layoutY="443.0" onAction="#changeForum" text="Login" />
+               <Label layoutX="224.0" layoutY="94.0" prefHeight="37.0" prefWidth="190.0" text="REGISTRE ACCOUNT" textFill="#050202">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Label>
+               <Label layoutX="163.0" layoutY="446.0" text="Vous avez déja un account ?" />
+            </children>
+         </AnchorPane>
+         <AnchorPane fx:id="menu" prefHeight="200.0" prefWidth="200.0">
+            <children>
+               <BorderPane layoutX="17.0" layoutY="25.0" prefHeight="483.0" prefWidth="652.0">
+                  <left>
+                     <VBox prefHeight="480.0" prefWidth="154.0" BorderPane.alignment="CENTER">
+                        <children>
+                           <Button mnemonicParsing="false" onAction="#f_dashboard_button_user" prefHeight="74.0" prefWidth="154.0" text="user" />
+                           <Button mnemonicParsing="false" onAction="#f_dashboard_button_hotel" prefHeight="62.0" prefWidth="154.0" text="hotel" />
+                           <Button mnemonicParsing="false" onAction="#f_dashboard_button_chambre" prefHeight="58.0" prefWidth="154.0" text="chambre" />
+                           <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="154.0" text="vol" />
+                           <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="154.0" text="circuit" />
+                           <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="154.0" text="offre" />
+                           <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="154.0" text="forum" />
+                           <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="154.0" text="Location" />
+                           <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="154.0" text="about" />
+                        </children>
+                     </VBox>
+                  </left>
+                  <center>
+                     <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <children>
+                           <AnchorPane fx:id="page_hotel" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="534.0" prefWidth="722.0">
+                              <children>
+                                  <Button layoutX="207.0" layoutY="410.0" onAction="#onHelloButtonClick" text="Enregistrer" underline="true" AnchorPane.rightAnchor="437.8" AnchorPane.topAnchor="410.0" />
+                  
+                                                                                                                                       <TextField layoutX="243.0" layoutY="72.0" promptText="Donner nom" />
+                                 <Label fx:id="welcomeText2" layoutX="120.0" layoutY="266.0" text="Localisation" textFill="#fffafa" />
+                                 <TextField layoutX="245.0" layoutY="263.0" promptText="Donner localisation" />
+                                 <Label fx:id="welcomeText21" layoutX="112.0" layoutY="120.0" prefHeight="18.0" prefWidth="111.0" text="Numero_telephone" textFill="#fffafa" />
+                                 <TextField layoutX="246.0" layoutY="116.0" promptText="Donner numero" />
+                                 <Label fx:id="welcomeText211" layoutX="121.0" layoutY="169.0" prefHeight="18.0" prefWidth="111.0" text="Email" textFill="#fffafa" />
+                                 <TextField layoutX="246.0" layoutY="166.0" promptText="Donner email" />
+                                 <Label fx:id="welcomeText2111" layoutX="112.0" layoutY="223.0" prefHeight="18.0" prefWidth="111.0" text="Description" textFill="#fffafa" />
+                                 <TextField id="2" layoutX="246.0" layoutY="220.0" promptText="donner description" />
+                                 <Button layoutX="300.0" layoutY="410.0" text="Annuler" />
+                                 <Hyperlink fx:id="Hotel_to_Chambre" layoutX="544.0" layoutY="424.0" onAction="#changeForum" text="Chambre" />
+                                 <Label fx:id="welcomeText212" layoutX="109.0" layoutY="76.0" prefHeight="18.0" prefWidth="111.0" text="Nom" textFill="#fffafa" />
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane fx:id="page_chambre" prefHeight="200.0" prefWidth="200.0" visible="false">
+                              <children>
+                                 <Label fx:id="welcomeText1" layoutX="164.0" layoutY="147.0" prefHeight="20.0" prefWidth="100.0" text="Nom_Hotel" textFill="WHITE" />
+                                 <Hyperlink fx:id="Chambre_to_Hotel" layoutX="374.0" layoutY="343.0" onAction="#changeForum" text="Hotel" />
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </StackPane>
+                  </center>
+               </BorderPane>
+            </children>
+         </AnchorPane>
+      </children>
+   </StackPane>
+</VBox>

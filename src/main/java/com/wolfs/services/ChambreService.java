@@ -26,7 +26,7 @@ public class ChambreService implements IService<Chambre> {
 
     @Override
     public void ajouter(Chambre ch) {
-        String req = "INSERT INTO chambre ( type_Chambre,prix_Chambre,disponibilite_Chambre,id_hotel_chambre) VALUES ('"+ch.getType_Chambre()+"','"+ch.getPrix_Chambre()+"','"+ch.getDisponibilite_Chambre()+"','"+ch.getId_hotel_Chambre()+"')";
+        String req = "INSERT INTO chambre ( type_Chambre,prix_Chambre,disponibilite_Chambre,description_Chambre,id_hotel_chambre) VALUES ('"+ch.getType_Chambre()+"','"+ch.getPrix_Chambre()+"','"+ch.getDisponibilite_Chambre()+"','"+ch.getdescription_Chambre()+"','"+ch.getId_hotel_Chambre()+"')";
         try {
 
             Statement st = connection.createStatement();
@@ -39,7 +39,7 @@ public class ChambreService implements IService<Chambre> {
 
     @Override
     public void modifier(Chambre ch) {
-        String req = "UPDATE chambre SET type_Chambre='"+ch.getType_Chambre()+"' ,prix_Chambre='"+ch.getPrix_Chambre()+"',disponibilite_Chambre='"+ch.getDisponibilite_Chambre()+"',id_hotel_chambre='"+ch.getId_hotel_Chambre()+"' WHERE id_Chambre="+ch.getId_Chambre();
+        String req = "UPDATE chambre SET type_Chambre='"+ch.getType_Chambre()+"' ,prix_Chambre='"+ch.getPrix_Chambre()+"',disponibilite_Chambre='"+ch.getDisponibilite_Chambre()+"',description_Chambre='"+ch.getdescription_Chambre()+"',id_hotel_chambre='"+ch.getId_hotel_Chambre()+"' WHERE id_Chambre="+ch.getId_Chambre();
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(req);
@@ -70,7 +70,7 @@ public class ChambreService implements IService<Chambre> {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(req);
             while (rs.next()) {
-                ch.add(new Chambre(rs.getInt("id_Chambre"), rs.getString("type_Chambre"), rs.getInt("prix_Chambre"),rs.getBoolean("disponibilite_Chambre"),rs.getInt("id_hotel_Chambre")));
+                ch.add(new Chambre(rs.getInt("id_Chambre"), rs.getString("type_Chambre"), rs.getInt("prix_Chambre"),rs.getBoolean("disponibilite_Chambre"),rs.getString("description_Chambre"),rs.getInt("id_hotel_Chambre")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

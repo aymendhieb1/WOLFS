@@ -1,5 +1,7 @@
 package com.wolfs.services;
 
+import com.wolfs.models.Client;
+
 import java.util.List;
 
 public interface IUserServices<T>{
@@ -10,4 +12,7 @@ public interface IUserServices<T>{
     void supprimerUser(T var1);
 
     List<T> rechercherUser();
+
+    T verifierUser(String email, String password);
+
 }

@@ -49,10 +49,18 @@
 *.button-hover:hover {
     -fx-underline: true; }
 
+.button-menu {
+    color: white;
+    font-size: 25px;
+    text-decoration: none; /* Ensures no underline initially */
+    background-color: transparent; /* Set background to transparent */
+}
 
-
-
-
+.button-menu:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #e78d1e; /* Change text color to #e78d1e on hover */
+    background-color: transparent; /* Keep the background transparent on hover */
+}
 
 
 

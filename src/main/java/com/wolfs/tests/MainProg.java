@@ -32,8 +32,8 @@ public class MainProg {
         ClientServices s1=new ClientServices();
         //add client
 
-       // s1.ajouterUser( clientajout1);
-       // s1.ajouterUser( clientajout2);
+        // s1.ajouterUser( clientajout1);
+        // s1.ajouterUser( clientajout2);
         //s1.ajouterUser( client3);
 
         //update client
@@ -42,7 +42,7 @@ public class MainProg {
 
         //delete client
         //s1.supprimerUser(clientupdate1);
-/********************************************/
+        /********************************************/
         Admin adminAjout1 = new Admin("Dupont", "Jean", "jean.dupont@email.com", 98765432, "securePass123", 0);
 
         Admin adminUpdate1 = new Admin(6,"Dupont", "Jean", "jean.dupont@esprit.tn", 98765432, "securePass123", 0);
@@ -66,7 +66,7 @@ public class MainProg {
         ModeratorServices s3=new ModeratorServices();
 
         //add moderator
-       // s3.ajouterUser(moderatorAjout1);
+        // s3.ajouterUser(moderatorAjout1);
 
         //update moderator
         //s3.modifierUser(moderatorUpdate1);
@@ -186,33 +186,33 @@ public class MainProg {
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        /*Vol volToAdd = new Vol(
-                "Tunis",
-                "Morocco",
-                LocalDateTime.parse("12/12/2025 10:00", formatter),
-                LocalDateTime.parse("12/12/2025 14:00", formatter),
-                ClasseChaise.ECONOMY,  // Use the Enum here
-                "Air Morocco",
-                1800,
-                24,
-                "Test flight"
-        );
-        volService.ajouterVol(volToAdd);
-        System.out.println("Vol ajouté: " + volToAdd);
-*/
+                                                /*Vol volToAdd = new Vol(
+                                                        "Tunis",
+                                                        "Morocco",
+                                                        LocalDateTime.parse("12/12/2025 10:00", formatter),
+                                                        LocalDateTime.parse("12/12/2025 14:00", formatter),
+                                                        ClasseChaise.ECONOMY,  // Use the Enum here
+                                                        "Air Morocco",
+                                                        1800,
+                                                        24,
+                                                        "Test flight"
+                                                );
+                                                volService.ajouterVol(volToAdd);
+                                                System.out.println("Vol ajouté: " + volToAdd);
+                                        */
 
-       /*Vol volToModify = new Vol(
-                1,
-                "Tunis",
-                "Italy",
-                LocalDateTime.parse("12/12/2025 15:00", formatter),
-                LocalDateTime.parse("12/12/2025 17:00", formatter),
-                ClasseChaise.BUSINESS,  // Use the Enum here
-                "Tunisair",
-                2000,
-                10,
-                "Modified flight"
-        );*/
+                                               /*Vol volToModify = new Vol(
+                                                        1,
+                                                        "Tunis",
+                                                        "Italy",
+                                                        LocalDateTime.parse("12/12/2025 15:00", formatter),
+                                                        LocalDateTime.parse("12/12/2025 17:00", formatter),
+                                                        ClasseChaise.BUSINESS,  // Use the Enum here
+                                                        "Tunisair",
+                                                        2000,
+                                                        10,
+                                                        "Modified flight"
+                                                );*/
         //volService.modifierVol(volToModify);
         //System.out.println("Vol modifié: " + volToModify);
 
@@ -244,8 +244,8 @@ public class MainProg {
 
         //HotelService hot = new HotelService();
         // hot.ajouter(new Hotel("youssef", "xx","23456789","mouradi.@gmail.com","url",""));
-          //hot.modifier(new Hotel(4,"Mouradi", "xx","23456789","mouradi.@gmail.com","url",""));
-       // hot.supprimer(new Hotel(4,"","","","","","" ));
+        //hot.modifier(new Hotel(4,"Mouradi", "xx","23456789","mouradi.@gmail.com","url",""));
+        // hot.supprimer(new Hotel(4,"","","","","","" ));
         //System.out.println(hot.rechercher());
 
         // ChambreService ch = new ChambreService();
@@ -257,31 +257,31 @@ public class MainProg {
         ActiviteService2 activiteService = new ActiviteService2();
         SessionService sessionService = new SessionService();
 
-         Activite activite1 = new Activite("sp", "A relaxing activity", "Beach", "Fitness", 20);
+        Activite activite1 = new Activite("sp", "A relaxing activity", "Beach", "Fitness", 20);
         // activiteService.ajouter(activite1);
-         //Activite activite2= new Activite(7,"Yoga", "A relaxing activity", "Beach", "Fitness", 20);
+        //Activite activite2= new Activite(7,"Yoga", "A relaxing activity", "Beach", "Fitness", 20);
 
 
         //activite2.setNom_act("hello");
         //activiteService.modifier(activite2);
 
 
-       //  activiteService.supprimer(activite2);
+        //  activiteService.supprimer(activite2);
 
 
-           LocalDate date = LocalDate.of(2026,10,10);
-           LocalTime time = LocalTime.of(4,20,20);
-           Session session1 = new Session(date, time, 50, 100);
-           Session session2 = new Session(1,date, time, 50, 100);
+        LocalDate date = LocalDate.of(2026,10,10);
+        LocalTime time = LocalTime.of(4,20,20);
+        Session session1 = new Session(date, time, 50, 100);
+        Session session2 = new Session(1,date, time, 50, 100);
 
-          //sessionService.ajouter(session1);
+        //sessionService.ajouter(session1);
 
 
 
-          //session2.setNbr_places_sess(220);
-          //sessionService.modifier(session2);
+        //session2.setNbr_places_sess(220);
+        //sessionService.modifier(session2);
 
-          //    sessionService.supprimer(session2);
+        //    sessionService.supprimer(session2);
 
 
         System.out.println(activiteService.rechercher());

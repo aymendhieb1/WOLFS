@@ -53,6 +53,183 @@ public class CrudUser {
     private PasswordField password_field_signup_match;
 
 
+//new
+
+    @FXML
+    private AnchorPane page_acceuil_gestion_circuit;
+
+    @FXML
+    private AnchorPane page_acceuil_gestion_forum;
+
+    @FXML
+    private AnchorPane page_acceuil_gestion_hotel;
+
+    @FXML
+    private AnchorPane page_acceuil_gestion_location;
+
+    @FXML
+    private AnchorPane page_acceuil_gestion_vol;
+
+    @FXML
+    private AnchorPane page_activite;
+
+    @FXML
+    private AnchorPane page_chambre;
+
+    @FXML
+    private AnchorPane page_checkout;
+
+    @FXML
+    private AnchorPane page_contrat;
+
+    @FXML
+    private AnchorPane page_dashboard;
+
+    @FXML
+    private AnchorPane page_forum;
+
+    @FXML
+    private AnchorPane page_hotel;
+
+    @FXML
+    private AnchorPane page_post;
+
+    @FXML
+    private AnchorPane page_session;
+
+    @FXML
+    private AnchorPane page_utilisateur;
+
+    @FXML
+    private AnchorPane page_vehicule;
+
+    @FXML
+    private AnchorPane page_vol;
+
+    @FXML
+    private  Button bt_menu_dashboard;
+    @FXML
+    private  Button bt_menu_user;
+    @FXML
+    private  Button bt_menu_hotel;
+    @FXML
+    private  Button bt_menu_Circuit;
+    @FXML
+    private  Button bt_menu_vol;
+    @FXML
+    private  Button bt_menu_location;
+    @FXML
+    private  Button bt_menu_forum;
+    @FXML
+    private  Button bt_menu_offre;
+
+    @FXML
+    private  AnchorPane page_ajouter_chambre;
+    @FXML
+    private  AnchorPane page_ajouter_hotel;
+    @FXML
+    private  AnchorPane page_ajouter_session;
+    @FXML
+    private  AnchorPane page_ajouter_activite;
+    @FXML
+    private  AnchorPane page_ajouter_vol;
+    @FXML
+    private  AnchorPane page_ajouter_checkout;
+    @FXML
+    private  AnchorPane page_ajouter_forum;
+    @FXML
+    private  AnchorPane page_ajouter_post;
+
+    @FXML
+    private  AnchorPane page_ajouter_vehicule;
+    @FXML
+    private  AnchorPane page_ajouter_contrat;
+
+@FXML
+private Button page_hotel_bt_go_to_hotel;
+    @FXML
+    private Button     page_hotel_bt_retour;
+    @FXML
+        private Button     page_ajouter_hotel_return;
+    @FXML
+    private Button     page_hotel_bt_ajouter;
+    @FXML
+    private Button     page_acceuil_hotel_go_to_chambre;
+    @FXML
+    private Button     page_chambre_retour;
+    @FXML
+    private Button     page_chambre_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_chambre_retour;
+    @FXML
+    private Button     page_acceuil_gestion_circuit_go_to_activite;
+    @FXML
+    private Button     page_acceuil_gestion_circuit_go_to_session;
+    @FXML
+    private Button     page_activite_retour;
+    @FXML
+    private Button     page_activite_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_activiter_retour;
+    @FXML
+    private Button     page_session_retour;
+    @FXML
+    private Button     page_session_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_session_retour;
+    @FXML
+    private Button     page_acceuil_location_go_to_vehicule;
+
+    @FXML
+    private Button     page_acceuil_location_go_to_contrat;
+    @FXML
+    private Button     page_vehicule_retour;
+    @FXML
+    private Button     page_vehicule_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_vehicule_retour;
+    @FXML
+    private Button     page_contrat_retour;
+    @FXML
+    private Button     page_contrat_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_contrat_retour;
+    @FXML
+    private Button     page_vol_retour;
+    @FXML
+    private Button     page_vol_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_vol_retour;
+    @FXML
+    private Button     page_checkout_retour;
+    @FXML
+    private Button     page_checkout_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_checkout_retour;
+    @FXML
+    private Button     page_acceuil_forum_bt_forum;
+    @FXML
+    private Button     page_ajouter_post_retour;
+    @FXML
+    private Button     page_acceuil_forum_go_to_post;
+    @FXML
+    private Button     page_forum_retour;
+    @FXML
+    private Button     page_forum_bt_ajouter;
+    @FXML
+    private Button     page_ajouter_forum_retour;
+    @FXML
+    private Button     page_post_retour;
+    @FXML
+    private Button     page_post_bt_ajouter;
+    @FXML
+    private Button     gestion_acceuil_bt_go_to_vol;
+    @FXML
+    private Button     gestion_acceuil_bt_go_to_checkout;
+    @FXML
+    private  Button page_utilisateur_retour;
+
+
     private boolean isPasswordVisible = false;
 
 
@@ -229,5 +406,397 @@ public class CrudUser {
     }
 
 
+    @FXML
+    private void changeForum(javafx.event.ActionEvent actionEvent) {
+        if (actionEvent.getSource() == bt_menu_dashboard) {
+            page_chambre.setVisible(false);
+            page_hotel.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+
+            page_dashboard.setVisible(true);
+
+        } else if (actionEvent.getSource() == bt_menu_user) {
+            page_chambre.setVisible(false);
+            page_hotel.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(true);
+
+        } else if (actionEvent.getSource() == bt_menu_hotel) {
+            page_chambre.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(true);
+
+        } else if (actionEvent.getSource() == bt_menu_Circuit) {
+            page_chambre.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(true);
+
+        }
+        else if (actionEvent.getSource() == bt_menu_vol) {
+            page_chambre.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(true);
+
+        }
+        else if (actionEvent.getSource() == bt_menu_location) {
+            page_chambre.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_location.setVisible(true);
+
+        }
+        else if (actionEvent.getSource() == bt_menu_forum) {
+            page_chambre.setVisible(false);
+            page_forum.setVisible(false);
+            page_activite.setVisible(false);
+            page_contrat.setVisible(false);
+            page_checkout.setVisible(false);
+            page_session.setVisible(false);
+            page_post.setVisible(false);
+            page_vehicule.setVisible(false);
+            page_vol.setVisible(false);
+
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(false);
+
+            page_dashboard.setVisible(false);
+            page_utilisateur.setVisible(false);
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
+            page_acceuil_gestion_location.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(true);
+
+        }
+        else if (actionEvent.getSource() == page_hotel_bt_go_to_hotel) {
+
+
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_hotel.setVisible(true);
+
+        }
+        else if (actionEvent.getSource() == page_hotel_bt_retour) {
+
+
+            page_hotel.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_hotel_bt_ajouter) {
+
+
+            page_hotel.setVisible(false);
+            page_ajouter_hotel.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_hotel_return) {
+
+
+            page_ajouter_hotel.setVisible(false);
+            page_hotel.setVisible(true);
+        }else if (actionEvent.getSource() == page_acceuil_hotel_go_to_chambre) {
+
+
+            page_acceuil_gestion_hotel.setVisible(false);
+            page_chambre.setVisible(true);
+        }else if (actionEvent.getSource() == page_chambre_retour) {
+
+
+            page_chambre.setVisible(false);
+            page_acceuil_gestion_hotel.setVisible(true);
+        }else if (actionEvent.getSource() == page_chambre_bt_ajouter) {
+
+
+            page_chambre.setVisible(false);
+           page_ajouter_chambre.setVisible(true);
+        }else if (actionEvent.getSource() == page_ajouter_chambre_retour) {
+
+
+            page_ajouter_chambre .setVisible(false);
+            page_chambre.setVisible(true);
+        }else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_activite) {
+
+
+            page_acceuil_gestion_circuit .setVisible(false);
+            page_activite.setVisible(true);
+        }else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_session) {
+
+
+            page_acceuil_gestion_circuit .setVisible(false);
+            page_session.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_activite_retour) {
+
+
+            page_activite .setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(true);
+        }  else if (actionEvent.getSource() == page_activite_bt_ajouter) {
+
+
+            page_activite .setVisible(false);
+            page_ajouter_activite.setVisible(true);
+        }
+                 else if (actionEvent.getSource() == page_ajouter_activiter_retour) {
+
+
+            page_ajouter_activite .setVisible(false);
+            page_activite.setVisible(true);
+        }    else if (actionEvent.getSource() == page_session_retour) {
+
+
+            page_session .setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_session_bt_ajouter) {
+
+
+            page_session .setVisible(false);
+            page_ajouter_session.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_session_retour) {
+
+
+            page_ajouter_session.setVisible(false);
+            page_session.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_acceuil_location_go_to_vehicule) {
+
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_vehicule.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_acceuil_location_go_to_contrat) {
+
+
+            page_acceuil_gestion_location.setVisible(false);
+            page_contrat.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_vehicule_retour) {
+
+
+            page_vehicule.setVisible(false);
+            page_acceuil_gestion_location.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_vehicule_bt_ajouter) {
+
+
+            page_vehicule.setVisible(false);
+            page_ajouter_vehicule.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_vehicule_retour) {
+
+
+            page_ajouter_vehicule.setVisible(false);
+            page_vehicule.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_contrat_retour) {
+
+
+            page_contrat.setVisible(false);
+            page_acceuil_gestion_location.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_contrat_bt_ajouter) {
+
+
+            page_contrat.setVisible(false);
+            page_ajouter_contrat.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_contrat_retour) {
+
+
+            page_ajouter_contrat.setVisible(false);
+            page_contrat.setVisible(true);
+        }
+        else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_vol) {
+
+
+            page_acceuil_gestion_vol.setVisible(false);
+            page_vol.setVisible(true);
+        }
+        else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_checkout) {
+
+
+            page_acceuil_gestion_vol.setVisible(false);
+            page_checkout.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_vol_retour) {
+
+
+            page_vol.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(true);
+        } else if (actionEvent.getSource() == page_vol_bt_ajouter) {
+
+
+            page_vol.setVisible(false);
+            page_ajouter_vol.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_vol_retour) {
+
+
+            page_ajouter_vol.setVisible(false);
+            page_vol.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_checkout_retour) {
+
+
+            page_checkout.setVisible(false);
+            page_acceuil_gestion_vol.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_checkout_bt_ajouter) {
+
+
+            page_checkout.setVisible(false);
+            page_ajouter_checkout.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_checkout_retour) {
+
+
+            page_ajouter_checkout.setVisible(false);
+            page_checkout.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_acceuil_forum_bt_forum) {
+
+
+            page_acceuil_gestion_forum.setVisible(false);
+            page_forum.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_acceuil_forum_go_to_post) {
+
+
+            page_acceuil_gestion_forum.setVisible(false);
+            page_post.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_forum_retour) {
+
+
+            page_forum.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_forum_bt_ajouter) {
+
+
+            page_forum.setVisible(false);
+            page_ajouter_forum.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_forum_retour) {
+
+
+            page_ajouter_forum.setVisible(false);
+            page_forum.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_post_retour) {
+
+
+            page_post.setVisible(false);
+            page_acceuil_gestion_forum.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_post_bt_ajouter) {
+
+
+            page_post.setVisible(false);
+            page_ajouter_post.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_ajouter_post_retour) {
+
+
+            page_ajouter_post.setVisible(false);
+            page_post.setVisible(true);
+        }
+        else if (actionEvent.getSource() == page_utilisateur_retour) {
+
+
+            page_utilisateur.setVisible(false);
+            page_dashboard.setVisible(true);
+        }
+    }
 }
 

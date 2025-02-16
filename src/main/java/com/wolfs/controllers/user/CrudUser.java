@@ -366,6 +366,8 @@ private Button page_hotel_bt_go_to_hotel;
 
                     btn.setOnAction(event -> {
                         Activite activite = getTableView().getItems().get(getIndex());
+                        activite_bt_modifier.setVisible(true);
+                        activite_bt_ajouter.setVisible(false);
 
                         nom_activite.setText(activite.getNom_act());
                         description_activite.setText(activite.getDescript());
@@ -414,7 +416,7 @@ private Button page_hotel_bt_go_to_hotel;
                     );
 
                     btn.setOnAction(event -> {
-                        // Récupérer l'activité associée à la ligne actuelle
+                        // Get the activity associated with the current row
                         Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
 
                         if (activiteSelectionnee == null) {
@@ -422,7 +424,7 @@ private Button page_hotel_bt_go_to_hotel;
                             return;
                         }
 
-                        // Demander confirmation avant suppression
+                        // Show confirmation alert before deletion
                         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                         confirmationAlert.setTitle("Confirmation de suppression");
                         confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette activité ?");
@@ -431,23 +433,19 @@ private Button page_hotel_bt_go_to_hotel;
                         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            // Supprimer l'activité via l'objet Activite
+                            // Delete the activity using its id_act
                             ActiviteService2 activiteService = new ActiviteService2();
                             activiteService.supprimer(activiteSelectionnee);
 
                             showAlert("Confirmation", "L'Activité a été supprimée avec succès", Alert.AlertType.INFORMATION);
 
-                            // Mettre à jour la TableView
+                            // Update the TableView
                             getTableView().getItems().remove(activiteSelectionnee);
                         }
                     });
                 }
 
-
-
-
-
-        @Override
+                @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
@@ -867,7 +865,11 @@ private Button page_hotel_bt_go_to_hotel;
             page_ajouter_activite.setVisible(true);
         }
                  else if (actionEvent.getSource() == page_ajouter_activiter_retour) {
-
+            nom_activite.setText("");
+            description_activite.setText("");
+            localisation_activite.setText("");
+            type_activite.setText("");
+            prix_activite.setText("");
 
             page_ajouter_activite .setVisible(false);
             page_activite.setVisible(true);
@@ -1287,8 +1289,6 @@ private Button page_hotel_bt_go_to_hotel;
     }
 @FXML
     private void Mod_act(ActionEvent event) throws IOException{
-        activite_bt_modifier.setVisible(true);
-        activite_bt_ajouter.setVisible(false);
 
         if (nom_activite.getText().isEmpty() ||
                 description_activite.getText().isEmpty() ||

@@ -37,20 +37,35 @@ public class ActiviteService2 implements IService<Activite> {
         }
     }
 
-    @Override
-    public void supprimer(Activite Activite) {
-        String req = "DELETE FROM activite WHERE id_act=?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
-            pst.setInt(1, Activite.getId_act());
-            pst.executeUpdate();
-            System.out.println("Personne supprimée");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
-    public int getIdByNom(String nomAct) {
+        public void supprimer(Activite activite) {
+            // Use nom_act to delete the activity from the database
+            String req = "DELETE FROM activite WHERE nom_act = ?";  // Change to search by nom_act
+
+            try {
+                // Check if the nom_act is being passed correctly
+                System.out.println("Attempting to delete activity with name: " + activite.getNom_act());
+
+                PreparedStatement pst = connection.prepareStatement(req);
+                pst.setString(1, activite.getNom_act());  // Set the nom_act to the prepared statement
+                int rowsAffected = pst.executeUpdate();  // Execute the delete
+
+                // Log how many rows were affected
+                System.out.println("Rows affected: " + rowsAffected);
+
+                if (rowsAffected > 0) {
+                    System.out.println("Activité supprimée avec succès.");
+                } else {
+                    System.out.println("Aucune activité trouvée avec ce nom.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Erreur lors de la suppression : " + e.getMessage());
+            }
+        }
+
+
+
+        public int getIdByNom(String nomAct) {
         String req = "SELECT id_act FROM activite WHERE nom_act = ?";
         try {
             PreparedStatement pst = connection.prepareStatement(req);

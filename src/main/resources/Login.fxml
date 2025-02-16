@@ -396,7 +396,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_acceuil_gestion_circuit" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                        <AnchorPane fx:id="page_acceuil_gestion_circuit" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0">
                            <children>
                               <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
@@ -446,7 +446,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_activite" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane fx:id="page_activite" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
                            <children>
                               <TableView fx:id="TableView_Activite" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
                                  <columns>
@@ -972,6 +972,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_activite" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
+                              <TextField fx:id="fixed_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" style="-fx-background-color: parent;" styleClass="text-field" />
                               <Button fx:id="activite_bt_ajouter" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddActivte" prefHeight="52.0" prefWidth="179.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
                               <TextField fx:id="nom_activite" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="description_activite" layoutX="324.0" layoutY="164.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre Description" />
@@ -993,7 +994,6 @@
                                     <Font name="SansSerif Bold" size="36.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="fixed_nom" layoutX="772.0" layoutY="188.0" prefHeight="47.0" prefWidth="359.0" style="-fx-background-color: parent;" styleClass="text-field" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_session" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">

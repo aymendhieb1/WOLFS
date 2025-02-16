@@ -133,7 +133,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/user%20(1).png" />
+                                          <Image url="@images/user (1).png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -278,7 +278,6 @@
                            <children>
                               <TableView fx:id="TableView_Hotel" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
                                 <columns>
-                                    <TableColumn fx:id="hotel_col_id" prefWidth="100.0" text="Id" />
                                   <TableColumn fx:id="hotel_col_name" prefWidth="100.0" text="Nom" />
                                   <TableColumn fx:id="hotel_col_location" prefWidth="100.0" text="Localisation" />
                                     <TableColumn fx:id="hotel_col_phone" prefWidth="100.0" text="Num_telephone" />
@@ -309,7 +308,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/return%20(1).png" />
+                                          <Image url="@images/return (1).png" />
                                        </image>
                                     </ImageView>
                                  </graphic>

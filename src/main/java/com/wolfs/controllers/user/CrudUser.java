@@ -261,8 +261,6 @@ private Button page_hotel_bt_go_to_hotel;
     @FXML
     private TableView<Hotel> TableView_Hotel;
     @FXML
-    private TableColumn<Hotel, Integer> hotel_col_id;
-    @FXML
     private TableColumn<Hotel, String> hotel_col_name;
     @FXML
     private TableColumn<Hotel, String> hotel_col_location;
@@ -283,6 +281,20 @@ private Button page_hotel_bt_go_to_hotel;
     //Animation part
     public void initialize() {
         startAnimation();
+
+        //tableView Hotel
+        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
+        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
+        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
+        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
+        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
+        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
+
+        HotelService hotelService = new HotelService();
+        List<Hotel> hotelList = hotelService.rechercher(); // Fetch hotel list from DB
+        ObservableList<Hotel> observableHotelList = FXCollections.observableArrayList(hotelList);
+
+        TableView_Hotel.setItems(observableHotelList);
     }
 
     private void startAnimation() {
@@ -937,7 +949,6 @@ private Button page_hotel_bt_go_to_hotel;
     @FXML
     public void initialize_table_hotel() {
         // Initialize table columns
-        hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id_hotel"));
         hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
         hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
         hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
@@ -987,22 +998,6 @@ private Button page_hotel_bt_go_to_hotel;
 
 
 
-  /*  public void initialize_tableview_hotel() {
-        // Initialize table columns
-       hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id_hotel"));
-        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
-        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
-        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
-        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
-        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
-        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
-
-        HotelService hotelService = new HotelService();
-        List<Hotel> hotelList = hotelService.rechercher(); // Fetch hotel list from DB
-        ObservableList<Hotel> observableHotelList = FXCollections.observableArrayList(hotelList);
-
-        TableView_Hotel.setItems(observableHotelList);
-    }*/
 
 
 }

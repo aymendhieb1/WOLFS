@@ -255,10 +255,11 @@ private Button page_hotel_bt_go_to_hotel;
 
     @FXML
     private TextField hotel_num_tel;
-
+    @FXML
+    private  Button page_hotel_refresh;
 
     @FXML
-    private TableView<Hotel> tableView_Hotel;
+    private TableView<Hotel> TableView_Hotel;
     @FXML
     private TableColumn<Hotel, Integer> hotel_col_id;
     @FXML
@@ -274,6 +275,7 @@ private Button page_hotel_bt_go_to_hotel;
     @FXML
     private TableColumn<Hotel, String> hotel_col_description;
 
+    private ObservableList<Hotel> HotelData = FXCollections.observableArrayList();
 
     private boolean isPasswordVisible = false;
 
@@ -619,7 +621,7 @@ private Button page_hotel_bt_go_to_hotel;
         }
         else if (actionEvent.getSource() == page_hotel_bt_ajouter) {
 
-
+            RefreshTableView();;
             page_hotel.setVisible(false);
             page_ajouter_hotel.setVisible(true);
         }
@@ -930,24 +932,77 @@ private Button page_hotel_bt_go_to_hotel;
         hotel_description.setText("");
         page_ajouter_hotel.setVisible(false);
         page_hotel.setVisible(true);
+        RefreshTableView();;
+    }
+    @FXML
+    public void initialize_table_hotel() {
+        // Initialize table columns
+        hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id_hotel"));
+        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
+        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
+        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
+        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
+        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
+        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
+
+        // Link the TableView to the HotelData list
+        TableView_Hotel.setItems(HotelData);
+
+        // Refresh the TableView to load data
+        //RefreshTableView();
     }
 
-    public void initialize_tableview_hotel() {
+    @FXML
+    private void RefreshTableView() {
+        try {
+            HotelService hotelService = new HotelService();
+            List<Hotel> hotels = hotelService.rechercher(); // Fetch hotels from DB
+
+            if (hotels != null) {
+                // Clear and update ObservableList
+                HotelData.clear();
+                HotelData.addAll(hotels);
+
+                // ✅ Manually adding a hotel with dummy data
+                //Hotel manualHotel = new Hotel(999, "Test Hotel", "Test Location", "123456789", "test@email.com", "test.jpg", "This is a test hotel");
+               // HotelData.add(manualHotel);
+
+                // Debugging
+                System.out.println("Number of hotels fetched: " + hotels.size());
+                System.out.println("HotelData size after update: " + HotelData.size());
+
+                TableView_Hotel.setItems(HotelData);
+                TableView_Hotel.refresh(); // Force update
+
+            } else {
+                showAlert("Information", "Aucun hôtel trouvé.", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+
+  /*  public void initialize_tableview_hotel() {
         // Initialize table columns
-       // hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("location"));
-        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image"));
-        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description"));
+       hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id_hotel"));
+        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
+        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
+        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
+        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
+        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
+        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
 
         HotelService hotelService = new HotelService();
         List<Hotel> hotelList = hotelService.rechercher(); // Fetch hotel list from DB
         ObservableList<Hotel> observableHotelList = FXCollections.observableArrayList(hotelList);
 
-        tableView_Hotel.setItems(observableHotelList);
-    }
+        TableView_Hotel.setItems(observableHotelList);
+    }*/
 
 
 }

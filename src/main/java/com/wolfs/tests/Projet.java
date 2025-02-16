@@ -20,7 +20,8 @@ public class Projet extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
         Parent root = loader.load();
 
-
+        //CrudUser controller = loader.getController();
+      //controller.RefreshTableView();
         // Create a scene with fixed width and height (1900x1000)
         Scene scene = new Scene(root, 1900, 1000);
         primaryStage.setScene(scene);

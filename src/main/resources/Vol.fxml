@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import com.wolfs.models.ClasseChaise?>
+
+<TabPane fx:id="tabPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.VolController">
+    <tabs>
+        <Tab text="Ajouter Vol">
+            <AnchorPane>
+                <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10">
+                    <TextField fx:id="tfDeparture" promptText="Départ"/>
+                    <TextField fx:id="tfDestination" promptText="Destination"/>
+                    <TextField fx:id="tfDepartureTime" promptText="Heure de départ (yyyy-MM-ddTHH:mm)"/>
+                    <TextField fx:id="tfArrivalTime" promptText="Heure d'arrivée (yyyy-MM-ddTHH:mm)"/>
+                    <ComboBox fx:id="cbClasseChaise" promptText="Classe de Chaise">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <ClasseChaise fx:value="ECONOMY"/>
+                                <ClasseChaise fx:value="PREMIUM_ECONOMY"/>
+                                <ClasseChaise fx:value="BUSINESS"/>
+                                <ClasseChaise fx:value="FIRST_CLASS"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                    <TextField fx:id="tfAirline" promptText="Compagnie aérienne"/>
+                    <TextField fx:id="tfFlightPrice" promptText="Prix du vol"/>
+                    <TextField fx:id="tfAvailableSeats" promptText="Sièges disponibles"/>
+                    <TextField fx:id="tfDescription" promptText="Description"/>
+                    <Button text="Ajouter Vol" onAction="#addVol"/>
+                </VBox>
+            </AnchorPane>
+        </Tab>
+
+        <Tab text="Afficher Vol">
+            <AnchorPane>
+                <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10">
+                    <TableView fx:id="tableViewVols" prefWidth="800">
+                        <columns>
+                            <TableColumn fx:id="colDeparture" text="Départ" />
+                            <TableColumn fx:id="colDestination" text="Destination" />
+                            <TableColumn fx:id="colDepartureTime" text="Heure de départ" />
+                            <TableColumn fx:id="colArrivalTime" text="Heure d'arrivée" />
+                            <TableColumn fx:id="colClasseChaise" text="Classe de Chaise" />
+                            <TableColumn fx:id="colAirline" text="Compagnie aérienne" />
+                            <TableColumn fx:id="colFlightPrice" text="Prix du vol" />
+                            <TableColumn fx:id="colAvailableSeats" text="Sièges disponibles" />
+                            <TableColumn fx:id="colDescription" text="Description" />
+                            <TableColumn fx:id="colModify" text="Modifier" />
+                            <TableColumn fx:id="colDelete" text="Supprimer" />
+                        </columns>
+                    </TableView>
+                </VBox>
+            </AnchorPane>
+        </Tab>
+    </tabs>
+</TabPane>

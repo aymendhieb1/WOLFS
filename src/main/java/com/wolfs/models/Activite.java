@@ -81,4 +81,8 @@ public class Activite {
                 ", prix_act=" + prix_act +
                 '}';
     }
+    public String getComboBoxDisplay() {
+        return nom_act + " - " + localisation;  // Customize this for how you want to display it
+    }
+
 }

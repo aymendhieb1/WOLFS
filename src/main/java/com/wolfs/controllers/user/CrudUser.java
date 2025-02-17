@@ -2,12 +2,16 @@ package com.wolfs.controllers.user;
 
 import com.wolfs.models.Activite;
 import com.wolfs.services.ActiviteService2;
+import java.time.LocalDate;
+import com.wolfs.services.SessionService;
+import com.wolfs.models.Session;
 import com.wolfs.models.Client;
 import com.wolfs.models.Hotel;
 import com.wolfs.services.ActiviteService2;
 import com.wolfs.services.HotelService;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,10 +28,15 @@ import com.wolfs.models.User;
 import com.wolfs.services.ClientServices;
 
 import javafx.event.ActionEvent;
+import javafx.util.StringConverter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -288,7 +297,7 @@ private Button page_hotel_bt_go_to_hotel;
 
     //fxml activite
 
-    private  Button page_activite_refresh;
+
     @FXML
     private Button activite_bt_ajouter;
     @FXML
@@ -326,27 +335,118 @@ private Button page_hotel_bt_go_to_hotel;
 
 
 
-
-
-
-
     private ObservableList<Activite> ActiviteData = FXCollections.observableArrayList();
+
+
+
+
+    //fxml session
+
+    @FXML
+    private Button session_bt_ajouter;
+    @FXML
+    private Button sessio_bt_modifier;
+    @FXML
+    private DatePicker date_sess;
+    @FXML
+    private TextField time_sess;
+    @FXML
+    private TextField sess_cap;
+    @FXML
+    private TextField sess_nbr_places;
+
+    @FXML
+    private ComboBox<Activite> combo_activite;
+
+
+    //tabelview session
+    @FXML
+    private TableView<Session> TableView_Session;
+    @FXML
+    private TableColumn<Session, String> sess_col_nomact;
+    @FXML
+    private TableColumn<Session, String> sess_col_date;
+    @FXML
+    private TableColumn<Session, String> sess_col_time;
+    @FXML
+    private TableColumn<Session, String> sess_col_capacite;
+    @FXML
+    private TableColumn<Session, String> sess_col_nbrplace;
+    @FXML
+    private TableColumn<Session, Void> sess_col_mod;
+
+    @FXML
+    private TableColumn<Activite, Void> sess_col_supp    ;
+
+
+
+
+
+
+
+    private ObservableList<Session> SessionData = FXCollections.observableArrayList();
+
+
+
+
+
+
+
+
+
+
 
     //Animation part
     public void initialize() {
         startAnimation();
-        // Initialize table columns
+        loadComboBoxActivites(); // Load the activities into the ComboBox
+
+        // Assuming ActiviteService2 is defined elsewhere
+        ActiviteService2 activiteService = new ActiviteService2();
+
+        List<Activite> activitesList = activiteService.rechercher();  // Fetch the List<Activite> from the rechercher method
+        ObservableList<Activite> activites = FXCollections.observableArrayList(activitesList);
+
+        // Set the items in the ComboBox
+        combo_activite.setItems(activites);
+
+        // Set the ComboBox to display just the names (or any other field) for user selection
+        combo_activite.setCellFactory(param -> new ListCell<Activite>() {
+            @Override
+            protected void updateItem(Activite item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNom_act());  // Display only the name of the activity
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Activite
+        combo_activite.setConverter(new StringConverter<Activite>() {
+            @Override
+            public String toString(Activite activite) {
+                return activite == null ? null : activite.getNom_act();  // Display name when selected
+            }
+
+            @Override
+            public Activite fromString(String string) {
+                return null;  // Not necessary in this case, since we work with Activite objects directly
+            }
+        });
+
+        // Initialize table columns act
         act_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom_act"));
         act_col_desc.setCellValueFactory(new PropertyValueFactory<>("descript"));
         act_col_loc.setCellValueFactory(new PropertyValueFactory<>("localisation"));
         act_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
         act_col_prix.setCellValueFactory(new PropertyValueFactory<>("prix_act"));
 
+        // Set cell factories for action buttons
         act_col_mod.setCellFactory(column -> {
             return new TableCell<Activite, Void>() {
                 private final Button btn = new Button("Modifier");
-
-
 
                 {
                     HBox hbox = new HBox(btn);
@@ -359,10 +459,6 @@ private Button page_hotel_bt_go_to_hotel;
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
-
-
-
-
 
                     btn.setOnAction(event -> {
                         Activite activite = getTableView().getItems().get(getIndex());
@@ -377,71 +473,6 @@ private Button page_hotel_bt_go_to_hotel;
                         fixed_nom.setText(activite.getNom_act());
                         page_ajouter_activite.setVisible(true);
                         page_activite.setVisible(false);
-
-
-
-
-
-                    });
-                }
-
-                @Override
-                protected void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
-                        setGraphic(hbox);
-                    }
-                }
-            };
-        });
-        act_col_supp.setCellFactory(column -> {
-            return new TableCell<Activite, Void>() {
-                private final Button btn = new Button("Supprimer");
-
-                {
-                    HBox hbox = new HBox(btn);
-                    hbox.setAlignment(Pos.CENTER);
-                    setGraphic(hbox);
-                    btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
-                                    "-fx-text-fill: white; " +
-                                    "-fx-font-size: 14px; " +
-                                    "-fx-border-radius: 5px; " +
-                                    "-fx-cursor: hand;"
-                    );
-
-                    btn.setOnAction(event -> {
-                        // Get the activity associated with the current row
-                        Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
-
-                        if (activiteSelectionnee == null) {
-                            showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
-                            return;
-                        }
-
-                        // Show confirmation alert before deletion
-                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                        confirmationAlert.setTitle("Confirmation de suppression");
-                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette activité ?");
-                        confirmationAlert.setContentText("Cette action est irréversible.");
-
-                        Optional<ButtonType> result = confirmationAlert.showAndWait();
-
-                        if (result.isPresent() && result.get() == ButtonType.OK) {
-                            // Delete the activity using its id_act
-                            ActiviteService2 activiteService = new ActiviteService2();
-                            activiteService.supprimer(activiteSelectionnee);
-
-                            showAlert("Confirmation", "L'Activité a été supprimée avec succès", Alert.AlertType.INFORMATION);
-
-                            // Update the TableView
-                            getTableView().getItems().remove(activiteSelectionnee);
-                        }
                     });
                 }
 
@@ -460,21 +491,32 @@ private Button page_hotel_bt_go_to_hotel;
             };
         });
 
+        // Initialize session table columns
+        sess_col_nomact.setCellValueFactory(cellData -> {
+            // Ensure cellData is working with a Session object
+            Session session = cellData.getValue();  // This should be of type Session
 
+            // Fetch the Activite using the session's idAct field
+            Activite activite = activiteService.getActiviteById(session.getIdAct());  // Using idAct from the Session
 
+            // Return the name of the activity (nom_act) or "Unknown" if not found
+            return new SimpleStringProperty(activite != null ? activite.getNom_act() : "Unknown");
+        });
 
+        // Initialize other columns for session data
+        sess_col_date.setCellValueFactory(new PropertyValueFactory<>("date_sess"));
+        sess_col_time.setCellValueFactory(new PropertyValueFactory<>("time_sess"));
+        sess_col_capacite.setCellValueFactory(new PropertyValueFactory<>("cap_sess"));
+        sess_col_nbrplace.setCellValueFactory(new PropertyValueFactory<>("nbr_places_sess"));
 
+        // Fetch session list from DB
+        SessionService sessionService = new SessionService();
+        List<Session> sessionList = sessionService.rechercher();  // Fetch session list from DB
 
-
-
-
-
-        ActiviteService2 ActiviteService2= new ActiviteService2();
-        List<Activite> acitviteliste = ActiviteService2.rechercher();
-        ObservableList<Activite> observableAcitviteListt = FXCollections.observableArrayList(acitviteliste);
-
-        TableView_Activite.setItems(observableAcitviteListt);
+        ObservableList<Session> observableSessionList = FXCollections.observableArrayList(sessionList);
+        TableView_Session.setItems(observableSessionList);
     }
+
 
     private void startAnimation() {
 
@@ -1130,23 +1172,7 @@ private Button page_hotel_bt_go_to_hotel;
         page_hotel.setVisible(true);
         RefreshTableView();;
     }
-    @FXML
-    public void initialize_table_hotel() {
-        // Initialize table columns
-        hotel_col_id.setCellValueFactory(new PropertyValueFactory<>("id_hotel"));
-        hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
-        hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
-        hotel_col_phone.setCellValueFactory(new PropertyValueFactory<>("num_telephone_hotel"));
-        hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
-        hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
-        hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
 
-        // Link the TableView to the HotelData list
-        TableView_Hotel.setItems(HotelData);
-
-        // Refresh the TableView to load data
-        //RefreshTableView();
-    }
 
    @FXML
     private void RefreshTableView() {
@@ -1245,20 +1271,7 @@ private Button page_hotel_bt_go_to_hotel;
       page_ajouter_activite.setVisible(false);
       page_activite.setVisible(true);
   }
-    @FXML
-    public void initialize_table_hotel_acitivte() {
-        // Initialize table columns
-        act_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom_act"));
-        act_col_desc.setCellValueFactory(new PropertyValueFactory<>("descript"));
-        act_col_loc.setCellValueFactory(new PropertyValueFactory<>("localisation"));
-        act_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        act_col_prix.setCellValueFactory(new PropertyValueFactory<>("prix_act"));
 
-
-        TableView_Activite.setItems(ActiviteData);
-
-
-        RefreshTableView_Activite();   }
 
     @FXML
     private void RefreshTableView_Activite() {
@@ -1344,6 +1357,148 @@ private Button page_hotel_bt_go_to_hotel;
 
     }
 
+
+
+
+    @FXML
+    private void AddSession(ActionEvent event) throws IOException {
+        // Check if all fields are filled
+        if (time_sess.getText().isEmpty() ||
+                sess_cap.getText().isEmpty() ||
+                sess_nbr_places.getText().isEmpty() ||
+                date_sess.getValue() == null ||
+                combo_activite.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert the time from TextField to LocalTime
+        LocalTime time;
+        try {
+            time = LocalTime.parse(time_sess.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur", "Le format de l'heure est invalide. Utilisez HH:mm", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert date_sess (DatePicker) to LocalDate
+        LocalDate date = date_sess.getValue();
+
+        // Convert cap & nbrPlaces
+        int cap, nbrPlaces;
+        try {
+            cap = Integer.parseInt(sess_cap.getText());
+            nbrPlaces = Integer.parseInt(sess_nbr_places.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le nombre de places et la capacité doivent être des entiers valides", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Get selected activity name from the ComboBox
+        String nomAct = combo_activite.getSelectionModel().getSelectedItem().getNom_act();
+
+        // Fetch the id_act using the name (nom_act) selected
+        ActiviteService2 activiteService = new ActiviteService2();
+        int idAct = activiteService.getIdByName(nomAct);
+
+        // If idAct is -1, that means the activity doesn't exist in the database
+        if (idAct == -1) {
+            showAlert("Erreur", "L'ID de l'activité sélectionnée n'existe pas dans la base de données.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Create the session object
+        Session newSession = new Session(date, time, cap, nbrPlaces, idAct);
+
+        // Save to database
+        SessionService sessionService = new SessionService();
+        sessionService.ajouter(newSession);
+
+        // Show success message
+        showAlert("Confirmation", "La session a été ajoutée avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields
+        time_sess.setText("");
+        sess_cap.setText("");
+        sess_nbr_places.setText("");
+        date_sess.setValue(null);
+        combo_activite.getSelectionModel().clearSelection(); // Clear selection
+        page_ajouter_session.setVisible(false);
+        page_session.setVisible(true);
+        RefreshTableView_Session();
+    }
+
+
+
+
+
+    private void loadComboBoxActivites() {
+        ActiviteService2 activiteService = new ActiviteService2();
+        List<Activite> activites = activiteService.rechercher(); // Fetch activities from DB
+
+        if (activites == null || activites.isEmpty()) {
+            System.out.println("⚠ No activities found in the database!");
+            return;
+        }
+
+        // Populate the ComboBox with the full Activite objects
+        combo_activite.setItems(FXCollections.observableArrayList(activites));
+
+        // Set the ComboBox to display just the names (or any other field) for user selection
+        combo_activite.setCellFactory(param -> new ListCell<Activite>() {
+            @Override
+            protected void updateItem(Activite item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNom_act());  // Display only the name of the activity
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Activite
+        combo_activite.setConverter(new StringConverter<Activite>() {
+            @Override
+            public String toString(Activite activite) {
+                return activite == null ? null : activite.getNom_act();  // Display name when selected
+            }
+
+            @Override
+            public Activite fromString(String string) {
+                return null;  // Not necessary in this case, since we work with Activite objects directly
+            }
+        });
+
+    }
+
+
+    @FXML
+    private void RefreshTableView_Session() {
+        try {
+            // Assuming SessionService handles database interactions for sessions
+            SessionService sessionService = new SessionService();
+            List<Session> sessions = sessionService.rechercher(); // Fetch sessions from DB
+
+            if (sessions != null) {
+                // Clear and update ObservableList
+                SessionData.clear();
+
+                // Add each session to the ObservableList
+                SessionData.addAll(sessions);
+
+                // After loading sessions, now update the TableView
+                TableView_Session.setItems(SessionData);
+                TableView_Session.refresh(); // Force update
+            } else {
+                showAlert("Information", "Aucune session", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
 
 
 

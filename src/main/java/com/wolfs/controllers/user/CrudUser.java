@@ -354,6 +354,9 @@ private Button page_hotel_bt_go_to_hotel;
     private TextField sess_cap;
     @FXML
     private TextField sess_nbr_places;
+    @FXML
+    private DatePicker fixed_nom_sess;
+
 
     @FXML
     private ComboBox<Activite> combo_activite;
@@ -376,7 +379,7 @@ private Button page_hotel_bt_go_to_hotel;
     private TableColumn<Session, Void> sess_col_mod;
 
     @FXML
-    private TableColumn<Activite, Void> sess_col_supp    ;
+    private TableColumn<Session, Void> sess_col_supp    ;
 
 
 
@@ -490,7 +493,78 @@ private Button page_hotel_bt_go_to_hotel;
                 }
             };
         });
+                act_col_supp.setCellFactory(column -> {
+                    return new TableCell<Activite, Void>() {
+                        private final Button btn = new Button("Supprimer");
 
+                        {
+                            HBox hbox = new HBox(btn);
+                            hbox.setAlignment(Pos.CENTER);
+                            setGraphic(hbox);
+                            btn.setStyle(
+                                    "-fx-background-color: #E78D1E; " +
+                                            "-fx-text-fill: white; " +
+                                            "-fx-font-size: 14px; " +
+                                            "-fx-border-radius: 5px; " +
+                                            "-fx-cursor: hand;"
+                            );
+
+                            btn.setOnAction(event -> {
+                                RefreshTableView_Session();
+                                // Récupérer l'activité associée à la ligne actuelle
+                                Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
+                                System.out.println("Activité sélectionnée : " + activiteSelectionnee.getNom_act());
+
+                                if (activiteSelectionnee == null) {
+                                    showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
+                                    return;
+                                }
+
+                                // Demander confirmation avant suppression
+                                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                                confirmationAlert.setTitle("Confirmation de suppression");
+                                confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette activité ?");
+                                confirmationAlert.setContentText("Cette action est irréversible.");
+
+                                Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                                if (result.isPresent() && result.get() == ButtonType.OK) {
+                                    // Supprimer l'activité via le nom_act
+                                    ActiviteService2 activiteService = new ActiviteService2();
+                                    activiteService.supprimer(activiteSelectionnee);
+
+                                    showAlert("Confirmation", "L'Activité a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                                    // Mettre à jour la TableView
+                                    getTableView().getItems().remove(activiteSelectionnee);
+                                    RefreshTableView_Session();
+                                    RefreshTableView_Activite();
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        protected void updateItem(Void item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                            } else {
+                                setGraphic(btn);
+                                HBox hbox = new HBox(btn);
+                                hbox.setAlignment(Pos.CENTER);
+                                setGraphic(hbox);
+                            }
+                        }
+                    };
+                })
+
+        ;
+        ActiviteService2 ActiviteService2= new ActiviteService2();
+        List<Activite> acitviteliste = ActiviteService2.rechercher();
+        ObservableList<Activite> observableAcitviteListt = FXCollections.observableArrayList(acitviteliste);
+
+        TableView_Activite.setItems(observableAcitviteListt);
         // Initialize session table columns
         sess_col_nomact.setCellValueFactory(cellData -> {
             // Ensure cellData is working with a Session object
@@ -508,7 +582,133 @@ private Button page_hotel_bt_go_to_hotel;
         sess_col_time.setCellValueFactory(new PropertyValueFactory<>("time_sess"));
         sess_col_capacite.setCellValueFactory(new PropertyValueFactory<>("cap_sess"));
         sess_col_nbrplace.setCellValueFactory(new PropertyValueFactory<>("nbr_places_sess"));
+        sess_col_mod.setCellFactory(column -> {
+            return new TableCell<Session, Void>() {
+                private final Button btn = new Button("Modifier");
 
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        Session session = getTableView().getItems().get(getIndex());
+
+
+
+
+                            // Show/hide the buttons
+                            sessio_bt_modifier.setVisible(true);
+                            session_bt_ajouter.setVisible(false);
+
+                            // Set the values from the Activite object
+                        LocalDate sessionDate = session.getDate_sess();
+                        LocalTime sessiotime = session.getTime_sess();
+                            date_sess.setValue(sessionDate);
+                        String formattedTime = sessiotime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                        time_sess.setText(formattedTime); // Set the location
+                        int capSess = session.getCap_sess();
+                            sess_cap.setText(String.valueOf(capSess));
+                        int nbr_place_sess = session.getNbr_places_sess();
+                        sess_nbr_places.setText(String.valueOf(nbr_place_sess));
+                            fixed_nom_sess.setValue(sessionDate); // Set the fixed name (could be used elsewhere in the UI)
+                        sessio_bt_modifier.setVisible(true);
+                        session_bt_ajouter.setVisible(false);
+                        page_ajouter_session.setVisible(true);
+                        page_session.setVisible(false);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        sess_col_supp.setCellFactory(column -> {
+            return new TableCell<Session, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+
+                        // Récupérer la session associée à la ligne actuelle
+                        Session SessionSelectionnee = getTableView().getItems().get(getIndex());
+
+
+                        if (SessionSelectionnee == null) {
+                            showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
+                            return;
+                        }
+
+                        // Demander confirmation avant suppression
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation de suppression");
+                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette session ?");
+                        confirmationAlert.setContentText("Cette action est irréversible.");
+
+
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Supprimer la session via id_sess
+                            SessionService sessionService = new SessionService();
+                            sessionService.supprimer(SessionSelectionnee);
+
+                            showAlert("Confirmation", "La session a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                            // Mettre à jour la TableView
+                            getTableView().getItems().remove(SessionSelectionnee);
+                            RefreshTableView_Session();
+                        }
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        })
+
+
+        ;
         // Fetch session list from DB
         SessionService sessionService = new SessionService();
         List<Session> sessionList = sessionService.rechercher();  // Fetch session list from DB
@@ -923,15 +1123,22 @@ private Button page_hotel_bt_go_to_hotel;
         }
         else if (actionEvent.getSource() == page_session_bt_ajouter) {
 
-
+            sessio_bt_modifier.setVisible(false);
+            session_bt_ajouter.setVisible(true);
             page_session .setVisible(false);
             page_ajouter_session.setVisible(true);
         }
         else if (actionEvent.getSource() == page_ajouter_session_retour) {
-
-
+            RefreshTableView_Session();
+            RefreshTableView_Activite();
+            time_sess.setText("");
+            sess_cap.setText("");
+            sess_nbr_places.setText("");
+            date_sess.setValue(null);
+            combo_activite.getSelectionModel().clearSelection();
             page_ajouter_session.setVisible(false);
             page_session.setVisible(true);
+
         }
         else if (actionEvent.getSource() == page_acceuil_location_go_to_vehicule) {
 
@@ -1474,7 +1681,7 @@ private Button page_hotel_bt_go_to_hotel;
     }
 
 
-    @FXML
+  @FXML
     private void RefreshTableView_Session() {
         try {
             // Assuming SessionService handles database interactions for sessions
@@ -1500,7 +1707,90 @@ private Button page_hotel_bt_go_to_hotel;
         }
     }
 
+     @FXML
+    private void Mod_sess(ActionEvent event) throws IOException {
+        // Check if all fields are filled for the session
+        if (time_sess.getText().isEmpty() ||
+                sess_cap.getText().isEmpty() ||
+                sess_nbr_places.getText().isEmpty() ||
+                date_sess.getValue() == null ||
+                combo_activite.getSelectionModel().getSelectedItem() == null) {
 
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert the session time from string to LocalTime
+        LocalTime time;
+        try {
+            time = LocalTime.parse(time_sess.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur", "Le format de l'heure est invalide. Utilisez HH:mm", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert date_sess to LocalDate
+        LocalDate date = date_sess.getValue();
+
+        // Convert cap & nbrPlaces to integers
+        int cap, nbrPlaces;
+        try {
+            cap = Integer.parseInt(sess_cap.getText());
+            nbrPlaces = Integer.parseInt(sess_nbr_places.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le nombre de places et la capacité doivent être des entiers valides", Alert.AlertType.ERROR);
+            return;
+        }
+         String nomAct = combo_activite.getSelectionModel().getSelectedItem().getNom_act();
+        // Fetch the ID of the activity using the name (fixed_nom is the name field)
+        ActiviteService2 activiteService = new ActiviteService2();
+
+        int idAct = activiteService.getIdByNom(nomAct);  // Fetch the ID based on the activity name
+
+        if (idAct == -1) {
+            showAlert("Erreur", "Activité non trouvée dans la base de données", Alert.AlertType.ERROR);
+            return;
+        }
+         SessionService sessserv = new SessionService();
+
+         LocalDate dateSess = fixed_nom_sess.getValue();
+
+         int id_sess = sessserv.getIdByDate(dateSess);
+
+
+        if (id_sess == -1) {
+            showAlert("Erreur", "Session non trouvée pour cette heure", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Initialize the updated Session object
+         Session updatedSession = new Session(
+                 id_sess,    // ID of the session (make sure this is passed properly)
+                 date,       // Date of session
+                 time,       // Time of session
+                 cap,        // Capacity
+                 nbrPlaces,  // Number of places
+                 idAct       // ID of the activity linked to this session
+         );
+
+// Update the session
+         sessserv.modifier(updatedSession);
+         // Update the session using the session service
+
+        // Show confirmation message
+        showAlert("Confirmation", "La session a été modifiée avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields
+        time_sess.setText("");
+        sess_cap.setText("");
+        sess_nbr_places.setText("");
+        date_sess.setValue(null);
+
+        // Refresh TableView and navigate between pages
+        RefreshTableView_Session();
+        page_ajouter_session.setVisible(false);
+        page_session.setVisible(true);
+    }
 
 
 

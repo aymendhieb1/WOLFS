@@ -116,27 +116,6 @@ public class ActiviteService2 implements IService<Activite> {
 
 
 
-    public Activite getActiviteByNom(String nomAct) {
-        String query = "SELECT * FROM activite WHERE nom_act = ?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(query);
-            pst.setString(1, nomAct);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                return new Activite(
-                        rs.getInt("id_act"),
-                        rs.getString("nom_act"),
-                        rs.getString("descript"),
-                        rs.getString("localisation"),
-                        rs.getString("type"),
-                        rs.getFloat("prix_act")
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null; // Return null if no matching activity is found
-    }
 
 
 

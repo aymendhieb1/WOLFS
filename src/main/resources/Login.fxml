@@ -229,7 +229,7 @@
                   </VBox>
                   <StackPane layoutX="414.0" layoutY="469.0" maxHeight="1000.0" maxWidth="1600.0" minHeight="600.0" minWidth="1000.0" prefHeight="864.0" prefWidth="1392.0">
                      <children>
-                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0" visible="false">
+                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0">
                            <children>
                               <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
@@ -997,9 +997,10 @@
                               </Text>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_ajouter_session" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0">
+                        <AnchorPane fx:id="page_ajouter_session" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button fx:id="session_bt_ajouter" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddSession" prefHeight="52.0" prefWidth="197.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <DatePicker fx:id="fixed_nom_sess" layoutX="347.0" layoutY="204.0" />
+                              <Button fx:id="session_bt_ajouter" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddSession" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
                               <Button fx:id="page_ajouter_session_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -1009,7 +1010,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="sessio_bt_modifier" layoutX="521.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="179.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Button fx:id="sessio_bt_modifier" layoutX="514.0" layoutY="513.0" mnemonicParsing="false" onAction="#Mod_sess" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SESSION" wrappingWidth="202.39999999999986">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
@@ -1017,7 +1018,7 @@
                               </Text>
                               <DatePicker fx:id="date_sess" layoutX="324.0" layoutY="195.0" prefHeight="43.0" prefWidth="372.0" />
                               <ComboBox fx:id="combo_activite" layoutX="324.0" layoutY="107.0" prefHeight="43.0" prefWidth="372.0" />
-                              <TextField fx:id="time_sess" layoutX="324.0" layoutY="272.0" prefHeight="47.0" prefWidth="372.0" />
+                              <TextField fx:id="time_sess" layoutX="324.0" layoutY="267.0" prefHeight="47.0" prefWidth="372.0" />
                               <TextField fx:id="sess_cap" layoutX="324.0" layoutY="343.0" prefHeight="47.0" prefWidth="372.0" />
                               <TextField fx:id="sess_nbr_places" layoutX="324.0" layoutY="424.0" prefHeight="47.0" prefWidth="372.0" />
                            </children>

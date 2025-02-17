@@ -2,8 +2,10 @@ package com.wolfs.services;
 
 import com.wolfs.models.Session;
 import com.wolfs.utils.DataSource;
+import java.time.LocalDate;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,22 +56,49 @@ public class SessionService implements IService<Session> {
 
     @Override
     public void modifier(Session session) {
-        String req = "UPDATE session SET date_sess=?, time_sess=?, cap_sess=?, nbr_places_sess=?, id_act =? WHERE id_sess=?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
-            pst.setDate(1, Date.valueOf(session.getDate_sess())); // Convert LocalDate to SQL Date
-            pst.setTime(2, Time.valueOf(session.getTime_sess())); // Convert LocalTime to SQL Time
-            pst.setInt(3, session.getCap_sess());
-            pst.setInt(4, session.getNbr_places_sess());
-            pst.setInt(5, session.getIdAct()); // Update id_act (foreign key)
-            pst.setInt(6, session.getId_sess()); // Target session ID for update
+        String req = "UPDATE session SET date_sess='" + session.getDate_sess() + "', " +
+                "time_sess='" + session.getTime_sess() + "', " +
+                "cap_sess=" + session.getCap_sess() + ", " +
+                "nbr_places_sess=" + session.getNbr_places_sess() + ", " +
+                "id_act=" + session.getIdAct() + " WHERE id_sess=" + session.getId_sess();
 
-            pst.executeUpdate();
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(req);
             System.out.println("Session modifiée avec succès, id_sess: " + session.getId_sess());
         } catch (SQLException e) {
             System.out.println("Erreur lors de la modification de la session: " + e.getMessage());
         }
     }
+
+
+    public int getIdByDate(LocalDate dateSess) {
+        String req = "SELECT id_sess FROM session WHERE date_sess = ?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setDate(1, java.sql.Date.valueOf(dateSess));  // Convert LocalDate to SQL Date
+
+            System.out.println("Executing query with date_sess: " + dateSess);  // Debugging output
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                System.out.println("Found session with id_sess: " + rs.getInt("id_sess"));  // Debugging output
+                return rs.getInt("id_sess");
+            } else {
+                System.out.println("No session found with the provided date.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving session: " + e.getMessage());
+        }
+        return -1; // Return -1 if no matching session is found
+    }
+
+
+
+
+
+
+
 
     @Override
     public void supprimer(Session session) {

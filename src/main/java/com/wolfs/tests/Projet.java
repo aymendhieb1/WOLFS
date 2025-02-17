@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javafx.application.Application;
 
@@ -18,6 +17,8 @@ public class Projet extends Application{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
+        primaryStage.setHeight(1000);
+        primaryStage.setWidth(1900);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Projet");
         primaryStage.show();

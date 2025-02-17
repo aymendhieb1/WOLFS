@@ -2,7 +2,7 @@ package com.wolfs.services;
 
 import com.wolfs.models.Client;
 import com.wolfs.utils.DataSource;
-import org.mindrot.jbcrypt.BCrypt;
+import javafx.scene.image.Image;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,28 +36,29 @@ public class ClientServices implements IUserServices<Client> {
     }
 
     public void modifierUser(Client client) {
-        String req = "UPDATE user SET nom=?, prenom=?, mail=?, num_tel=?, mdp=?, status=?, photo_profil=?, role=? WHERE id_user=?";
+        String req = "UPDATE user SET nom=?, prenom=?, mail=?, num_tel=?, mdp=? WHERE id_user=?";
 
-        try {
-            // Préparer la requête
-            PreparedStatement ps = this.connection.prepareStatement(req);
-
+        try (PreparedStatement ps = this.connection.prepareStatement(req)) {
             ps.setString(1, client.getName());
             ps.setString(2, client.getPrenom());
             ps.setString(3, client.getEmail());
             ps.setInt(4, client.getNum_tel());
             ps.setString(5, client.getPassword());
-            ps.setInt(6, client.getStatus());
-            ps.setString(7, client.getPhoto_profile());
-            ps.setInt(8, client.getRole());
-            ps.setInt(9, client.getId());
+            ps.setInt(6, client.getId());
 
-            ps.executeUpdate();
-            System.out.println("Client modifié");
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Client modifié avec succès.");
+            } else {
+                System.out.println("Aucun client trouvé.");
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur lors de la mise à jour du client : " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
 
 
     public void supprimerUser(Client client) {
@@ -130,6 +131,48 @@ public class ClientServices implements IUserServices<Client> {
             System.out.println("Erreur SQL : " + e.getMessage());
         }
         return null;
+    }
+    public int getUserIdByEmail(String email) {
+        String req = "SELECT id_user FROM user WHERE mail = ?";
+        int userId = -1;
+
+        try (PreparedStatement ps = this.connection.prepareStatement(req)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                userId = rs.getInt("id_user");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'ID : " + e.getMessage());
+        }
+
+        return userId;
+    }
+    public Image loadImageFromDatabase(String mail) {
+        try {
+            String query = "SELECT photo_profil FROM user WHERE mail = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, mail);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String imageUrl = resultSet.getString("photo_profil");
+
+                // Vérification que l'image n'est pas vide
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    // L'image est déjà une URL absolue
+                    return new Image(imageUrl); // Utiliser directement l'URL absolue
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Afficher un message d'erreur plus explicite si la récupération échoue
+            System.err.println("Erreur lors du chargement de l'image pour l'email: " + mail);
+        }
+
+        // Retourner une image par défaut en cas d'échec
+        return new Image("file:images/user_icon_001.jpg"); // Assurez-vous que ce chemin est correct
     }
 
 

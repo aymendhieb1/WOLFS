@@ -3,12 +3,18 @@
     -fx-border-width: 1px;
     -fx-border-color: #ccc;
     -fx-border-radius: 5px;
-    -fx-background-color: #f9f9f9;
+    -fx-background-color: #e0e0e0; /* Couleur grise par défaut */
     -fx-font-size: 16px;
+    -fx-background-radius: 10px;
+    -fx-prompt-text-fill: rgba(150, 150, 150, 0.7); /* Placeholder en gris */
 }
-.text-field:hover {
-    -fx-underline: true;
+
+
+.text-field:focused {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #0078D7;
 }
+
 .submit-button {
     -fx-padding: 16px;
     -fx-border-width: 0;
@@ -23,6 +29,21 @@
 
 .submit-button:hover {
     -fx-background-color: linear-gradient(#132a3e, #e78d1e);
+}
+.submit-button2 {
+    -fx-padding: 16px;
+    -fx-border-width: 0;
+    -fx-background-color: #132a3e;
+    -fx-text-fill: #e8e8e8;
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+    -fx-background-radius: 5px;
+}
+
+.submit-button2:hover {
+    -fx-background-color: linear-gradient(#e78d1e, #132a3e );
 }
 .btnConnexion {
     -fx-padding: 10px;
@@ -76,6 +97,15 @@
     -fx-font-size: 14px;
     -fx-background-color: #E78D1E;
 }
+.table-view2 .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-color: #132a3e;
+    -fx-border-color: #132a3e;
+}
+
+
 
 
 

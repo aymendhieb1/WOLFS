@@ -26,7 +26,7 @@
     <children>
         <StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="1000.0" prefWidth="1900.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);">
             <children>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -198,7 +198,7 @@
                   <TextField fx:id="fixed_email" layoutX="643.0" layoutY="43.0" prefHeight="25.0" prefWidth="17.0" style="-fx-background-color: transparent;" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0">
+            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0" visible="false">
                <children>
                   <Button layoutX="1674.0" layoutY="193.0" mnemonicParsing="false" onAction="#LogOut_back" prefHeight="90.0" prefWidth="67.0" style="-fx-background-color: transparent;">
                      <graphic>
@@ -386,7 +386,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" styleClass="text-field" />
                               <Button fx:id="page_hotel_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_hotel_bt_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -439,7 +438,7 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_acceuil_gestion_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0">
+                        <AnchorPane fx:id="page_acceuil_gestion_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
                               <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
@@ -709,19 +708,19 @@
                         </AnchorPane>
                         <AnchorPane fx:id="page_vol" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
                            <children>
-                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                              <TableView fx:id="tableViewVols" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
                                  <columns>
-                                    <TableColumn prefWidth="100.0" text="Departure" />
-                                    <TableColumn prefWidth="100.0" text="Destination" />
-                                    <TableColumn prefWidth="100.0" text="Date de Departure" />
-                                    <TableColumn prefWidth="100.0" text="Date d'arrivée" />
-                                    <TableColumn prefWidth="100.0" text="ClasseChaise" />
-                                    <TableColumn prefWidth="100.0" text="Compagnie aérienne" />
-                                    <TableColumn prefWidth="100.0" text="Prix" />
-                                    <TableColumn prefWidth="100.0" text="Places disponibles" />
-                                    <TableColumn prefWidth="100.0" text="Description" />
-                                    <TableColumn prefWidth="100.0" text="Modifier" />
-                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                    <TableColumn fx:id="colDeparture" prefWidth="100.0" text="Départ" />
+                                    <TableColumn fx:id="colDestination" prefWidth="100.0" text="Destination" />
+                                    <TableColumn fx:id="colDepartureTime" prefWidth="100.0" text="Heure de départ" />
+                                    <TableColumn fx:id="colArrivalTime" prefWidth="100.0" text="Heure d'arrivée" />
+                                    <TableColumn fx:id="colClasseChaise" prefWidth="100.0" text="Classe de Chaise" />
+                                    <TableColumn fx:id="colAirline" prefWidth="100.0" text="Compagnie aérienne" />
+                                    <TableColumn fx:id="colFlightPrice" prefWidth="100.0" text="Prix du vol" />
+                                    <TableColumn fx:id="colAvailableSeats" prefWidth="100.0" text="Sièges disponibles" />
+                                    <TableColumn fx:id="colDescription" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="colModify" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="colDelete" prefWidth="100.0" text="Supprimer" />
                                  </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -787,9 +786,7 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
-                              <Button layoutX="209.0" layoutY="17.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_utilisateur_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -1023,8 +1020,8 @@
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_vol" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
-                              <TextField fx:id="email_field_signup1111111" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="Ajouter_Vol" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#addVol" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="tfDeparture" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Départ" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <Button fx:id="page_ajouter_vol_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -1034,12 +1031,20 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VOL" wrappingWidth="202.39999999999986">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
                                  </font>
                               </Text>
+                              <TextField fx:id="tfDestination" layoutX="324.0" layoutY="163.0" prefHeight="47.0" prefWidth="359.0" promptText="Destination" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfDepartureTime" layoutX="324.0" layoutY="234.0" prefHeight="47.0" prefWidth="359.0" promptText="Heure de départ (yyyy-MM-ddTHH:mm)" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfAirline" layoutX="719.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Compagnie aérienne" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfArrivalTime" layoutX="324.0" layoutY="307.0" prefHeight="47.0" prefWidth="359.0" promptText="Heure d'arrivée (yyyy-MM-ddTHH:mm)" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ComboBox fx:id="cbClasseChaise" layoutX="324.0" layoutY="378.0" prefHeight="47.0" prefWidth="359.0" promptText="Classe de Chaise" />
+
+                              <TextField fx:id="tfFlightPrice" layoutX="719.0" layoutY="163.0" prefHeight="47.0" prefWidth="359.0" promptText="Prix du vol" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfAvailableSeats" layoutX="719.0" layoutY="234.0" prefHeight="47.0" prefWidth="359.0" promptText="Sièges disponibles" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfDescription" layoutX="719.0" layoutY="307.0" prefHeight="47.0" prefWidth="359.0" promptText="Description" styleClass="text-field" stylesheets="@/styles/style.css" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_checkout" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">

@@ -79,7 +79,7 @@ public class VolService2 implements IVolService {
             PreparedStatement pst = connection.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-
+                System.out.println("Classe Chaise :"+ ClasseChaise.valueOf(rs.getString("classeChaise")));
                 vols.add(new Vol(
                         rs.getInt("flightID"),
                         rs.getString("departure"),

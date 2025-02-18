@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -26,7 +28,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -605,12 +609,33 @@ public class CrudUser {
     private ImageView hotel_imageView;
 
 
+//FXML VOL
+@FXML
+private TableView<Vol> tableViewVols;
 
+    @FXML
+    private TableColumn<Vol, String> colDeparture, colDestination, colClasseChaise, colAirline, colDescription;
 
+    @FXML
+    private TableColumn<Vol, LocalDateTime> colDepartureTime, colArrivalTime;
 
+    @FXML
+    private TableColumn<Vol, Double> colFlightPrice;
 
+    @FXML
+    private TableColumn<Vol, Integer> colAvailableSeats;
 
+    @FXML
+    private TableColumn<Vol, Void> colModify, colDelete;
 
+    @FXML
+    private ComboBox<ClasseChaise> cbClasseChaise;
+
+    @FXML
+    private TextField tfDeparture, tfDestination, tfDepartureTime, tfArrivalTime, tfAirline, tfFlightPrice, tfAvailableSeats, tfDescription;
+
+    @FXML
+    private Button btnAddVol;
 
 
 
@@ -897,7 +922,6 @@ public class CrudUser {
                         RefreshTableView_Session();
                         // Récupérer l'activité associée à la ligne actuelle
                         Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
-                        // System.out.println("Activité sélectionnée : " + activiteSelectionnee.getNom_act());
 
                         if (activiteSelectionnee == null) {
                             showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
@@ -1405,10 +1429,8 @@ public class CrudUser {
                         contrat_photo_permit.setText(String.valueOf(Contrat.getPhotoPermit()));
 
                         // contrat_matricule.setItems(Contrat.getNomVehicule());
-                        //  System.out.println("DateD"+String.valueOf(Contrat.getDateD()));
                         Contrat C= new Contrat(String.valueOf(Contrat.getDateD()),String.valueOf(Contrat.getDateF()),Integer.valueOf(String.valueOf(Contrat.getCinLocateur())),String.valueOf(Contrat.getPhotoPermit()));
                         ContratService ContratService = new ContratService();
-                        // System.out.println("id "+String.valueOf(ContratService.chercher_id(C)));
                         contrat_id2.setText(String.valueOf(ContratService.chercher_id(C)));
                         contrat_id2.setVisible(false);
                         page_contrat.setVisible(false);
@@ -1774,8 +1796,66 @@ public class CrudUser {
 
 
 
+//Hotel
+       /* cbClasseChaise.setItems(FXCollections.observableArrayList(
+                "ECONOMY",
+                "PREMIUM_ECONOMY",
+                "BUSINESS",
+                "FIRST_CLASS"
+        ));*/
 
 
+
+        cbClasseChaise.setItems(FXCollections.observableArrayList(ClasseChaise.values()));
+
+        // Bind columns to properties
+        colDeparture.setCellValueFactory(new PropertyValueFactory<>("departure"));
+        colDestination.setCellValueFactory(new PropertyValueFactory<>("destination"));
+        colDepartureTime.setCellValueFactory(new PropertyValueFactory<>("departureTime"));
+        colArrivalTime.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
+        colClasseChaise.setCellValueFactory(new PropertyValueFactory<>("classeChaise"));
+        colAirline.setCellValueFactory(new PropertyValueFactory<>("airline"));
+        colFlightPrice.setCellValueFactory(new PropertyValueFactory<>("flightPrice"));
+        colAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("availableSeats"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        // Modify Button
+        colModify.setCellFactory(param -> new TableCell<Vol, Void>() {
+            private final Button modifyButton = new Button("Modifier");
+
+            {
+                modifyButton.setOnAction(event -> {
+                    Vol vol = getTableView().getItems().get(getIndex());
+                    editVol(vol);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : modifyButton);
+            }
+        });
+
+        // Delete Button
+        colDelete.setCellFactory(param -> new TableCell<Vol, Void>() {
+            private final Button deleteButton = new Button("Supprimer");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    Vol vol = getTableView().getItems().get(getIndex());
+                    deleteVol(vol);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : deleteButton);
+            }
+        });
+
+        refreshTable();
 
     }
     private void setCircularImage(String imagePath) {
@@ -2057,7 +2137,6 @@ public class CrudUser {
     private void UserAccount() {
         try {
             ClientServices C1 = new ClientServices();
-            System.out.println("Email entré : " + email_field_signin.getText());
             Client client = C1.verifierUser(email_field_signin.getText(), password_field_signin.getText());
             labal_prenom.setText(client.getPrenom().toUpperCase());
             labal_tel.setText(String.valueOf(client.getNum_tel()).toUpperCase());
@@ -2633,9 +2712,6 @@ public class CrudUser {
                 //Hotel manualHotel = new Hotel(999, "Test Hotel", "Test Location", "123456789", "test@email.com", "test.jpg", "This is a test hotel");
                 // HotelData.add(manualHotel);
 
-                // Debugging
-                // System.out.println("Number of hotels fetched: " + hotels.size());
-                // System.out.println("HotelData size after update: " + HotelData.size());
 
                 TableView_Hotel.setItems(HotelData);
                 TableView_Hotel.refresh(); // Force update
@@ -2763,8 +2839,6 @@ public class CrudUser {
                 ActiviteData.addAll(activites);
 
 
-                // System.out.println("Number of activites " + activites.size());
-                // System.out.println("ActiviteData: " +ActiviteData.size());
                 TableView_Activite.setItems(ActiviteData);
                 TableView_Activite.refresh(); // Force update
 
@@ -2905,7 +2979,6 @@ public class CrudUser {
         List<Activite> activites = activiteService.rechercher(); // Fetch activities from DB
         RefreshTableView_Session();
         if (activites == null || activites.isEmpty()) {
-            // System.out.println("⚠ No activities found in the database!");
             return;
         }
 
@@ -3073,9 +3146,6 @@ public class CrudUser {
                 //Hotel manualHotel = new Hotel(999, "Test Hotel", "Test Location", "123456789", "test@email.com", "test.jpg", "This is a test hotel");
                 // HotelData.add(manualHotel);
 
-                // Debugging
-                //System.out.println("Number of User fetched: " + Clients.size());
-                // System.out.println("UserData size after update: " + userData_back.size());
 
                 TableView_vehicule.setItems(VehiculeData);
                 TableView_vehicule.refresh(); // Force update
@@ -3108,7 +3178,6 @@ public class CrudUser {
 
                 TableView_contrat.setItems(ContratData);
                 TableView_contrat.refresh(); // Force update
-                //  System.out.println(contrats);
             } else {
                 showAlert("Information", "Aucun Contrat trouvé.", Alert.AlertType.INFORMATION);
             }
@@ -3499,7 +3568,6 @@ public class CrudUser {
         List<Vehicule> vehicules = vehiculeService.getAllVehicules(); // Fetch vehicles from DB
 
         if (vehicules == null || vehicules.isEmpty()) {
-            // System.out.println("⚠ No Vehicules found in the database!");
             return;
         }
 
@@ -3540,7 +3608,6 @@ public class CrudUser {
         List<Hotel> hotels = hotelService.rechercher(); // Fetch hotels from DB
 
         if (hotels == null || hotels.isEmpty()) {
-            //  System.out.println("⚠ No hotels found in the database!");
             return;
         }
 
@@ -3574,5 +3641,205 @@ public class CrudUser {
         });
     }
 
+
+    @FXML
+    private void refreshTable() {
+        ObservableList<Vol> volList = FXCollections.observableArrayList();
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/wolfs", "root", "");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM Vol")) {
+
+            while (rs.next()) {
+                Vol vol = new Vol(
+                        rs.getInt("FlightID"),
+                        rs.getString("Departure"),
+                        rs.getString("Destination"),
+                        rs.getTimestamp("DepartureTime").toLocalDateTime(),
+                        rs.getTimestamp("ArrivalTime").toLocalDateTime(),
+                        ClasseChaise.valueOf(rs.getString("ClasseChaise")),
+                        rs.getString("Airline"),
+                        rs.getInt("FlightPrice"),  // Corrected to use Double
+                        rs.getInt("AvailableSeats"),
+                        rs.getString("Description")
+                );
+
+                volList.add(vol);
+            }
+
+            tableViewVols.setItems(volList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void addVol() {
+        String departure = tfDeparture.getText();
+        String destination = tfDestination.getText();
+        String departureTimeStr = tfDepartureTime.getText();
+        String arrivalTimeStr = tfArrivalTime.getText();
+        ClasseChaise classeChaise = cbClasseChaise.getValue();
+        String airline = tfAirline.getText();
+        double flightPrice;
+        int availableSeats;
+        String description = tfDescription.getText();
+
+        // Validate inputs
+        if (departure.isEmpty() || destination.isEmpty() || departureTimeStr.isEmpty() || arrivalTimeStr.isEmpty() || classeChaise == null || airline.isEmpty() || tfFlightPrice.getText().isEmpty() || tfAvailableSeats.getText().isEmpty() || description.isEmpty()) {
+            showAlert("Erreur", "Veuillez remplir tous les champs !");
+            return;
+        }
+
+        try {
+            flightPrice = Double.parseDouble(tfFlightPrice.getText()); // Ensuring flight price is Double
+            availableSeats = Integer.parseInt(tfAvailableSeats.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Prix du vol et sièges disponibles doivent être des nombres !");
+            return;
+        }
+
+        // Convert date strings to LocalDateTime
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime departureTime, arrivalTime;
+        try {
+            departureTime = LocalDateTime.parse(departureTimeStr, formatter);
+            arrivalTime = LocalDateTime.parse(arrivalTimeStr, formatter);
+        } catch (Exception e) {
+            showAlert("Erreur", "Format de date incorrect (yyyy-MM-ddTHH:mm) !");
+            return;
+        }
+
+        // Insert into database
+        String query = "INSERT INTO Vol (Departure, Destination, DepartureTime, ArrivalTime, ClasseChaise, Airline, FlightPrice, AvailableSeats, Description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/wolfs", "root", "");
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, departure);
+            stmt.setString(2, destination);
+            stmt.setTimestamp(3, Timestamp.valueOf(departureTime));
+            stmt.setTimestamp(4, Timestamp.valueOf(arrivalTime));
+            stmt.setString(5, classeChaise.name());
+            stmt.setString(6, airline);
+            stmt.setDouble(7, flightPrice);
+            stmt.setInt(8, availableSeats);
+            stmt.setString(9, description);
+
+            stmt.executeUpdate();
+            showAlert("Succès", "Vol ajouté avec succès !");
+            refreshTable();
+            page_ajouter_vol.setVisible(false);
+            page_vol.setVisible(true);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ajouter le vol !");
+        }
+    }
+
+    private void editVol(Vol vol) {
+
+        // Create a dialog to edit multiple fields
+        Dialog<Vol> dialog = new Dialog<>();
+        dialog.setTitle("Edit Flight Information");
+
+        // Create buttons for the dialog
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        // Create a grid for input fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        // Define the fields to edit
+        TextField departureField = new TextField(vol.getDeparture());
+        TextField destinationField = new TextField(vol.getDestination());
+        TextField airlineField = new TextField(vol.getAirline());
+        TextField flightPriceField = new TextField(String.valueOf(vol.getFlightPrice()));
+        TextField availableSeatsField = new TextField(String.valueOf(vol.getAvailableSeats()));
+        TextField descriptionField = new TextField(vol.getDescription());
+
+        // Add labels and fields to the grid
+        grid.add(new Label("Departure:"), 0, 0);
+        grid.add(departureField, 1, 0);
+
+        grid.add(new Label("Destination:"), 0, 1);
+        grid.add(destinationField, 1, 1);
+
+        grid.add(new Label("Airline:"), 0, 2);
+        grid.add(airlineField, 1, 2);
+
+        grid.add(new Label("Flight Price:"), 0, 3);
+        grid.add(flightPriceField, 1, 3);
+
+        grid.add(new Label("Available Seats:"), 0, 4);
+        grid.add(availableSeatsField, 1, 4);
+
+        grid.add(new Label("Description:"), 0, 5);
+        grid.add(descriptionField, 1, 5);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Set the result converter (save the changes)
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                // Update the Vol object with the new values
+                vol.setDeparture(departureField.getText());
+                vol.setDestination(destinationField.getText());
+                vol.setAirline(airlineField.getText());
+                vol.setFlightPrice(Integer.parseInt(flightPriceField.getText()));
+                vol.setAvailableSeats(Integer.parseInt(availableSeatsField.getText()));
+                vol.setDescription(descriptionField.getText());
+
+                // Save the updated Vol to the database
+                modifierVol(vol);
+
+                // Log the changes (for demonstration purposes)
+                refreshTable();
+            }
+            return vol; // Return the updated Vol object
+        });
+
+        // Show the dialog and wait for the user input
+        dialog.showAndWait();
+    }
+
+    public void modifierVol(Vol vol) {
+        String req = "UPDATE vol SET departure='" + vol.getDeparture() + "', destination='" + vol.getDestination() + "', departureTime='" + vol.getDepartureTime() + "', " +
+                "arrivalTime='" + vol.getArrivalTime() + "', classeChaise='" + vol.getClasseChaise() + "', airline='" + vol.getAirline() + "', flightPrice=" + vol.getFlightPrice() + ", " +
+                "availableSeats=" + vol.getAvailableSeats() + ", description='" + vol.getDescription() + "' WHERE flightID=" + vol.getFlightID();
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/wolfs", "root", "");
+             Statement st = conn.createStatement()) {
+
+            st.executeUpdate(req);
+            refreshTable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void deleteVol(Vol vol) {
+        String req = "DELETE FROM vol WHERE flightID=" + vol.getFlightID();
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/wolfs", "root", "");
+             Statement st = conn.createStatement()) {
+            st.executeUpdate(req);
+            refreshTable();
+            showAlert("Succès", "Vol supprimé avec succès !");
+            refreshTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 }

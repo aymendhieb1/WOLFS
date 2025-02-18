@@ -103,4 +103,16 @@ public class ChoixService implements IService<Choix> {
             System.out.println("ID: " + choix.getIdChoix() + ", Post ID: " + choix.getPostId() + ", Choix: " + choix.getChoix() + ", Pourcentage: " + choix.getPourcentage() + ", Votes: " + choix.getChoiceVotesCount());
         }
     }
+
+    public void supprimerParPostId(int postId) {
+        String req = "DELETE FROM choix WHERE post_id=?";
+        try {
+            PreparedStatement pst = connection.prepareStatement(req);
+            pst.setInt(1, postId);
+            pst.executeUpdate();
+            System.out.println("✅ Choices deleted successfully for post ID: " + postId);
+        } catch (SQLException e) {
+            System.out.println("❌ Error deleting choices: " + e.getMessage());
+        }
+    }
 }

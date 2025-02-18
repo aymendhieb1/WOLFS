@@ -14,7 +14,8 @@ public class Comment extends Post {
     }
 
     public String getCommentContent() { return commentContent; }
-    public void setCommentContent(String commentContent) { this.commentContent = commentContent; }
+    public void setCommentContent(String content) { this.commentContent = content; }
     public int getParentId() { return parentId; }
     public void setParentId(int parentId) { this.parentId = parentId; }
+    public LocalDateTime getDateCreation() { return dateCreation; }
 }

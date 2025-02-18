@@ -68,12 +68,12 @@ public class ForumService implements IService<Forum> {
                         rs.getInt("forum_id"),
                         rs.getString("name"),
                         rs.getInt("created_by"),
-                        rs.getInt("post_count"),   // Fix: Make sure the column exists in the database
-                        rs.getInt("nbr_members"),  // Fix: Make sure the column exists in the database
+                        rs.getInt("post_count"),
+                        rs.getInt("nbr_members"),
                         rs.getString("description"),
                         rs.getTimestamp("date_creation").toLocalDateTime(),
                         rs.getBoolean("is_private"),
-                        rs.getString("list_members") // retrieve list_members
+                        rs.getString("list_members")
                 );
                 forums.add(forum);
             }
@@ -91,8 +91,8 @@ public class ForumService implements IService<Forum> {
             System.out.print("Forum ID: " + forum.getForumId() + " ");
             System.out.print("Name: " + forum.getName() + " ");
             System.out.print("Created By (User ID): " + forum.getCreatedBy() + " ");
-            System.out.print("Post Count: " + forum.getPostCount() + " ");  // Fix: Ensure post_count is displayed
-            System.out.print("Number of Members: " + forum.getNbrMembers() + " ");  // Fix: Ensure nbr_members is displayed
+            System.out.print("Post Count: " + forum.getPostCount() + " ");
+            System.out.print("Number of Members: " + forum.getNbrMembers() + " ");
             System.out.print("Description: " + forum.getDescription() + " ");
             System.out.print("List Members: " + forum.getListMembers() + " ");
             System.out.print("Creation Date: " + forum.getDateCreation() + " ");
@@ -100,9 +100,6 @@ public class ForumService implements IService<Forum> {
             System.out.println();
         }
     }
-
-
-
 
     @Override
     public void supprimer(Forum forum) {

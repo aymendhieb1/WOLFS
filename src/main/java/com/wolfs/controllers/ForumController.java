@@ -90,7 +90,7 @@ public class ForumController {
         boolean isPrivate = isPrivateCheckBox.isSelected();
         membersListView.setDisable(!isPrivate);
         memberEmailField.setDisable(!isPrivate);
-        
+
         if (!isPrivate) {
             membersListView.getItems().clear();
             updateMemberCount();
@@ -102,11 +102,11 @@ public class ForumController {
         String email = memberEmailField.getText().trim();
         if (!email.isEmpty() && !membersListView.getItems().contains(email)) {
             if (forumService.getUserByEmail(email) != -1) {
-            membersListView.getItems().add(email);
+                membersListView.getItems().add(email);
                 memberEmailField.clear();
                 hideError(memberEmailField, memberEmailErrorLabel);
                 isMemberEmailValid = true;
-                
+
                 updateMemberCount();
             }
         }
@@ -160,7 +160,7 @@ public class ForumController {
                     setPrefHeight(Control.USE_COMPUTED_SIZE);
                     text.wrappingWidthProperty().bind(widthProperty());
                 }
-                
+
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -369,12 +369,12 @@ public class ForumController {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erreur de validation");
             alert.setHeaderText("Veuillez corriger les erreurs suivantes:");
-            
+
             StringBuilder content = new StringBuilder();
             if (!isNameValid) content.append("- Erreur dans le nom du forum\n");
             if (!isEmailValid) content.append("- Erreur dans l'email du créateur\n");
             if (!isDescriptionValid) content.append("- Erreur dans la description\n");
-            
+
             alert.setContentText(content.toString());
             alert.showAndWait();
             return;
@@ -404,7 +404,7 @@ public class ForumController {
     private boolean validateTableEdit(Forum forum, String field, String newValue) {
         StringBuilder errors = new StringBuilder();
         boolean isValid = true;
-        
+
         switch(field) {
             case "name":
                 if (newValue.isEmpty()) {
@@ -420,7 +420,7 @@ public class ForumController {
                     isValid = false;
                 }
                 break;
-            
+
             case "createdBy":
                 if (newValue.isEmpty()) {
                     errors.append("- L'email ne peut pas être vide\n");
@@ -433,7 +433,7 @@ public class ForumController {
                     isValid = false;
                 }
                 break;
-            
+
             case "description":
                 if (newValue.isEmpty()) {
                     errors.append("- La description ne peut pas être vide\n");
@@ -445,7 +445,7 @@ public class ForumController {
                 }
                 break;
         }
-        
+
         if (!isValid) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erreur de modification");
@@ -455,7 +455,7 @@ public class ForumController {
             refreshTable();
             return false;
         }
-        
+
         return true;
     }
 

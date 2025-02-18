@@ -159,21 +159,89 @@ public class ClientServices implements IUserServices<Client> {
             if (resultSet.next()) {
                 String imageUrl = resultSet.getString("photo_profil");
 
-                // Vérification que l'image n'est pas vide
                 if (imageUrl != null && !imageUrl.isEmpty()) {
-                    // L'image est déjà une URL absolue
-                    return new Image(imageUrl); // Utiliser directement l'URL absolue
+
+                    return new Image(imageUrl);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Afficher un message d'erreur plus explicite si la récupération échoue
             System.err.println("Erreur lors du chargement de l'image pour l'email: " + mail);
         }
 
         // Retourner une image par défaut en cas d'échec
         return new Image("file:images/user_icon_001.jpg"); // Assurez-vous que ce chemin est correct
     }
+
+    public Client verifierUserByMail(String email) {
+        String req = "SELECT id_user, nom, prenom, mail, mdp, num_tel, role, status, photo_profil FROM user WHERE mail=?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(req);
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+
+            if (rs.next()) {
+                System.out.println("Utilisateur trouvé : " + rs.getString("mail"));
+
+
+
+
+                System.out.println("Mot de passe correct !");
+                return new Client(
+                        rs.getInt("id_user"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("mail"),
+                        rs.getString("mdp"),
+                        rs.getInt("num_tel"),
+                        rs.getInt("role"),
+                        rs.getInt("status"),
+                        rs.getString("photo_profil"));}
+            else {
+                System.out.println("Email non trouvé !");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void bloquer_client(int id) {
+        String req = "UPDATE user SET status = 1 WHERE id_user = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setInt(1, id); // Replaces `?` with the value of `id`
+            int rowsUpdated = pst.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Client with ID " + id + " has been blocked.");
+            } else {
+                System.out.println("No client found with ID " + id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur  : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void debloquer_client(int id) {
+        String req = "UPDATE user SET status = 0 WHERE id_user = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setInt(1, id); // Replaces `?` with the value of `id`
+            int rowsUpdated = pst.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Client with ID " + id + " has been blocked.");
+            } else {
+                System.out.println("No client found with ID " + id);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur  : " + e.getMessage());
+            e.printStackTrace();
+        }}
 
 
 

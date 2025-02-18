@@ -1,3 +1,5 @@
+package com.wolfs.services;
+
 import java.util.List;
 
 public interface IUserServices<T>{

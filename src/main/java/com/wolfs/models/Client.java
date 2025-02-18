@@ -1,4 +1,8 @@
-public class Client extends User{
+package com.wolfs.models;
+
+import com.wolfs.models.User;
+
+public class Client extends User {
 
     private int status;
     private String photo_profile;

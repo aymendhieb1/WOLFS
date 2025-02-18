@@ -1,8 +1,7 @@
 package com.wolfs.controllers.user;
 
-import com.wolfs.models.Client;
-import com.wolfs.models.Hotel;
-import com.wolfs.services.HotelService;
+import com.wolfs.models.*;
+import com.wolfs.services.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,16 +19,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import com.wolfs.services.ClientServices;
 import javafx.event.ActionEvent;
+import javafx.util.StringConverter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 
@@ -37,6 +38,14 @@ public class CrudUser {
 
     @FXML
     private AnchorPane Modifier_page;
+    @FXML
+    private AnchorPane background_mon_profil;
+    @FXML
+    private AnchorPane background_front_forum;
+    @FXML
+    private AnchorPane background_front_offres;
+    @FXML
+    private AnchorPane background_front_acceuil;
     @FXML
     private TextField email_field_update;
     @FXML
@@ -287,11 +296,7 @@ public class CrudUser {
     @FXML
     private TextField hotel_num_tel;
     @FXML
-    private  Button page_hotel_refresh;
-    @FXML
-    private  Label count_client;
-    @FXML
-    private  Label count_bloque;
+    private TextField hotel_id;
     @FXML
     private TableView<Hotel> TableView_Hotel;
     @FXML
@@ -306,17 +311,324 @@ public class CrudUser {
     private TableColumn<Hotel, String> hotel_col_image;
     @FXML
     private TableColumn<Hotel, String> hotel_col_description;
-
+    @FXML
+    private TableColumn<Hotel, Void> hotel_col_supprimer;
+    @FXML
+    private TableColumn<Hotel, Void> hotel_col_modifier;
     private ObservableList<Hotel> HotelData = FXCollections.observableArrayList();
 
-    private ObservableList<Client> userData = FXCollections.observableArrayList();
+
+
+    //chambre
+
+    @FXML
+    private TextField chambre_description;
+
+    @FXML
+    private ComboBox<String> chambre_disponibilite;
+
+    @FXML
+    private ComboBox<Hotel> chambre_hotel_nom;
+
+    @FXML
+    private TextField chambre_prix;
+
+    @FXML
+    private ComboBox<String> chambre_type;
+
+    @FXML
+    private TableView<Chambre> TableView_chambre;
+
+    @FXML
+    private TableColumn<Chambre, String> TableView_chambre_description;
+
+    @FXML
+    private TableColumn<Chambre, Boolean> TableView_chambre_disponibilite;
+
+    @FXML
+    private TableColumn<Chambre, Void> TableView_chambre_modifier;
+
+@FXML
+    private Button button_logout;
+    @FXML
+    private TableColumn<Chambre, String > TableView_chambre_nom_hotel;
+
+    @FXML
+    private TableColumn<Chambre, Integer> TableView_chambre_prix;
+
+    @FXML
+    private TableColumn<Chambre, Void> TableView_chambre_supprimer;
+
+    @FXML
+    private TableColumn<Chambre, String> TableView_chambre_type;
+
+
+    @FXML
+    private TextField chambre_id;
+
+    private ObservableList<Chambre> ChambreData = FXCollections.observableArrayList();
+
+
+
+
+    //fxml activite
+
+
+    @FXML
+    private Button activite_bt_ajouter;
+    @FXML
+    private Button activite_bt_modifier;
+    @FXML
+    private TextField nom_activite;
+    @FXML
+    private  TextField description_activite;
+    @FXML
+    private TextField localisation_activite;
+    @FXML
+    private TextField type_activite;
+    @FXML
+    private TextField prix_activite;
+    @FXML
+    private TextField fixed_nom;
+    //tabelview activite
+    @FXML
+    private TableView<Activite> TableView_Activite;
+    @FXML
+    private TableColumn<Activite, Integer> act_col_nom;
+    @FXML
+    private TableColumn<Activite, String> act_col_desc;
+    @FXML
+    private TableColumn<Activite, String> act_col_loc;
+    @FXML
+    private TableColumn<Activite, String> act_col_type;
+    @FXML
+    private TableColumn<Activite, String> act_col_prix;
+    @FXML
+    private TableColumn<Activite, Void> act_col_mod;
+
+    @FXML
+    private TableColumn<Activite, Void> act_col_supp    ;
+
+
+
+    private ObservableList<Activite> ActiviteData = FXCollections.observableArrayList();
+
+
+
+
+    //fxml session
+
+    @FXML
+    private Button session_bt_ajouter;
+    @FXML
+    private Button sessio_bt_modifier;
+    @FXML
+    private DatePicker date_sess;
+    @FXML
+    private TextField time_sess;
+    @FXML
+    private TextField sess_cap;
+    @FXML
+    private TextField sess_nbr_places;
+    @FXML
+    private DatePicker fixed_nom_sess;
+
+
+    @FXML
+    private ComboBox<Activite> combo_activite;
+
+
+    //tabelview session
+    @FXML
+    private TableView<Session> TableView_Session;
+    @FXML
+    private TableColumn<Session, String> sess_col_nomact;
+    @FXML
+    private TableColumn<Session, String> sess_col_date;
+    @FXML
+    private TableColumn<Session, String> sess_col_time;
+    @FXML
+    private TableColumn<Session, String> sess_col_capacite;
+    @FXML
+    private TableColumn<Session, String> sess_col_nbrplace;
+    @FXML
+    private TableColumn<Session, Void> sess_col_mod;
+
+    @FXML
+    private TableColumn<Session, Void> sess_col_supp    ;
+
+
+
+
+
+
+
+    private ObservableList<Session> SessionData = FXCollections.observableArrayList();
+
+
+
+
+
+
+    @FXML
+    private TableView<Client> TableView_Utilisateur;
+    @FXML
+    private TableColumn<Client, String> cl_user_mail;
+
+    @FXML
+    private TableColumn<Client, String> cl_user_nom;
+
+    @FXML
+    private TableColumn<Client, Integer> cl_user_num_tel;
+
+    @FXML
+    private TableColumn<Client, String> cl_user_photo;
+
+    @FXML
+    private TableColumn<Client, String> cl_user_prenom;
+
+    @FXML
+    private TableColumn<Client, Integer> cl_user_status;
+    @FXML
+    private TableColumn<Client, Void> cl_user_bloquer;
+    @FXML
+    private TableColumn<Client, Void> cl_user_debloquer;
+    @FXML
+    private TableColumn<Client, Void> cl_user_supprimer;
+
+    private ObservableList<Client> userData_back = FXCollections.observableArrayList();
+
+
+
+
+
+
+
+
+
+    //vehicule
+
+
+    @FXML
+    private TextField page_vehicule_cylindre;
+
+    @FXML
+    private TextField page_vehicule_image;
+
+    @FXML
+    private TextField page_vehicule_matricule;
+
+    @FXML
+    private TextField page_vehicule_nb_place;
+
+    @FXML
+    private TextField page_vehicule_prix;
+    @FXML
+    private TextField page_vehicule_status;
+
+    @FXML
+    private TableView<Vehicule> TableView_vehicule;
+
+    @FXML
+    private TableColumn<Voiture, Integer> TableView_vehicule_cylindre;
+
+    @FXML
+    private TableColumn<Vehicule, String> TableView_vehicule_matricule;
+
+    @FXML
+    private TableColumn<Vehicule, Void> TableView_vehicule_modifier;
+
+    @FXML
+    private TableColumn<Bus, Integer> TableView_vehicule_nb_place;
+
+    @FXML
+    private TableColumn<Vehicule, Integer> TableView_vehicule_prix;
+
+    @FXML
+    private TableColumn<Vehicule, String> TableView_vehicule_status;
+
+    @FXML
+    private TableColumn<Vehicule, Void> TableView_vehicule_supprimer;
+
+    @FXML
+    private TextField page_vehicule_id;
+
+    @FXML
+    private ComboBox<Vehicule> contrat_matricule;
+
+    @FXML
+    private TextField contrat_photo_permit;
+
+    @FXML
+    private TextField contrat_cin;
+    @FXML
+    private TextField contrat_date_debut;
+    @FXML
+    private TextField contrat_date_fin;
+
+    private ObservableList<Vehicule> VehiculeData = FXCollections.observableArrayList();
+
+
+
+
+
+    //tableView Contrat
+    @FXML
+    private TableView<Contrat> TableView_contrat;
+
+    @FXML
+    private TableColumn<Contrat, Integer> TableView_contrat_cin;
+
+    @FXML
+    private TableColumn<Contrat, String> TableView_contrat_debut;
+
+    @FXML
+    private TableColumn<Contrat,String> TableView_contrat_fin;
+
+    @FXML
+    private TableColumn<Contrat, String> TableView_contrat_matricule;
+
+    @FXML
+    private TableColumn<Contrat,Void> TableView_contrat_modifier;
+
+    @FXML
+    private TableColumn<Contrat,Void> TableView_contrat_supprimer;
+
+    private ObservableList<Contrat> ContratData = FXCollections.observableArrayList();
+
+    @FXML
+    private TextField contrat_id2;
+
+    @FXML
+    private ImageView contrat_imageView;
+    @FXML
+    private ImageView hotel_imageView;
+
+
+
+
+
+
+
+
+
+
 
 
     private boolean isPasswordVisible = false;
 
     public void initialize() {
         startAnimation();
-
+        chambre_type.setItems(FXCollections.observableArrayList(
+                "Standard",
+                "Deluxe",
+                "Suite",
+                "Executive Room"
+        ));
+        chambre_disponibilite.setItems(FXCollections.observableArrayList(
+                "Disponible",
+                "Non disponible"
+        ));
         //tableView Hotel
         hotel_col_name.setCellValueFactory(new PropertyValueFactory<>("nom_hotel"));
         hotel_col_location.setCellValueFactory(new PropertyValueFactory<>("localisation_hotel"));
@@ -324,13 +636,127 @@ public class CrudUser {
         hotel_col_email.setCellValueFactory(new PropertyValueFactory<>("email_hotel"));
         hotel_col_image.setCellValueFactory(new PropertyValueFactory<>("image_hotel"));
         hotel_col_description.setCellValueFactory(new PropertyValueFactory<>("description_hotel"));
+        hotel_id.setVisible(false);
+        hotel_col_modifier.setCellFactory(column -> {
+            return new TableCell<Hotel, Void>() {
+                private final Button btn = new Button("Modifier");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        page_hotel.setVisible(false);
+                        Hotel Hot = getTableView().getItems().get(getIndex());
+                        animateTransition(background_front, page_ajouter_hotel, 0);
+                        hotel_nom.setText(Hot.getNom_hotel());
+                        hotel_localisation.setText(Hot.getLocalisation_hotel());
+                        hotel_num_tel.setText(Hot.getNum_telephone_hotel());
+                        hotel_email.setText(String.valueOf(Hot.getEmail_hotel()));
+                        hotel_image.setText(Hot.getImage_hotel());
+                        hotel_description.setText(Hot.getDescription_hotel());
+                        HotelService HotelService = new HotelService();
+                        hotel_id.setText(String.valueOf(HotelService.ChercherId(String.valueOf(Hot.getEmail_hotel()))));
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+
+        hotel_col_supprimer.setCellFactory(column -> {
+            return new TableCell<Hotel, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de Suppression");
+                        alert.setHeaderText("Voulez-vous vraiment vous supprimer ce hotel ?");
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            Hotel Hot = getTableView().getItems().get(getIndex());
+                            HotelService HotelService = new HotelService();
+                            hotel_id.setText(String.valueOf(HotelService.ChercherId(String.valueOf(Hot.getEmail_hotel()))));
+                            Hotel H1 = new Hotel();
+                            H1.setId_hotel(HotelService.ChercherId(String.valueOf(Hot.getEmail_hotel())));
+                            HotelService.supprimer(H1);
+                            RefreshTableView_Hotel();
+                        }
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
 
         HotelService hotelService = new HotelService();
         List<Hotel> hotelList = hotelService.rechercher(); // Fetch hotel list from DB
         ObservableList<Hotel> observableHotelList = FXCollections.observableArrayList(hotelList);
 
         TableView_Hotel.setItems(observableHotelList);
+
+
+
+
+
+
         setCircularImage("images//user_icon_001.jpg");
+
          photo_profile_signin.setOnMouseClicked(this::handleImageClick);
 
 
@@ -345,6 +771,1012 @@ public class CrudUser {
         clip.setCenterY(500 / 2);
 
          photo_profile_front.setClip(clip);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        loadComboBoxActivites(); // Load the activities into the ComboBox
+
+        // Assuming ActiviteService2 is defined elsewhere
+        ActiviteService2 activiteService = new ActiviteService2();
+
+        List<Activite> activitesList = activiteService.rechercher();  // Fetch the List<Activite> from the rechercher method
+        ObservableList<Activite> activites = FXCollections.observableArrayList(activitesList);
+
+        // Set the items in the ComboBox
+        combo_activite.setItems(activites);
+
+        // Set the ComboBox to display just the names (or any other field) for user selection
+        combo_activite.setCellFactory(param -> new ListCell<Activite>() {
+            @Override
+            protected void updateItem(Activite item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNom_act());  // Display only the name of the activity
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Activite
+        combo_activite.setConverter(new StringConverter<Activite>() {
+            @Override
+            public String toString(Activite activite) {
+                return activite == null ? null : activite.getNom_act();  // Display name when selected
+            }
+
+            @Override
+            public Activite fromString(String string) {
+                return null;  // Not necessary in this case, since we work with Activite objects directly
+            }
+        });
+
+        // Initialize table columns act
+        act_col_nom.setCellValueFactory(new PropertyValueFactory<>("nom_act"));
+        act_col_desc.setCellValueFactory(new PropertyValueFactory<>("descript"));
+        act_col_loc.setCellValueFactory(new PropertyValueFactory<>("localisation"));
+        act_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        act_col_prix.setCellValueFactory(new PropertyValueFactory<>("prix_act"));
+
+        // Set cell factories for action buttons
+        act_col_mod.setCellFactory(column -> {
+            return new TableCell<Activite, Void>() {
+                private final Button btn = new Button("Modifier");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        Activite activite = getTableView().getItems().get(getIndex());
+                        activite_bt_modifier.setVisible(true);
+                        activite_bt_ajouter.setVisible(false);
+
+                        nom_activite.setText(activite.getNom_act());
+                        description_activite.setText(activite.getDescript());
+                        localisation_activite.setText(activite.getLocalisation());
+                        type_activite.setText(activite.getType());
+                        prix_activite.setText(String.valueOf(activite.getPrix_act()));
+                        fixed_nom.setText(activite.getNom_act());
+                        page_ajouter_activite.setVisible(true);
+                        page_activite.setVisible(false);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        act_col_supp.setCellFactory(column -> {
+            return new TableCell<Activite, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        RefreshTableView_Session();
+                        // Récupérer l'activité associée à la ligne actuelle
+                        Activite activiteSelectionnee = getTableView().getItems().get(getIndex());
+                        // System.out.println("Activité sélectionnée : " + activiteSelectionnee.getNom_act());
+
+                        if (activiteSelectionnee == null) {
+                            showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
+                            return;
+                        }
+
+                        // Demander confirmation avant suppression
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation de suppression");
+                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette activité ?");
+                        confirmationAlert.setContentText("Cette action est irréversible.");
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Supprimer l'activité via le nom_act
+                            ActiviteService2 activiteService = new ActiviteService2();
+                            activiteService.supprimer(activiteSelectionnee);
+
+                            showAlert("Confirmation", "L'Activité a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                            // Mettre à jour la TableView
+                            getTableView().getItems().remove(activiteSelectionnee);
+                            RefreshTableView_Session();
+                            RefreshTableView_Activite();
+                        }
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        })
+
+        ;
+        ActiviteService2 ActiviteService2= new ActiviteService2();
+        List<Activite> acitviteliste = ActiviteService2.rechercher();
+        ObservableList<Activite> observableAcitviteListt = FXCollections.observableArrayList(acitviteliste);
+
+        TableView_Activite.setItems(observableAcitviteListt);
+        // Initialize session table columns
+        sess_col_nomact.setCellValueFactory(cellData -> {
+            // Ensure cellData is working with a Session object
+            Session session = cellData.getValue();  // This should be of type Session
+
+            // Fetch the Activite using the session's idAct field
+            Activite activite = activiteService.getActiviteById(session.getIdAct());  // Using idAct from the Session
+
+            // Return the name of the activity (nom_act) or "Unknown" if not found
+            return new SimpleStringProperty(activite != null ? activite.getNom_act() : "Unknown");
+        });
+
+        // Initialize other columns for session data
+        sess_col_date.setCellValueFactory(new PropertyValueFactory<>("date_sess"));
+        sess_col_time.setCellValueFactory(new PropertyValueFactory<>("time_sess"));
+        sess_col_capacite.setCellValueFactory(new PropertyValueFactory<>("cap_sess"));
+        sess_col_nbrplace.setCellValueFactory(new PropertyValueFactory<>("nbr_places_sess"));
+        sess_col_mod.setCellFactory(column -> {
+            return new TableCell<Session, Void>() {
+                private final Button btn = new Button("Modifier");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        Session session = getTableView().getItems().get(getIndex());
+
+
+
+
+                        // Show/hide the buttons
+                        sessio_bt_modifier.setVisible(true);
+                        session_bt_ajouter.setVisible(false);
+
+                        // Set the values from the Activite object
+                        LocalDate sessionDate = session.getDate_sess();
+                        LocalTime sessiotime = session.getTime_sess();
+                        date_sess.setValue(sessionDate);
+                        String formattedTime = sessiotime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                        time_sess.setText(formattedTime); // Set the location
+                        int capSess = session.getCap_sess();
+                        sess_cap.setText(String.valueOf(capSess));
+                        int nbr_place_sess = session.getNbr_places_sess();
+                        sess_nbr_places.setText(String.valueOf(nbr_place_sess));
+                        fixed_nom_sess.setValue(sessionDate); // Set the fixed name (could be used elsewhere in the UI)
+                        sessio_bt_modifier.setVisible(true);
+                        session_bt_ajouter.setVisible(false);
+                        page_ajouter_session.setVisible(true);
+                        page_session.setVisible(false);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        sess_col_supp.setCellFactory(column -> {
+            return new TableCell<Session, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+
+                        // Récupérer la session associée à la ligne actuelle
+                        Session SessionSelectionnee = getTableView().getItems().get(getIndex());
+
+
+                        if (SessionSelectionnee == null) {
+                            showAlert("Erreur", "Impossible de récupérer l'activité sélectionnée.", Alert.AlertType.ERROR);
+                            return;
+                        }
+
+                        // Demander confirmation avant suppression
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation de suppression");
+                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette session ?");
+                        confirmationAlert.setContentText("Cette action est irréversible.");
+
+
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Supprimer la session via id_sess
+                            SessionService sessionService = new SessionService();
+                            sessionService.supprimer(SessionSelectionnee);
+
+                            showAlert("Confirmation", "La session a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                            // Mettre à jour la TableView
+                            getTableView().getItems().remove(SessionSelectionnee);
+                            RefreshTableView_Session();
+                        }
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        })
+
+
+        ;
+        // Fetch session list from DB
+        SessionService sessionService = new SessionService();
+        List<Session> sessionList = sessionService.rechercher();  // Fetch session list from DB
+
+        ObservableList<Session> observableSessionList = FXCollections.observableArrayList(sessionList);
+        TableView_Session.setItems(observableSessionList);
+
+
+
+
+
+
+
+        TableView_vehicule_matricule.setCellValueFactory(new PropertyValueFactory<>("matricule"));
+        TableView_vehicule_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        TableView_vehicule_nb_place.setCellValueFactory(new PropertyValueFactory<>("nbPlace"));
+        TableView_vehicule_cylindre.setCellValueFactory(new PropertyValueFactory<>("cylinder"));
+        TableView_vehicule_prix.setCellValueFactory(new PropertyValueFactory<>("prix"));
+        TableView_vehicule_modifier.setCellFactory(column -> {
+            return new TableCell<Vehicule, Void>() {
+                private final Button btn = new Button("Modifier");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Vehicule Vl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de modifier");
+                        alert.setHeaderText("Voulez-vous vraiment vous Modifer  ? " + Vl.getMatricule());
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            page_vehicule.setVisible(false);
+                            page_ajouter_vehicule.setVisible(true);
+                            page_vehicule_matricule.setText(Vl.getMatricule());
+                            VehiculeService VLS = new VehiculeService();
+                            Vehicule V = new Vehicule();
+                            V = VLS.getVehiculeByMatricule(Vl.getMatricule());
+                            // Bus B= new Bus();
+                            // Voiture Ve= new Voiture();
+
+                            page_vehicule_matricule.setText(V.getMatricule());
+                            page_vehicule_status.setText(V.getStatus());
+                            page_vehicule_prix.setText(String.valueOf(V.getPrix()));
+                            page_vehicule_id.setText(String.valueOf(VLS.getIdVehiculeByMatricule(V.getMatricule())));
+                            if (V instanceof Voiture) {
+                                Voiture voiture = (Voiture) V; // Cast V to Voiture
+                                page_vehicule_cylindre.setText(String.valueOf(voiture.getCylinder())); // Call getCylinder() method
+                                page_vehicule_image.setText(String.valueOf(voiture.getImage_vehicule())); // Set image text to empty
+                                page_vehicule_nb_place.setText("0"); // Call getCylinder() method
+
+                            }
+                            if (V instanceof Bus) {
+                                Bus B = (Bus) V; // Cast V to Voiture
+                                page_vehicule_nb_place.setText(String.valueOf(B.getNbPlace()));
+                                page_vehicule_cylindre.setText(""); // Call getCylinder() method
+                                page_vehicule_image.setText(""); // Set image text to empty
+                            }
+                            RefreshTableView_Vehicule();
+
+                        }
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        TableView_vehicule_supprimer.setCellFactory(column -> {
+            return new TableCell<Vehicule, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Vehicule Vl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de suppression");
+                        alert.setHeaderText("Voulez-vous vraiment vous supprimer  ? " + Vl.getMatricule());
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            VehiculeService VL1 = new VehiculeService();
+                            Vehicule V = new Vehicule();
+                            V.setMatricule(Vl.getMatricule());
+                            VL1.supprimer(V);
+                            RefreshTableView_Vehicule();
+
+                        }
+
+
+                        RefreshTableView_Vehicule();
+
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        VehiculeService VS = new VehiculeService();
+        List<Vehicule> VehiculeList = VS.getAllVehicules(); // Fetch hotel list from DB
+        ObservableList<Vehicule> observableVehiculeList = FXCollections.observableArrayList(VehiculeList);
+
+        TableView_vehicule.setItems(observableVehiculeList);
+
+        loadComboBoxVehicules();
+
+        VehiculeService VehiculeService = new VehiculeService(); // Assuming service class
+
+        List<Vehicule> vehiculeListe = VehiculeService.getAllVehicules();  // Fetch the List<Activite> from the rechercher method
+
+        // Convert List<Activite> to ObservableList<Activite>
+        ObservableList<Vehicule> vehicules = FXCollections.observableArrayList(vehiculeListe);
+
+        // Set the items in the ComboBox
+        contrat_matricule.setItems(vehicules);
+
+        // Set the ComboBox to display just the names (or any other field) for user selection
+        contrat_matricule.setCellFactory(param -> new ListCell<Vehicule>() {
+            @Override
+            protected void updateItem(Vehicule item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getMatricule());  // Display only the name of the activity
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Activite
+        contrat_matricule.setConverter(new StringConverter<Vehicule>() {
+            @Override
+            public String toString(Vehicule vehicule) {
+                return vehicule == null ? null : vehicule.getMatricule();  // Display name when selected
+            }
+
+            @Override
+            public Vehicule fromString(String string) {
+                return null;  // Not necessary in this case, since we work with Activite objects directly
+            }
+        });
+
+
+
+
+
+
+
+        ContratService ContratService = new ContratService();
+        List<Contrat> ContratList = ContratService.getListContrats(); // Fetch hotel list from DB
+        ObservableList<Contrat> observableContratList = FXCollections.observableArrayList(ContratList);
+
+        TableView_contrat.setItems(observableContratList);
+
+
+        //tableView
+        TableView_contrat_debut.setCellValueFactory(new PropertyValueFactory<>("dateD"));
+        TableView_contrat_fin.setCellValueFactory(new PropertyValueFactory<>("dateF"));
+        TableView_contrat_cin.setCellValueFactory(new PropertyValueFactory<>("cinLocateur"));
+        TableView_contrat_matricule.setCellValueFactory(new PropertyValueFactory<>("nomVehicule"));
+
+        TableView_contrat_supprimer.setCellFactory(column -> {
+            return new TableCell<Contrat, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+
+                        // Récupérer la session associée à la ligne actuelle
+                        Contrat ContratSelectionnee = getTableView().getItems().get(getIndex());
+
+
+                        if (ContratSelectionnee == null) {
+                            showAlert("Erreur", "Impossible de récupérer l'contrat sélectionnée.", Alert.AlertType.ERROR);
+                            return;
+                        }
+
+                        // Demander confirmation avant suppression
+                        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirmationAlert.setTitle("Confirmation de suppression");
+                        confirmationAlert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette session ?");
+                        confirmationAlert.setContentText("Cette action est irréversible.");
+
+
+
+                        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            // Supprimer la session via id_sess
+                            ContratService  ContratService = new ContratService();
+                            ContratService.supprimer(ContratSelectionnee);
+
+                            showAlert("Confirmation", "La session a été supprimée avec succès", Alert.AlertType.INFORMATION);
+
+                            // Mettre à jour la TableView
+                            getTableView().getItems().remove(ContratSelectionnee);
+                            RefreshTableView_Session();
+                        }
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        TableView_contrat_modifier.setCellFactory(column -> {
+            return new TableCell<Contrat, Void>() {
+                private final Button btn = new Button("Modifier");
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+                    btn.setOnAction(event -> {
+                        Contrat Contrat = getTableView().getItems().get(getIndex());
+
+
+
+
+
+
+                        contrat_cin.setText(String.valueOf(Contrat.getCinLocateur()));
+                        contrat_date_debut.setText(String.valueOf(Contrat.getDateD()));
+                        contrat_date_fin.setText(String.valueOf(Contrat.getDateF()));
+                        contrat_photo_permit.setText(String.valueOf(Contrat.getPhotoPermit()));
+
+                        // contrat_matricule.setItems(Contrat.getNomVehicule());
+                        //  System.out.println("DateD"+String.valueOf(Contrat.getDateD()));
+                        Contrat C= new Contrat(String.valueOf(Contrat.getDateD()),String.valueOf(Contrat.getDateF()),Integer.valueOf(String.valueOf(Contrat.getCinLocateur())),String.valueOf(Contrat.getPhotoPermit()));
+                        ContratService ContratService = new ContratService();
+                        // System.out.println("id "+String.valueOf(ContratService.chercher_id(C)));
+                        contrat_id2.setText(String.valueOf(ContratService.chercher_id(C)));
+                        contrat_id2.setVisible(false);
+                        page_contrat.setVisible(false);
+                        page_ajouter_contrat.setVisible(true);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+        RefreshTableView_Contrat();
+
+
+
+
+
+
+
+
+        //tableView USER Back
+        cl_user_nom.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cl_user_prenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        cl_user_mail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        cl_user_num_tel.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
+        cl_user_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        cl_user_bloquer.setCellFactory(column -> {
+            return new TableCell<Client, Void>() {
+                private final Button btn = new Button("Bloquer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Client Cl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de Bloquer");
+                        alert.setHeaderText("Voulez-vous vraiment vous Bloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            ClientServices CL1 = new ClientServices();
+                            CL1.bloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            RefreshTableView_User();
+
+                        }
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+
+        cl_user_debloquer.setCellFactory(column -> {
+            return new TableCell<Client, Void>() {
+                private final Button btn = new Button("Debloquer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Client Cl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de debloquer");
+                        alert.setHeaderText("Voulez-vous vraiment vous debloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            ClientServices CL1 = new ClientServices();
+                            CL1.debloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            RefreshTableView_User();
+
+                        }
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+        cl_user_supprimer.setCellFactory(column -> {
+            return new TableCell<Client, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Client Cl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de Suppression");
+                        alert.setHeaderText("Voulez-vous vraiment vous supprimer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            ClientServices ClientService = new ClientServices();
+                            Client C1 = new Client(ClientService.getUserIdByEmail(Cl.getEmail()), "", "", "", "", 0, 0, 0, "");
+                            ClientService.supprimerUser(C1);
+                            RefreshTableView_User();
+                        }
+
+
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+
+
+        ClientServices ClS = new ClientServices();
+        List<Client> ClientList = ClS.rechercherUser();
+        ObservableList<Client> observableClientList = FXCollections.observableArrayList(ClientList);
+
+        TableView_Utilisateur.setItems(observableClientList);
+
+
+
+
+
+        //TableView chambre
+        loadComboBox_hotel_nom() ;
+        HotelService hotelService1 = new HotelService();
+        List<Hotel> hotelList1 = hotelService1.rechercher();
+        ChambreService  ChambreService= new ChambreService();
+        List<Chambre> ChambreList = ChambreService.rechercher(); // Fetch hotel list from DB
+        ObservableList<Chambre> observableChambreList = FXCollections.observableArrayList(ChambreList);
+
+        TableView_chambre.setItems(observableChambreList);
+
+
+        //tableView Chambre
+        TableView_chambre_type.setCellValueFactory(new PropertyValueFactory<>("type_Chambre"));
+        TableView_chambre_prix.setCellValueFactory(new PropertyValueFactory<>("prix_Chambre"));
+        TableView_chambre_disponibilite.setCellValueFactory(new PropertyValueFactory<>("disponibilite_Chambre"));
+        TableView_chambre_description.setCellValueFactory(new PropertyValueFactory<>("description_Chambre"));
+        TableView_chambre_nom_hotel.setCellValueFactory(new PropertyValueFactory<>("nom_hotel_chambre"));
+        TableView_chambre_supprimer.setCellFactory(column -> {
+            return new TableCell<Chambre, Void>() {
+                private final Button btn = new Button("Supprimer");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        Chambre Cl = getTableView().getItems().get(getIndex());
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Confirmation de suppression");
+                        alert.setHeaderText("Voulez-vous vraiment vous supprimer  ? ");
+                        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            ChambreService CL1 = new ChambreService();
+                            HotelService hotelService1 = new HotelService();
+                            Chambre C = new Chambre(
+                                    String.valueOf(Cl.getType_Chambre()), // String
+                                    Integer.parseInt(String.valueOf(Cl.getPrix_Chambre())), // Convert String to int
+                                    Boolean.parseBoolean(String.valueOf(Cl.getDisponibilite_Chambre())), // Convert String to boolean
+                                    String.valueOf(Cl.getDescription_Chambre()), // String
+                                    hotelService1.getIdHotelBynom(String.valueOf(Cl.getNom_hotel_chambre())) // Get hotel ID from name
+                            );
+                            CL1.supprimer(C);
+                            RefreshTableView_Chambre();
+
+                        }
+
+
+                        RefreshTableView_Chambre();
+
+                    });
+
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        TableView_chambre_modifier.setCellFactory(column -> {
+            return new TableCell<Chambre, Void>() {
+                private final Button btn = new Button("Modifier");
+
+
+                {
+                    HBox hbox = new HBox(btn);
+                    hbox.setAlignment(Pos.CENTER);
+                    setGraphic(hbox);
+                    btn.setStyle(
+                            "-fx-background-color: #E78D1E; " +
+                                    "-fx-text-fill: white; " +
+                                    "-fx-font-size: 14px; " +
+                                    "-fx-border-radius: 5px; " +
+                                    "-fx-cursor: hand;"
+                    );
+
+
+                    btn.setOnAction(event -> {
+                        HotelService Hot=  new HotelService();
+                        page_chambre.setVisible(false);
+                        Chambre CH = getTableView().getItems().get(getIndex());
+                        animateTransition(background_front, page_ajouter_chambre, 0);
+                        chambre_type.setValue(CH.getType_Chambre());
+                        chambre_prix.setText(String.valueOf(CH.getPrix_Chambre()));
+                        chambre_disponibilite.setValue(String.valueOf(CH.getDisponibilite_Chambre()));
+                        chambre_description.setText(CH.getDescription_Chambre());
+                        // chambre_hotel_nom.setValue(String.valueOf(CH.getNom_hotel_chambre()));
+
+                        ChambreService ChambreService = new ChambreService();
+
+
+                        Chambre C = new Chambre(
+                                String.valueOf(CH.getType_Chambre()), // String
+                                Integer.parseInt(String.valueOf(CH.getPrix_Chambre())), // Convert String to int
+                                Boolean.parseBoolean(String.valueOf(CH.getDisponibilite_Chambre())), // Convert String to boolean
+                                String.valueOf(CH.getDescription_Chambre()), // String
+                                hotelService1.getIdHotelBynom(String.valueOf(CH.getNom_hotel_chambre())) // Get hotel ID from name
+                        );
+                        chambre_id.setText(String.valueOf(ChambreService.chercher_id(CH)));;
+                        page_ajouter_chambre.setVisible(true);
+                        chambre_id.setVisible(false);
+                    });
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
+                        HBox hbox = new HBox(btn);
+                        hbox.setAlignment(Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            };
+        });
+        RefreshTableView_Chambre();
+
+
+        //image
+
+        contrat_imageView.setOnMouseClicked(this::handleImageClick_contrat);
+
+        contrat_photo_permit.setVisible(false);
+
+        hotel_imageView.setOnMouseClicked(this::handleImageClick_hotel);
+        hotel_image.setVisible(false);
+
+
+
+
+
+
     }
     private void setCircularImage(String imagePath) {
         Image image = new Image(imagePath);
@@ -375,6 +1807,31 @@ public class CrudUser {
         if (file != null) {
             Image image = new Image(file.toURI().toString());
              photo_profile_signin.setImage(image);
+        }
+    }
+    private void handleImageClick_contrat(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            contrat_imageView.setImage(image);
+            contrat_photo_permit.setText(image.getUrl());
+        }
+    }
+
+    private void handleImageClick_hotel (MouseEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            hotel_imageView.setImage(image);
+            hotel_image.setText(image.getUrl());
         }
     }
     private void startAnimation() {
@@ -503,6 +1960,7 @@ public class CrudUser {
             C1.ajouterUser(newClient);
             showAlert("Confirmation", "Votre compte a été créé", Alert.AlertType.INFORMATION);
             switchToSignIn();
+            RefreshTableView_User();
         }
 
         clearFields();
@@ -555,6 +2013,7 @@ public class CrudUser {
         for (TextField field : fields) {
             field.setText("");
         }
+        photo_profile_signin.setImage(new Image("images/user_icon_001.jpg"));
 
     }
 
@@ -600,7 +2059,6 @@ public class CrudUser {
             ClientServices C1 = new ClientServices();
             System.out.println("Email entré : " + email_field_signin.getText());
             Client client = C1.verifierUser(email_field_signin.getText(), password_field_signin.getText());
-
             labal_prenom.setText(client.getPrenom().toUpperCase());
             labal_tel.setText(String.valueOf(client.getNum_tel()).toUpperCase());
             label_mail.setText(client.getEmail());
@@ -644,6 +2102,25 @@ public class CrudUser {
             email_field_signin.clear();
             animateTransition(background_front, Se_connecter_page, 0);
             background_front.setVisible(false);
+            Se_connecter_page.setVisible(true);
+        }
+
+    }
+    @FXML
+    private void LogOut_back(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de déconnexion");
+        alert.setHeaderText("Voulez-vous vraiment vous déconnecter ?");
+        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            text_field_mdp.clear();
+            password_field_signin.clear();
+            email_field_signin.clear();
+            animateTransition(background_back, Se_connecter_page, 0);
+            background_back.setVisible(false);
             Se_connecter_page.setVisible(true);
         }
 
@@ -711,7 +2188,7 @@ public class CrudUser {
             page_acceuil_gestion_circuit.setVisible(false);
             page_acceuil_gestion_forum.setVisible(false);
             page_acceuil_gestion_vol.setVisible(false);
-
+            //RefreshTableView_User();
             page_dashboard.setVisible(false);
             page_utilisateur.setVisible(true);
 
@@ -757,8 +2234,7 @@ public class CrudUser {
             page_hotel.setVisible(false);
             page_acceuil_gestion_circuit.setVisible(true);
 
-        }
-        else if (actionEvent.getSource() == bt_menu_vol) {
+        } else if (actionEvent.getSource() == bt_menu_vol) {
             page_chambre.setVisible(false);
             page_forum.setVisible(false);
             page_activite.setVisible(false);
@@ -779,8 +2255,7 @@ public class CrudUser {
             page_acceuil_gestion_circuit.setVisible(false);
             page_acceuil_gestion_vol.setVisible(true);
 
-        }
-        else if (actionEvent.getSource() == bt_menu_location) {
+        } else if (actionEvent.getSource() == bt_menu_location) {
             page_chambre.setVisible(false);
             page_forum.setVisible(false);
             page_activite.setVisible(false);
@@ -801,8 +2276,7 @@ public class CrudUser {
             page_acceuil_gestion_circuit.setVisible(false);
             page_acceuil_gestion_location.setVisible(true);
 
-        }
-        else if (actionEvent.getSource() == bt_menu_forum) {
+        } else if (actionEvent.getSource() == bt_menu_forum) {
             page_chambre.setVisible(false);
             page_forum.setVisible(false);
             page_activite.setVisible(false);
@@ -823,157 +2297,152 @@ public class CrudUser {
             page_acceuil_gestion_location.setVisible(false);
             page_acceuil_gestion_forum.setVisible(true);
 
-        }
-        else if (actionEvent.getSource() == page_hotel_bt_go_to_hotel) {
+        } else if (actionEvent.getSource() == page_hotel_bt_go_to_hotel) {
 
 
             page_acceuil_gestion_hotel.setVisible(false);
             page_hotel.setVisible(true);
 
-        }
-        else if (actionEvent.getSource() == page_hotel_bt_retour) {
+        } else if (actionEvent.getSource() == page_hotel_bt_retour) {
 
 
             page_hotel.setVisible(false);
             page_acceuil_gestion_hotel.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_hotel_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_hotel_bt_ajouter) {
 
 
             page_hotel.setVisible(false);
             page_ajouter_hotel.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_hotel_return) {
+        } else if (actionEvent.getSource() == page_ajouter_hotel_return) {
 
 
             page_ajouter_hotel.setVisible(false);
             page_hotel.setVisible(true);
-        }else if (actionEvent.getSource() == page_acceuil_hotel_go_to_chambre) {
+        } else if (actionEvent.getSource() == page_acceuil_hotel_go_to_chambre) {
 
 
             page_acceuil_gestion_hotel.setVisible(false);
             page_chambre.setVisible(true);
-        }else if (actionEvent.getSource() == page_chambre_retour) {
+        } else if (actionEvent.getSource() == page_chambre_retour) {
 
 
             page_chambre.setVisible(false);
             page_acceuil_gestion_hotel.setVisible(true);
-        }else if (actionEvent.getSource() == page_chambre_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_chambre_bt_ajouter) {
 
 
             page_chambre.setVisible(false);
             page_ajouter_chambre.setVisible(true);
-        }else if (actionEvent.getSource() == page_ajouter_chambre_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_chambre_retour) {
 
 
-            page_ajouter_chambre .setVisible(false);
+            page_ajouter_chambre.setVisible(false);
             page_chambre.setVisible(true);
-        }else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_activite) {
+        } else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_activite) {
 
 
-            page_acceuil_gestion_circuit .setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
             page_activite.setVisible(true);
-        }else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_session) {
+        } else if (actionEvent.getSource() == page_acceuil_gestion_circuit_go_to_session) {
 
 
-            page_acceuil_gestion_circuit .setVisible(false);
+            page_acceuil_gestion_circuit.setVisible(false);
             page_session.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_activite_retour) {
+        } else if (actionEvent.getSource() == page_activite_retour) {
 
 
-            page_activite .setVisible(false);
+            page_activite.setVisible(false);
             page_acceuil_gestion_circuit.setVisible(true);
-        }  else if (actionEvent.getSource() == page_activite_bt_ajouter) {
-
-
-            page_activite .setVisible(false);
+        } else if (actionEvent.getSource() == page_activite_bt_ajouter) {
+            RefreshTableView_Session();
+            activite_bt_modifier.setVisible(false);
+            activite_bt_ajouter.setVisible(true);
+            page_activite.setVisible(false);
             page_ajouter_activite.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_activiter_retour) {
-
-
-            page_ajouter_activite .setVisible(false);
+        } else if (actionEvent.getSource() == page_ajouter_activiter_retour) {
+            RefreshTableView_Session();
+            nom_activite.setText("");
+            description_activite.setText("");
+            localisation_activite.setText("");
+            prix_activite.setText("");
+            type_activite.setText("");
+            page_ajouter_activite.setVisible(false);
             page_activite.setVisible(true);
-        }    else if (actionEvent.getSource() == page_session_retour) {
+        } else if (actionEvent.getSource() == page_session_retour) {
 
 
-            page_session .setVisible(false);
+            page_session.setVisible(false);
             page_acceuil_gestion_circuit.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_session_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_session_bt_ajouter) {
+            RefreshTableView_Session();
+            loadComboBoxActivites();
+            sessio_bt_modifier.setVisible(false);
+            session_bt_ajouter.setVisible(true);
 
-
-            page_session .setVisible(false);
+            page_session.setVisible(false);
             page_ajouter_session.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_session_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_session_retour) {
 
-
+            RefreshTableView_Session();
+            RefreshTableView_Activite();
+            time_sess.setText("");
+            sess_cap.setText("");
+            sess_nbr_places.setText("");
+            date_sess.setValue(null);
+            combo_activite.getSelectionModel().clearSelection();
             page_ajouter_session.setVisible(false);
             page_session.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_acceuil_location_go_to_vehicule) {
+        } else if (actionEvent.getSource() == page_acceuil_location_go_to_vehicule) {
 
 
             page_acceuil_gestion_location.setVisible(false);
             page_vehicule.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_acceuil_location_go_to_contrat) {
+        } else if (actionEvent.getSource() == page_acceuil_location_go_to_contrat) {
 
 
             page_acceuil_gestion_location.setVisible(false);
             page_contrat.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_vehicule_retour) {
+        } else if (actionEvent.getSource() == page_vehicule_retour) {
 
 
             page_vehicule.setVisible(false);
             page_acceuil_gestion_location.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_vehicule_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_vehicule_bt_ajouter) {
 
 
             page_vehicule.setVisible(false);
             page_ajouter_vehicule.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_vehicule_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_vehicule_retour) {
 
 
             page_ajouter_vehicule.setVisible(false);
             page_vehicule.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_contrat_retour) {
+        } else if (actionEvent.getSource() == page_contrat_retour) {
 
 
             page_contrat.setVisible(false);
             page_acceuil_gestion_location.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_contrat_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_contrat_bt_ajouter) {
 
 
             page_contrat.setVisible(false);
             page_ajouter_contrat.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_contrat_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_contrat_retour) {
 
 
             page_ajouter_contrat.setVisible(false);
             page_contrat.setVisible(true);
-        }
-        else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_vol) {
+        } else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_vol) {
 
 
             page_acceuil_gestion_vol.setVisible(false);
             page_vol.setVisible(true);
-        }
-        else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_checkout) {
+        } else if (actionEvent.getSource() == gestion_acceuil_bt_go_to_checkout) {
 
 
             page_acceuil_gestion_vol.setVisible(false);
             page_checkout.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_vol_retour) {
+        } else if (actionEvent.getSource() == page_vol_retour) {
 
 
             page_vol.setVisible(false);
@@ -983,80 +2452,67 @@ public class CrudUser {
 
             page_vol.setVisible(false);
             page_ajouter_vol.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_vol_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_vol_retour) {
 
 
             page_ajouter_vol.setVisible(false);
             page_vol.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_checkout_retour) {
+        } else if (actionEvent.getSource() == page_checkout_retour) {
 
 
             page_checkout.setVisible(false);
             page_acceuil_gestion_vol.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_checkout_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_checkout_bt_ajouter) {
 
 
             page_checkout.setVisible(false);
             page_ajouter_checkout.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_checkout_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_checkout_retour) {
 
 
             page_ajouter_checkout.setVisible(false);
             page_checkout.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_acceuil_forum_bt_forum) {
+        } else if (actionEvent.getSource() == page_acceuil_forum_bt_forum) {
 
 
             page_acceuil_gestion_forum.setVisible(false);
             page_forum.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_acceuil_forum_go_to_post) {
+        } else if (actionEvent.getSource() == page_acceuil_forum_go_to_post) {
 
 
             page_acceuil_gestion_forum.setVisible(false);
             page_post.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_forum_retour) {
+        } else if (actionEvent.getSource() == page_forum_retour) {
 
 
             page_forum.setVisible(false);
             page_acceuil_gestion_forum.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_forum_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_forum_bt_ajouter) {
 
 
             page_forum.setVisible(false);
             page_ajouter_forum.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_forum_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_forum_retour) {
 
 
             page_ajouter_forum.setVisible(false);
             page_forum.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_post_retour) {
+        } else if (actionEvent.getSource() == page_post_retour) {
 
 
             page_post.setVisible(false);
             page_acceuil_gestion_forum.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_post_bt_ajouter) {
+        } else if (actionEvent.getSource() == page_post_bt_ajouter) {
 
 
             page_post.setVisible(false);
             page_ajouter_post.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_ajouter_post_retour) {
+        } else if (actionEvent.getSource() == page_ajouter_post_retour) {
 
 
             page_ajouter_post.setVisible(false);
             page_post.setVisible(true);
-        }
-        else if (actionEvent.getSource() == page_utilisateur_retour) {
+        } else if (actionEvent.getSource() == page_utilisateur_retour) {
 
 
             page_utilisateur.setVisible(false);
@@ -1065,52 +2521,63 @@ public class CrudUser {
     }
     @FXML
     private void AddHotel(ActionEvent event) throws IOException {
-        if (hotel_nom.getText().isEmpty() || hotel_num_tel.getText().isEmpty() ||
-                hotel_email.getText().isEmpty() || hotel_description.getText().isEmpty() ) {
+        // Vérification des champs vides
+        if (hotel_nom.getText().trim().isEmpty() ||
+                hotel_localisation.getText().trim().isEmpty() ||
+                hotel_num_tel.getText().trim().isEmpty() ||
+                hotel_email.getText().trim().isEmpty() ||
+                hotel_description.getText().trim().isEmpty() ||
+                hotel_image.getText().trim().isEmpty()) {
 
             showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
             return;
         }
 
         // Vérification du format de l'email
-        if (!hotel_email.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        if (!hotel_email.getText().matches(emailRegex)) {
             showAlert("Erreur", "Veuillez entrer un email valide", Alert.AlertType.ERROR);
             return;
         }
 
         // Vérification du numéro de téléphone
-        /*try {
-            Integer.parseInt(number_field.getText());  // Essaye de convertir en entier
-            if (number_field.getText().length() != 8) {
-                showAlert("Erreur", "Le numéro de téléphone doit être composé de 8 chiffres", Alert.AlertType.ERROR);
-                return;
-            }
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "Le numéro de téléphone doit être un nombre valide", Alert.AlertType.ERROR);
+        String phoneText = hotel_num_tel.getText().trim();
+        if (!phoneText.matches("\\d{8}")) {  // Vérifie que le numéro contient exactement 8 chiffres
+            showAlert("Erreur", "Le numéro de téléphone doit être composé de 8 chiffres", Alert.AlertType.ERROR);
             return;
-        }*/
+        }
 
 
-        // Si toutes les vérifications passent
+        // Si toutes les validations sont passées
         HotelService H = new HotelService();
-        H.ajouter(new Hotel(hotel_nom.getText(), hotel_localisation.getText(),hotel_num_tel.getText(), hotel_email.getText(),hotel_image.getText(),hotel_description.getText()));
+        H.ajouter(new Hotel(
+                hotel_nom.getText().trim(),
+                hotel_localisation.getText().trim(),
+                hotel_num_tel.getText().trim(),
+                hotel_email.getText().trim(),
+                hotel_image.getText().trim(),
+                hotel_description.getText().trim()
+        ));
 
-        // Affichage de l'alerte de confirmation
-        showAlert("Confirmation", "L'Hotel a été ajouté", Alert.AlertType.INFORMATION);
-        hotel_nom.setText("");
-        hotel_localisation.setText("");
-        hotel_num_tel.setText("");
-        hotel_email.setText("");
-        hotel_image.setText("");
-        hotel_description.setText("");
-        RefreshTableView_Hotel();;
+
+        showAlert("Confirmation", "L'hôtel a été ajouté avec succès", Alert.AlertType.INFORMATION);
+
+        hotel_nom.clear();
+        hotel_localisation.clear();
+        hotel_num_tel.clear();
+        hotel_email.clear();
+        hotel_image.clear();
+        hotel_description.clear();
+        hotel_imageView.setImage(null);
+
+        RefreshTableView_Hotel();
         page_ajouter_hotel.setVisible(false);
         page_hotel.setVisible(true);
     }
     @FXML
     private void UPDATEHotel(ActionEvent event) throws IOException {
         if (hotel_nom.getText().isEmpty() || hotel_num_tel.getText().isEmpty() ||
-                hotel_email.getText().isEmpty() || hotel_description.getText().isEmpty() ) {
+                hotel_email.getText().isEmpty() || hotel_description.getText().isEmpty()) {
 
             showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
             return;
@@ -1137,7 +2604,7 @@ public class CrudUser {
 
         // Si toutes les vérifications passent
         HotelService H = new HotelService();
-        H.modifier(new Hotel(5,hotel_nom.getText(), hotel_localisation.getText(),hotel_num_tel.getText(), hotel_email.getText(),hotel_image.getText(),hotel_description.getText()));
+        H.modifier(new Hotel(Integer.parseInt(hotel_id.getText()), hotel_nom.getText(), hotel_localisation.getText(), hotel_num_tel.getText(), hotel_email.getText(), hotel_image.getText(), hotel_description.getText()));
 
         // Affichage de l'alerte de confirmation
         showAlert("Confirmation", "L'Hotel a été modifié", Alert.AlertType.INFORMATION);
@@ -1167,8 +2634,8 @@ public class CrudUser {
                 // HotelData.add(manualHotel);
 
                 // Debugging
-                System.out.println("Number of hotels fetched: " + hotels.size());
-                System.out.println("HotelData size after update: " + HotelData.size());
+                // System.out.println("Number of hotels fetched: " + hotels.size());
+                // System.out.println("HotelData size after update: " + HotelData.size());
 
                 TableView_Hotel.setItems(HotelData);
                 TableView_Hotel.refresh(); // Force update
@@ -1183,4 +2650,929 @@ public class CrudUser {
         }
 
     }
+
+    @FXML
+        private void EnvoyerMail(){
+            String email = email_field_signin.getText();
+            if (email.isEmpty()) {
+                showAlert("Erreur", "Veuillez entrer votre email.",Alert.AlertType.INFORMATION);
+                return;
+            }
+            ClientServices C1=new ClientServices();
+            Client cLient=C1.verifierUserByMail(email_field_signin.getText());
+            EmailService.sendEmail(email, "Réinitialisation de mot de passe",
+                    "Votre mot de passe :  "  + cLient.getPassword());
+
+            showAlert("Succès", "Un email de réinitialisation a été envoyé.",Alert.AlertType.INFORMATION);
+
+        }
+
+        @FXML
+        private void SwitchToMonProfile(ActionEvent event){
+            background_mon_profil.setVisible(true);
+            background_front_offres.setVisible(false);
+            background_front_forum.setVisible(false);
+            background_front_acceuil.setVisible(false);
+        }
+        @FXML
+        private void SwitchToOffres(ActionEvent event){
+        background_mon_profil.setVisible(false);
+        background_front_offres.setVisible(true);
+        background_front_forum.setVisible(false);
+        background_front_acceuil.setVisible(false);
+    }
+        @FXML
+        private void SwitchToForum(ActionEvent event) {
+            background_mon_profil.setVisible(false);
+            background_front_offres.setVisible(false);
+            background_front_forum.setVisible(true);
+            background_front_acceuil.setVisible(false);
+        }
+        @FXML
+        private void SwitchToAcceuil(ActionEvent event){
+        background_mon_profil.setVisible(false);
+        background_front_offres.setVisible(false);
+        background_front_forum.setVisible(false);
+        background_front_acceuil.setVisible(true);}
+
+
+
+
+
+
+
+
+
+    @FXML
+    private void AddActivte(ActionEvent event) throws IOException {
+
+
+        if (nom_activite.getText().isEmpty() ||
+                description_activite.getText().isEmpty() ||
+                localisation_activite.getText().isEmpty() ||
+                type_activite.getText().isEmpty() ||
+                prix_activite.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        float prix;
+        try {
+
+
+            prix = Float.parseFloat(prix_activite.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Si toutes les vérifications passentA
+        ActiviteService2 A= new ActiviteService2();
+        A.ajouter(new Activite(nom_activite.getText(),
+                description_activite.getText(),
+                localisation_activite.getText(),
+                type_activite.getText(),
+                prix));
+
+
+        showAlert("Confirmation", "L'Activité a été ajoutée avec succès", Alert.AlertType.INFORMATION);
+
+        // Réinitialisation des champs
+        nom_activite.setText("");
+        description_activite.setText("");
+        localisation_activite.setText("");
+        type_activite.setText("");
+        prix_activite.setText("");
+
+        RefreshTableView_Activite();
+        page_ajouter_activite.setVisible(false);
+        page_activite.setVisible(true);
+    }
+
+
+    @FXML
+    private void RefreshTableView_Activite() {
+        try {
+            ActiviteService2 ACTAFF = new ActiviteService2();
+            List<Activite> activites = ACTAFF.rechercher(); // Fetch hotels from DB
+
+            if (activites != null) {
+                // Clear and update ObservableList
+                ActiviteData.clear();
+                ActiviteData.addAll(activites);
+
+
+                // System.out.println("Number of activites " + activites.size());
+                // System.out.println("ActiviteData: " +ActiviteData.size());
+                TableView_Activite.setItems(ActiviteData);
+                TableView_Activite.refresh(); // Force update
+
+            } else {
+                showAlert("Information", "Aucun activite", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+
+    }
+    @FXML
+    private void Mod_act(ActionEvent event) throws IOException{
+
+        if (nom_activite.getText().isEmpty() ||
+                description_activite.getText().isEmpty() ||
+                localisation_activite.getText().isEmpty() ||
+                type_activite.getText().isEmpty() ||
+                prix_activite.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+        float prix;
+        try {
+
+
+            prix = Float.parseFloat(prix_activite.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide", Alert.AlertType.ERROR);
+            return;
+        }
+        ActiviteService2 activiteService = new ActiviteService2();
+        int idAct = activiteService.getIdByNom(fixed_nom.getText());
+        if (idAct == -1) {
+            showAlert("Erreur", "Activité non trouvée dans la base de données", Alert.AlertType.ERROR);
+            return;
+        }
+
+        Activite activite = new Activite(
+                idAct,
+                nom_activite.getText(),
+                description_activite.getText(),
+                localisation_activite.getText(),
+                type_activite.getText(),
+                prix
+        );
+
+        // Modification de l'activité
+        activiteService.modifier(activite);
+
+        showAlert("Confirmation", "L'Activité a été modifiée avec succès", Alert.AlertType.INFORMATION);
+
+
+
+        // Réinitialisation des champs
+        nom_activite.setText("");
+        description_activite.setText("");
+        localisation_activite.setText("");
+        type_activite.setText("");
+        prix_activite.setText("");
+
+        RefreshTableView_Activite();
+        page_ajouter_activite.setVisible(false);
+        page_activite.setVisible(true);
+
+    }
+
+
+
+
+    @FXML
+    private void AddSession(ActionEvent event) throws IOException {
+        if (time_sess.getText().isEmpty() ||
+                sess_cap.getText().isEmpty() ||
+                sess_nbr_places.getText().isEmpty() ||
+                date_sess.getValue() == null ||
+                combo_activite.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        LocalTime time;
+        try {
+            time = LocalTime.parse(time_sess.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur", "Le format de l'heure est invalide. Utilisez HH:mm", Alert.AlertType.ERROR);
+            return;
+        }
+
+        LocalDate date = date_sess.getValue();
+
+        int cap, nbrPlaces;
+        try {
+            cap = Integer.parseInt(sess_cap.getText());
+            nbrPlaces = Integer.parseInt(sess_nbr_places.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le nombre de places et la capacité doivent être des entiers valides", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String nomAct = combo_activite.getSelectionModel().getSelectedItem().getNom_act();
+
+        ActiviteService2 activiteService = new ActiviteService2();
+        int idAct = activiteService.getIdByName(nomAct);
+
+        if (idAct == -1) {
+            showAlert("Erreur", "L'ID de l'activité sélectionnée n'existe pas dans la base de données.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        Session newSession = new Session(date, time, cap, nbrPlaces, idAct);
+
+        SessionService sessionService = new SessionService();
+        sessionService.ajouter(newSession);
+
+        showAlert("Confirmation", "La session a été ajoutée avec succès", Alert.AlertType.INFORMATION);
+
+        time_sess.setText("");
+        sess_cap.setText("");
+        sess_nbr_places.setText("");
+        date_sess.setValue(null);
+        combo_activite.getSelectionModel().clearSelection();
+        page_ajouter_session.setVisible(false);
+        page_session.setVisible(true);
+        RefreshTableView_Session();
+    }
+
+
+
+
+
+    private void loadComboBoxActivites() {
+        ActiviteService2 activiteService = new ActiviteService2();
+        List<Activite> activites = activiteService.rechercher(); // Fetch activities from DB
+        RefreshTableView_Session();
+        if (activites == null || activites.isEmpty()) {
+            // System.out.println("⚠ No activities found in the database!");
+            return;
+        }
+
+        // Populate the ComboBox with the full Activite objects
+        combo_activite.setItems(FXCollections.observableArrayList(activites));
+
+        // Set the ComboBox to display just the names (or any other field) for user selection
+        combo_activite.setCellFactory(param -> new ListCell<Activite>() {
+            @Override
+            protected void updateItem(Activite item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNom_act());  // Display only the name of the activity
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Activite
+        combo_activite.setConverter(new StringConverter<Activite>() {
+            @Override
+            public String toString(Activite activite) {
+                return activite == null ? null : activite.getNom_act();  // Display name when selected
+            }
+
+            @Override
+            public Activite fromString(String string) {
+                return null;  // Not necessary in this case, since we work with Activite objects directly
+            }
+        });
+
+    }
+
+
+    @FXML
+    private void RefreshTableView_Session() {
+        try {
+            // Assuming SessionService handles database interactions for sessions
+            SessionService sessionService = new SessionService();
+            List<Session> sessions = sessionService.rechercher(); // Fetch sessions from DB
+
+            if (sessions != null) {
+                // Clear and update ObservableList
+                SessionData.clear();
+
+                // Add each session to the ObservableList
+                SessionData.addAll(sessions);
+
+                // After loading sessions, now update the TableView
+                TableView_Session.setItems(SessionData);
+                TableView_Session.refresh(); // Force update
+            } else {
+                showAlert("Information", "Aucune session", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void Mod_sess(ActionEvent event) throws IOException {
+        // Check if all fields are filled for the session
+        if (time_sess.getText().isEmpty() ||
+                sess_cap.getText().isEmpty() ||
+                sess_nbr_places.getText().isEmpty() ||
+                date_sess.getValue() == null ||
+                combo_activite.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert the session time from string to LocalTime
+        LocalTime time;
+        try {
+            time = LocalTime.parse(time_sess.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur", "Le format de l'heure est invalide. Utilisez HH:mm", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Convert date_sess to LocalDate
+        LocalDate date = date_sess.getValue();
+
+        // Convert cap & nbrPlaces to integers
+        int cap, nbrPlaces;
+        try {
+            cap = Integer.parseInt(sess_cap.getText());
+            nbrPlaces = Integer.parseInt(sess_nbr_places.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le nombre de places et la capacité doivent être des entiers valides", Alert.AlertType.ERROR);
+            return;
+        }
+        String nomAct = combo_activite.getSelectionModel().getSelectedItem().getNom_act();
+        // Fetch the ID of the activity using the name (fixed_nom is the name field)
+        ActiviteService2 activiteService = new ActiviteService2();
+
+        int idAct = activiteService.getIdByNom(nomAct);  // Fetch the ID based on the activity name
+
+        if (idAct == -1) {
+            showAlert("Erreur", "Activité non trouvée dans la base de données", Alert.AlertType.ERROR);
+            return;
+        }
+        SessionService sessserv = new SessionService();
+
+        LocalDate dateSess = fixed_nom_sess.getValue();
+
+        int id_sess = sessserv.getIdByDate(dateSess);
+
+
+        if (id_sess == -1) {
+            showAlert("Erreur", "Session non trouvée pour cette heure", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Initialize the updated Session object
+        Session updatedSession = new Session(
+                id_sess,    // ID of the session (make sure this is passed properly)
+                date,       // Date of session
+                time,       // Time of session
+                cap,        // Capacity
+                nbrPlaces,  // Number of places
+                idAct       // ID of the activity linked to this session
+        );
+
+// Update the session
+        sessserv.modifier(updatedSession);
+        // Update the session using the session service
+
+        // Show confirmation message
+        showAlert("Confirmation", "La session a été modifiée avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields
+        time_sess.setText("");
+        sess_cap.setText("");
+        sess_nbr_places.setText("");
+        date_sess.setValue(null);
+
+        // Refresh TableView and navigate between pages
+        RefreshTableView_Session();
+        page_ajouter_session.setVisible(false);
+        page_session.setVisible(true);
+    }
+
+
+
+
+
+
+
+    @FXML
+    private void RefreshTableView_Vehicule() {
+        try {
+            VehiculeService VehiculeService = new VehiculeService();
+            List<Vehicule> V = VehiculeService.getAllVehicules(); // Fetch hotels from DB
+
+            if (V != null) {
+                // Clear and update ObservableList
+                VehiculeData.clear();
+                VehiculeData.addAll(V);
+
+                // ✅ Manually adding a hotel with dummy data
+                //Hotel manualHotel = new Hotel(999, "Test Hotel", "Test Location", "123456789", "test@email.com", "test.jpg", "This is a test hotel");
+                // HotelData.add(manualHotel);
+
+                // Debugging
+                //System.out.println("Number of User fetched: " + Clients.size());
+                // System.out.println("UserData size after update: " + userData_back.size());
+
+                TableView_vehicule.setItems(VehiculeData);
+                TableView_vehicule.refresh(); // Force update
+
+            } else {
+                showAlert("Information", "Aucun User trouvé.", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+    }
+
+    @FXML
+    private void RefreshTableView_Contrat() {
+        try {
+            ContratService ContratService = new ContratService();
+            List<Contrat> contrats = ContratService.getListContrats(); // Fetch hotels from DB
+
+            if (contrats != null) {
+                // Clear and update ObservableList
+                ContratData.clear();
+                ContratData.addAll(contrats);
+
+                // ✅ Manually adding a hotel with dummy data
+                //Hotel manualHotel = new Hotel(999, "Test Hotel", "Test Location", "123456789", "test@email.com", "test.jpg", "This is a test hotel");
+                // HotelData.add(manualHotel);
+
+
+                TableView_contrat.setItems(ContratData);
+                TableView_contrat.refresh(); // Force update
+                //  System.out.println(contrats);
+            } else {
+                showAlert("Information", "Aucun Contrat trouvé.", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    @FXML
+    private void AddContrat(ActionEvent event) {
+        if (contrat_cin.getText().trim().isEmpty() ||
+                contrat_photo_permit.getText().trim().isEmpty() ||
+                contrat_date_debut.getText().trim().isEmpty() ||
+                contrat_date_fin.getText().trim().isEmpty() ||
+                contrat_matricule.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String cinText = contrat_cin.getText().trim();
+        if (!cinText.matches("\\d{8}")) {
+            showAlert("Erreur", "Le CIN doit être composé de 8 chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+
+
+
+        // Vérification du format et de la logique des dates
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateDebut, dateFin;
+
+        try {
+            dateDebut = LocalDate.parse(contrat_date_debut.getText().trim(), formatter);
+            dateFin = LocalDate.parse(contrat_date_fin.getText().trim(), formatter);
+
+            if (dateDebut.isAfter(dateFin)) {
+                showAlert("Erreur", "La date de début doit être avant la date de fin", Alert.AlertType.ERROR);
+                return;
+            }
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur", "Les dates doivent être au format yyyy/MM/dd", Alert.AlertType.ERROR);
+            return;
+        }
+
+        VehiculeService vehiculeService = new VehiculeService();
+        int id = vehiculeService.getIdVehiculeByMatricule(contrat_matricule.getSelectionModel().getSelectedItem().getMatricule());
+
+        Contrat C = new Contrat(
+                Integer.parseInt(cinText),
+                contrat_date_debut.getText().trim(),
+                contrat_date_fin.getText().trim(),
+                contrat_photo_permit.getText().trim(),
+                id
+        );
+
+        ContratService contratService = new ContratService();
+        contratService.ajouter(C);
+
+        // Affichage de confirmation
+        showAlert("Confirmation", "Le contrat a été ajouté avec succès", Alert.AlertType.INFORMATION);
+
+        // Réinitialisation des champs
+        contrat_cin.clear();
+        contrat_photo_permit.clear();
+        contrat_date_debut.clear();
+        contrat_date_fin.clear();
+        contrat_imageView.setImage(null);
+        contrat_matricule.getSelectionModel().clearSelection();
+        RefreshTableView_Contrat();
+    }
+
+
+    @FXML
+    private void AddVehicule(ActionEvent event) throws IOException {
+        if (page_vehicule_matricule.getText().isEmpty() || page_vehicule_cylindre.getText().isEmpty() ||
+                page_vehicule_image.getText().isEmpty() || page_vehicule_nb_place.getText().isEmpty() ||
+                page_vehicule_prix.getText().isEmpty() || page_vehicule_status.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!page_vehicule_matricule.getText().matches("^\\d{1,3}}TUN\\d{1,4}$")) {
+            showAlert("Erreur", "Veuillez entrer un matricule valide (ex: 123TUN1, 456TUN12,456TUN123, 789TUN1234)", Alert.AlertType.ERROR);
+            return;
+        }
+// Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_cylindre.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        // Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_nb_place.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        // Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_prix.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        VehiculeService V = new VehiculeService();
+
+        if (Integer.parseInt(page_vehicule_cylindre.getText()) == 0) {
+            V.ajouter(new Bus(page_vehicule_matricule.getText(), page_vehicule_status.getText(), Integer.parseInt(page_vehicule_prix.getText()), Integer.parseInt(page_vehicule_nb_place.getText())));
+        } else {
+            // Si toutes les vérifications passent
+            V.ajouter(new Voiture(page_vehicule_matricule.getText(), page_vehicule_status.getText(), Integer.parseInt(page_vehicule_prix.getText()), Integer.parseInt(page_vehicule_cylindre.getText()), page_vehicule_image.getText()));
+        }
+        // Affichage de l'alerte de confirmation
+        showAlert("Confirmation", "La vehicule a été ajouté", Alert.AlertType.INFORMATION);
+        page_vehicule_matricule.setText("");
+        page_vehicule_status.setText("");
+        page_vehicule_prix.setText("");
+        page_vehicule_cylindre.setText("");
+        page_vehicule_nb_place.setText("");
+        page_vehicule_image.setText("");
+
+        RefreshTableView_Vehicule();
+        ;
+        page_ajouter_vehicule.setVisible(false);
+        page_vehicule.setVisible(true);
+    }
+
+    @FXML
+    private void UPDATEVoiture(ActionEvent event) throws IOException {
+        if (page_vehicule_matricule.getText().isEmpty() || page_vehicule_cylindre.getText().isEmpty() ||
+                page_vehicule_image.getText().isEmpty() || page_vehicule_nb_place.getText().isEmpty() ||
+                page_vehicule_prix.getText().isEmpty() || page_vehicule_status.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!page_vehicule_matricule.getText().matches("^\\d{3}TUN\\d{1,4}$")) {
+            showAlert("Erreur", "Veuillez entrer un matricule valide (ex: 123TUN1, 456TUN12,456TUN123, 789TUN1234)", Alert.AlertType.ERROR);
+            return;
+        }
+// Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_cylindre.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        // Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_nb_place.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        // Vérification du format du cylindre (uniquement des chiffres)
+        if (!page_vehicule_prix.getText().matches("^\\d+$")) {
+            showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
+            return;
+        }
+        VehiculeService V = new VehiculeService();
+
+        if (Integer.parseInt(page_vehicule_cylindre.getText()) == 0) {
+            V.modifier(new Bus(Integer.parseInt(page_vehicule_id.getText()), page_vehicule_matricule.getText(), page_vehicule_status.getText(), Integer.parseInt(page_vehicule_prix.getText()), Integer.parseInt(page_vehicule_nb_place.getText())));
+        } else {
+            // Si toutes les vérifications passent
+            V.modifier(new Voiture(Integer.parseInt(page_vehicule_id.getText()), page_vehicule_matricule.getText(), page_vehicule_status.getText(), Integer.parseInt(page_vehicule_prix.getText()), Integer.parseInt(page_vehicule_cylindre.getText()), page_vehicule_image.getText()));
+        }
+        // Affichage de l'alerte de confirmation
+        showAlert("Confirmation", "La vehicule a été modifié", Alert.AlertType.INFORMATION);
+        page_vehicule_matricule.setText("");
+        page_vehicule_status.setText("");
+        page_vehicule_prix.setText("");
+        page_vehicule_cylindre.setText("");
+        page_vehicule_nb_place.setText("");
+        page_vehicule_image.setText("");
+
+        RefreshTableView_Vehicule();
+        ;
+        page_ajouter_vehicule.setVisible(false);
+        page_vehicule.setVisible(true);
+    }
+    @FXML
+    private void UpdateContrat(ActionEvent event) {
+        // Check if all fields are filled
+        if (contrat_cin.getText().isEmpty() ||
+                contrat_photo_permit.getText().isEmpty() ||
+                contrat_date_fin.getText().isEmpty()  ||
+                contrat_date_debut.getText().isEmpty()  ||
+                contrat_matricule.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+
+
+
+        // Fetch vehicle ID from database
+        VehiculeService vehiculeService = new VehiculeService();
+        int id = vehiculeService.getIdVehiculeByMatricule(String.valueOf(contrat_matricule.getSelectionModel().getSelectedItem().getMatricule()));
+        // Creating an instance of Contrat with String dates
+        Contrat C = new Contrat(Integer.parseInt(contrat_id2.getText()),
+                Integer.parseInt(contrat_cin.getText()),
+                String.valueOf(contrat_date_debut.getText()),   // String date in yyyy/MM/dd format
+                String.valueOf(contrat_date_fin.getText()),     // String date in yyyy/MM/dd format
+                String.valueOf(contrat_photo_permit.getText()),
+                id
+        );
+        // Call the service method to add the contract
+        ContratService contratService = new ContratService();
+        contratService.modifier(C);
+
+        // Show success message after the contract is added
+        showAlert("Confirmation", "Le contrat a été modifié avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields after successful addition
+        contrat_cin.clear();
+        contrat_photo_permit.clear();
+        contrat_date_debut.clear();
+        contrat_date_fin.clear();
+        contrat_matricule.getSelectionModel().clearSelection();
+        page_ajouter_contrat.setVisible(false);
+        page_contrat.setVisible(true);
+        RefreshTableView_Contrat();
+    }
+
+    @FXML
+    private void AddChambre(ActionEvent event) {
+
+        if (chambre_prix.getText().isEmpty() ||
+                chambre_description.getText().isEmpty() ||
+                chambre_hotel_nom.getSelectionModel().getSelectedItem() == null
+                ||
+                chambre_disponibilite.getSelectionModel().getSelectedItem() == null
+                ||
+                chambre_type.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+
+
+
+        // Fetch vehicle ID from database
+        ChambreService ChambreService = new ChambreService();
+        HotelService HS=new HotelService();
+
+        Hotel selectedHotel = chambre_hotel_nom.getSelectionModel().getSelectedItem();
+        int id = HS.getIdHotelBynom(selectedHotel.getNom_hotel());  // Pass only the hotel name
+
+
+        // Creating an instance of Contrat with String dates
+        Chambre C = new Chambre(
+                chambre_type.getSelectionModel().getSelectedItem(),
+                Integer.parseInt(chambre_prix.getText()),
+                Boolean.parseBoolean(chambre_disponibilite.getSelectionModel().getSelectedItem()),
+                chambre_description.getText(),
+                id
+        );
+
+        // Call the service method to add the contract
+        ChambreService chambreService1= new ChambreService();
+        chambreService1.ajouter(C);
+
+        // Show success message after the contract is added
+        showAlert("Confirmation", "Le Chambre a été ajouté avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields after successful addition
+        chambre_prix.clear();
+        chambre_type.getSelectionModel().clearSelection();
+        chambre_disponibilite.getSelectionModel().clearSelection();
+        chambre_hotel_nom.getSelectionModel().clearSelection();
+        chambre_description.clear();
+        page_ajouter_contrat.setVisible(false);
+        page_contrat.setVisible(true);
+    }
+
+
+    @FXML
+    private void UpdateChambre(ActionEvent event) {
+        // Check if all fields are filled
+        if (chambre_prix.getText().isEmpty() ||
+                chambre_description.getText().isEmpty() ||
+                chambre_hotel_nom.getSelectionModel().getSelectedItem() == null
+                ||
+                chambre_disponibilite.getSelectionModel().getSelectedItem() == null
+                ||
+                chambre_type.getSelectionModel().getSelectedItem() == null) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis", Alert.AlertType.ERROR);
+            return;
+        }
+
+
+
+
+        // Fetch vehicle ID from database
+        ChambreService ChambreService = new ChambreService();
+        HotelService HS=new HotelService();
+
+        Hotel selectedHotel = chambre_hotel_nom.getSelectionModel().getSelectedItem();
+        int id = HS.getIdHotelBynom(selectedHotel.getNom_hotel());  // Pass only the hotel name
+
+
+        // Creating an instance of Contrat with String dates
+        Chambre C = new Chambre(Integer.parseInt(String.valueOf(chambre_id.getText())),
+                chambre_type.getSelectionModel().getSelectedItem(),
+                Integer.parseInt(chambre_prix.getText()),
+                Boolean.parseBoolean(chambre_disponibilite.getSelectionModel().getSelectedItem()),
+                chambre_description.getText(),
+                id
+        );
+
+        // Call the service method to add the contract
+        ChambreService chambreService1= new ChambreService();
+        chambreService1.modifier(C);
+
+        // Show success message after the contract is added
+        showAlert("Confirmation", "Le Chambre a été ajouté avec succès", Alert.AlertType.INFORMATION);
+
+        // Reset fields after successful addition
+        chambre_prix.clear();
+        chambre_type.getSelectionModel().clearSelection();
+        chambre_disponibilite.getSelectionModel().clearSelection();
+        chambre_hotel_nom.getSelectionModel().clearSelection();
+        chambre_description.clear();
+        page_ajouter_chambre.setVisible(false);
+        page_chambre.setVisible(true);
+        RefreshTableView_Chambre();
+    }
+
+
+
+    @FXML
+    private void RefreshTableView_Chambre() {
+        try {
+            ChambreService ChambreService = new ChambreService();
+            List<Chambre> chambres = ChambreService.rechercher_1(); // Fetch hotels from DB
+
+            if (chambres != null) {
+                // Clear and update ObservableList
+                ChambreData.clear();
+                ChambreData.addAll(chambres);
+
+
+
+                TableView_chambre.setItems(ChambreData);
+                TableView_chambre.refresh(); // Force update
+
+            } else {
+                showAlert("Information", "Aucun Chambre trouvé.", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+    }
+
+
+    @FXML
+    private void RefreshTableView_User() {
+        try {
+            ClientServices ClientService = new ClientServices();
+            List<Client> Clients = ClientService.rechercherUser();
+
+            if (Clients != null) {
+                // Clear and update ObservableList
+                userData_back.clear();
+                userData_back.addAll(Clients);
+
+
+                TableView_Utilisateur.setItems(userData_back);
+                TableView_Utilisateur.refresh();
+
+            } else {
+                showAlert("Information", "Aucun User trouvé.", Alert.AlertType.INFORMATION);
+            }
+        } catch (Exception e) {
+            showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
+            e.printStackTrace();
+
+        }
+    }
+
+    private void loadComboBoxVehicules() {
+        VehiculeService vehiculeService = new VehiculeService();
+        List<Vehicule> vehicules = vehiculeService.getAllVehicules(); // Fetch vehicles from DB
+
+        if (vehicules == null || vehicules.isEmpty()) {
+            // System.out.println("⚠ No Vehicules found in the database!");
+            return;
+        }
+
+        // Populate the ComboBox with the full Vehicule objects
+        contrat_matricule.setItems(FXCollections.observableArrayList(vehicules));
+
+        // Set the ComboBox to display just the matricule for user selection
+        contrat_matricule.setCellFactory(param -> new ListCell<Vehicule>() {
+            @Override
+            protected void updateItem(Vehicule item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getMatricule());  // Display the vehicle's matricule
+                }
+            }
+        });
+
+        // Set the converter to handle the selected Vehicule
+        contrat_matricule.setConverter(new StringConverter<Vehicule>() {
+            @Override
+            public String toString(Vehicule vehicule) {
+                return vehicule == null ? null : vehicule.getMatricule();  // Display matricule when selected
+            }
+
+            @Override
+            public Vehicule fromString(String string) {
+                return null;  // Not needed since we work with Vehicule objects directly
+            }
+        });
+    }
+
+
+
+    private void loadComboBox_hotel_nom() {
+        HotelService hotelService = new HotelService();
+        List<Hotel> hotels = hotelService.rechercher(); // Fetch hotels from DB
+
+        if (hotels == null || hotels.isEmpty()) {
+            //  System.out.println("⚠ No hotels found in the database!");
+            return;
+        }
+
+        // Populate the ComboBox with the list of hotels
+        chambre_hotel_nom.setItems(FXCollections.observableArrayList(hotels));
+
+        // Set the ComboBox to display just the names
+        chambre_hotel_nom.setCellFactory(param -> new ListCell<Hotel>() {
+            @Override
+            protected void updateItem(Hotel item, boolean empty) {
+                super.updateItem(item, empty);
+                setText((empty || item == null) ? null : item.getNom_hotel());  // Display only the hotel name
+            }
+        });
+
+        // Set the converter to handle selection
+        chambre_hotel_nom.setConverter(new StringConverter<Hotel>() {
+            @Override
+            public String toString(Hotel hotel) {
+                return (hotel == null) ? "" : hotel.getNom_hotel();  // Display name when selected
+            }
+
+            @Override
+            public Hotel fromString(String string) {
+                // Find a matching hotel by name (useful for user-typed input)
+                return hotels.stream()
+                        .filter(h -> h.getNom_hotel().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+    }
+
+
 }

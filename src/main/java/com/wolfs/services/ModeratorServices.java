@@ -88,7 +88,6 @@ public class ModeratorServices implements IUserServices <Moderator> {
 
         return Moderators;    }
 
-    @Override
     public Moderator verifierUser(String email, String password) {
         return null;
     }

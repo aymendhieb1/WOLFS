@@ -28,6 +28,10 @@ public class Hotel {
         this.description_hotel = description_hotel;
     }
 
+    public Hotel() {
+
+    }
+
     public String getDescription_hotel() {
         return description_hotel;
     }

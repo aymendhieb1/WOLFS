@@ -1,4 +1,8 @@
-public class Admin extends User{
+package com.wolfs.models;
+
+import com.wolfs.models.User;
+
+public class Admin extends User {
 
 
     public Admin(String nom, String prenom, String email, int num_tel,String password, int role) {

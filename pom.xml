@@ -13,14 +13,38 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Google API BOM to manage versions of Google libraries -->
+            <dependency>
+                <groupId>com.google.api-client</groupId>
+                <artifactId>google-api-client-bom</artifactId>
+                <version>2.5.1</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <!-- Google OAuth BOM -->
+            <dependency>
+                <groupId>com.google.oauth-client</groupId>
+                <artifactId>google-oauth-client-bom</artifactId>
+                <version>1.35.0</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <!-- MySQL dependency -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
 
-
+        <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -36,14 +60,45 @@
             <artifactId>javafx-graphics</artifactId>
             <version>20.0.2</version>
         </dependency>
+
+        <!-- BCrypt for password hashing -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-        
+        <!-- Jakarta Mail for email functionality -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>1.6.5</version>
+        </dependency>
+
+
+
+        <!-- JavaFX Dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>20.0.2</version>
+        </dependency>
+
+
     </dependencies>
+
+
+
     <build>
         <plugins>
             <plugin>
@@ -56,5 +111,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

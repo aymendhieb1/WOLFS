@@ -200,15 +200,7 @@
             </AnchorPane>
             <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0" visible="false">
                <children>
-                  <Button layoutX="1674.0" layoutY="193.0" mnemonicParsing="false" onAction="#LogOut_back" prefHeight="90.0" prefWidth="67.0" style="-fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="114.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/pngwing.com%20(1).png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <VBox layoutX="-21.0" layoutY="64.0" maxHeight="1333.0" maxWidth="335.0" minHeight="753.0" minWidth="200.0" prefHeight="1267.0" prefWidth="311.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-21.0">
+                  <VBox alignment="BOTTOM_LEFT" layoutX="-1.0" layoutY="58.0" maxHeight="1333.0" maxWidth="387.0" minHeight="753.0" minWidth="200.0" prefHeight="1273.0" prefWidth="303.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-1.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;&#10;&#10;&#10;" wrappingWidth="248.5367546081543" />
                         <ImageView fitHeight="175.0" fitWidth="234.0" pickOnBounds="true" preserveRatio="true">
@@ -219,9 +211,9 @@
                               <Insets left="50.0" />
                            </VBox.margin>
                         </ImageView>
-                        <VBox prefHeight="841.0" prefWidth="311.0">
+                        <VBox prefHeight="987.0" prefWidth="303.0">
                            <children>
-                              <Button fx:id="bt_menu_dashboard" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="249.0" style="-fx-background-color: transparent;" stylesheets="@styles/style.css" text="Dashboard" textAlignment="CENTER" textFill="WHITE" underline="true">
+                              <Button fx:id="bt_menu_dashboard" mnemonicParsing="false" onAction="#changeForum" prefHeight="76.0" prefWidth="303.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="    Dashboard" textAlignment="CENTER" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -233,7 +225,8 @@
                                     <Font name="Arial" size="25.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="bt_menu_user" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="220.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="        User" textAlignment="CENTER" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_user" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="333.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  User" textAlignment="CENTER" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -245,7 +238,8 @@
                                     <Font name="Bell MT Bold" size="20.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="bt_menu_hotel" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Hotel" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_hotel" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="326.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Hotel" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -257,7 +251,8 @@
                                     <Font size="20.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="bt_menu_Circuit" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="  Circuit" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_Circuit" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="345.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Circuit" textFill="WHITE">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -269,7 +264,8 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="bt_menu_vol" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="     Vol" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_vol" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="290.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="     Vol" textFill="WHITE">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -281,7 +277,8 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="bt_menu_location" layoutX="10.0" layoutY="209.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="    Location" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_location" layoutX="10.0" layoutY="209.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text=" Location" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -293,7 +290,8 @@
                                     <Font size="20.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="bt_menu_forum" layoutX="10.0" layoutY="256.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Forum" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_forum" layoutX="10.0" layoutY="256.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="329.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Forum" textFill="WHITE">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -305,7 +303,8 @@
                                     <Font size="20.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="bt_menu_offre" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="218.0" style="-fx-background-color: transparent;" styleClass="button-menu" stylesheets="@styles/style.css" text="Offre" textFill="WHITE">
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_offre" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="534.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="     Offre" textFill="WHITE">
                                  <font>
                                     <Font name="Bell MT" size="20.0" />
                                  </font>
@@ -317,13 +316,22 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button mnemonicParsing="false" onAction="#LogOut_back" prefHeight="90.0" prefWidth="345.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="63.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/pngwing.com%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                         </VBox>
                      </children>
                   </VBox>
                   <StackPane layoutX="414.0" layoutY="469.0" maxHeight="1000.0" maxWidth="1600.0" minHeight="600.0" minWidth="1000.0" prefHeight="864.0" prefWidth="1392.0">
                      <children>
-                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0" visible="false">
+                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0">
                            <children>
                               <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
@@ -397,15 +405,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="page_hotel_refresh" layoutX="442.0" layoutY="23.0" mnemonicParsing="false" onAction="#RefreshTableView_Hotel" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/return (1).png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
+                              <Button fx:id="page_hotel_refresh" layoutX="442.0" layoutY="23.0" mnemonicParsing="false" onAction="#RefreshTableView_Hotel" style="-fx-background-color: transparent;" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_chambre" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -604,7 +604,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
                               <Button fx:id="page_vehicule_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_vehicule_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -616,15 +615,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button fx:id="page_vehicule_refresh" layoutX="415.0" layoutY="25.0" mnemonicParsing="false" onAction="#RefreshTableView_Vehicule" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/return (1).png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
+                              <Button fx:id="page_vehicule_refresh" layoutX="415.0" layoutY="25.0" mnemonicParsing="false" onAction="#RefreshTableView_Vehicule" style="-fx-background-color: transparent;" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_contrat" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -726,7 +717,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
                               <Button fx:id="page_vol_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_vol_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -755,7 +745,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
                               <Button fx:id="page_checkout_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_checkout_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -815,7 +804,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
                               <Button fx:id="page_forum_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_forum_retour" layoutX="23.0" layoutY="23.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -846,7 +834,6 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
                               <Button fx:id="page_post_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_post_retour" layoutX="23.0" layoutY="23.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
@@ -910,37 +897,10 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_ajouter_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
-                           <children>
-                              <Button fx:id="hotel_bt_ajouter" layoutX="324.0" layoutY="528.0" mnemonicParsing="false" onAction="#AddHotel" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
-                              <TextField fx:id="hotel_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le nom" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <Button fx:id="page_ajouter_hotel_return" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/back-button.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button fx:id="hotel_bt_modifier" layoutX="622.0" layoutY="528.0" mnemonicParsing="false" onAction="#UPDATEHotel" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
-                              <Text fill="#e78d1e" layoutX="377.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel" wrappingWidth="126.800048828125">
-                                 <font>
-                                    <Font name="SansSerif Bold" size="36.0" />
-                                 </font>
-                              </Text>
-                              <TextField fx:id="hotel_localisation" layoutX="324.0" layoutY="161.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le localisation" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="hotel_num_tel" layoutX="324.0" layoutY="237.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le numero de telephone" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="hotel_email" layoutX="324.0" layoutY="309.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le email" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="hotel_image" layoutX="324.0" layoutY="384.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le image" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="hotel_description" layoutX="324.0" layoutY="447.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="hotel_id" layoutX="725.0" layoutY="124.0" prefHeight="33.0" prefWidth="118.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <ImageView fx:id="hotel_imageView" fitHeight="175.0" fitWidth="242.0" layoutX="725.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_chambre" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddChambre" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddChambre" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="chambre_id" layoutX="481.0" layoutY="218.0" prefHeight="33.0" prefWidth="46.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="chambre_description" layoutX="324.0" layoutY="359.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le description" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <Button fx:id="page_ajouter_chambre_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -951,7 +911,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateChambre" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Button layoutX="521.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateChambre" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAMBRE" wrappingWidth="202.39999999999986">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
@@ -961,12 +921,12 @@
                               <ComboBox fx:id="chambre_type" layoutX="324.0" layoutY="134.0" prefHeight="47.0" prefWidth="359.0" />
                               <ComboBox fx:id="chambre_disponibilite" layoutX="324.0" layoutY="284.0" prefHeight="47.0" prefWidth="359.0" />
                               <ComboBox fx:id="chambre_hotel_nom" layoutX="324.0" layoutY="432.0" prefHeight="47.0" prefWidth="359.0" />
-                              <TextField fx:id="chambre_id" layoutX="183.0" layoutY="155.0" prefHeight="52.0" prefWidth="65.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_vehicule" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddVehicule" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddVehicule" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="page_vehicule_id" layoutX="631.0" layoutY="165.0" prefHeight="33.0" prefWidth="52.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="page_vehicule_matricule" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le matricule" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <Button fx:id="page_ajouter_vehicule_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -977,7 +937,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#UPDATEVoiture" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Button layoutX="506.0" layoutY="513.0" mnemonicParsing="false" onAction="#UPDATEVoiture" prefHeight="52.0" prefWidth="174.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VEHICULE" wrappingWidth="202.39999999999986">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
@@ -988,12 +948,12 @@
                               <TextField fx:id="page_vehicule_cylindre" layoutX="324.0" layoutY="279.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le cylindre" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="page_vehicule_prix" layoutX="324.0" layoutY="344.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="page_vehicule_image" layoutX="324.0" layoutY="408.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="page_vehicule_id" layoutX="169.0" layoutY="155.0" prefHeight="47.0" prefWidth="88.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_contrat" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
                            <children>
-                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddContrat" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <Button layoutX="337.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddContrat" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="contrat_id2" layoutX="607.0" layoutY="190.0" prefHeight="38.0" prefWidth="65.0" promptText="Cin locateur" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="contrat_cin" layoutX="338.0" layoutY="98.0" prefHeight="52.0" prefWidth="338.0" promptText="Cin locateur" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <Button fx:id="page_ajouter_contrat_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -1004,7 +964,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateContrat" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Button layoutX="515.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateContrat" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
                               <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTRAT" wrappingWidth="202.39999999999986">
                                  <font>
                                     <Font name="SansSerif Bold" size="36.0" />
@@ -1014,7 +974,6 @@
                               <ComboBox fx:id="contrat_matricule" layoutX="338.0" layoutY="419.0" prefHeight="52.0" prefWidth="338.0" />
                               <TextField fx:id="contrat_date_debut" layoutX="338.0" layoutY="183.0" prefHeight="52.0" prefWidth="338.0" promptText="Date de Debut" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="contrat_date_fin" layoutX="338.0" layoutY="256.0" prefHeight="52.0" prefWidth="338.0" promptText="Date de fin" styleClass="text-field" stylesheets="@/styles/style.css" />
-                              <TextField fx:id="contrat_id2" layoutX="175.0" layoutY="150.0" prefHeight="38.0" prefWidth="82.0" promptText="Cin locateur" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <ImageView fx:id="contrat_imageView" fitHeight="212.0" fitWidth="258.0" layoutX="712.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
@@ -1131,9 +1090,7 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
-                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="TRI" />
                               <Button fx:id="page_session_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_session_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -1183,9 +1140,7 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
-                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="TRI" />
                               <Button fx:id="page_activite_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_activite_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -1222,6 +1177,34 @@
                               <TextField fx:id="time_sess" layoutX="324.0" layoutY="267.0" prefHeight="47.0" prefWidth="372.0" promptText="Entre l'heure du session" />
                               <TextField fx:id="sess_cap" layoutX="324.0" layoutY="343.0" prefHeight="47.0" prefWidth="372.0" promptText="Entre la capacité du session" />
                               <TextField fx:id="sess_nbr_places" layoutX="324.0" layoutY="424.0" prefHeight="47.0" prefWidth="372.0" promptText="Entrer le nombre du places du session" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button fx:id="hotel_bt_ajouter" layoutX="324.0" layoutY="528.0" mnemonicParsing="false" onAction="#AddHotel" prefHeight="52.0" prefWidth="174.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="hotel_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_id" layoutX="480.0" layoutY="168.0" prefHeight="33.0" prefWidth="118.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_hotel_return" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="hotel_bt_modifier" layoutX="503.0" layoutY="528.0" mnemonicParsing="false" onAction="#UPDATEHotel" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="377.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel" wrappingWidth="126.800048828125">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="hotel_localisation" layoutX="324.0" layoutY="161.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le localisation" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_num_tel" layoutX="324.0" layoutY="237.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le numero de telephone" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_email" layoutX="324.0" layoutY="309.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_image" layoutX="324.0" layoutY="384.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_description" layoutX="324.0" layoutY="447.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ImageView fx:id="hotel_imageView" fitHeight="175.0" fitWidth="242.0" layoutX="725.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
                      </children>

@@ -1643,13 +1643,15 @@ private TableView<Vol> tableViewVols;
 
 
         //TableView chambre
+        chambre_id.setVisible(false);
+
+
         loadComboBox_hotel_nom() ;
         HotelService hotelService1 = new HotelService();
         List<Hotel> hotelList1 = hotelService1.rechercher();
         ChambreService  ChambreService= new ChambreService();
         List<Chambre> ChambreList = ChambreService.rechercher(); // Fetch hotel list from DB
         ObservableList<Chambre> observableChambreList = FXCollections.observableArrayList(ChambreList);
-
         TableView_chambre.setItems(observableChambreList);
 
 

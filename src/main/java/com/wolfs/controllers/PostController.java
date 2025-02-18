@@ -32,7 +32,7 @@ public class PostController {
     @FXML private Label forumPrivacyLabel;
     @FXML private Label forumDateLabel;
     @FXML private Label memberCountLabel;
-    @FXML private ListView<String> membersListView;
+    @FXML private ListView<String> membersListViewFP;
     @FXML private VBox membersSection;
     @FXML private ComboBox<String> postTypeComboBox;
     @FXML private VBox announcementFields;
@@ -116,7 +116,7 @@ public class PostController {
     @FXML private Label editTagsErrorLabel;
     @FXML private Label editSurveyTagsErrorLabel;
 
-    private ForumService forumService = new ForumService();
+    private ForumService forumServiceFP = new ForumService();
     private PostService postService = new PostService();
     private ChoixService choixService = new ChoixService();
 
@@ -242,7 +242,7 @@ public class PostController {
     }
 
     private void loadForums() {
-        List<Forum> forums = forumService.rechercher();
+        List<Forum> forums = forumServiceFP.rechercher();
         forumComboBox.getItems().clear();
         forumComboBox.getItems().addAll(forums);
 
@@ -270,11 +270,11 @@ public class PostController {
                 memberCountLabel.setText("Members: " + selectedForum.getNbrMembers());
                 membersSection.setVisible(true);
 
-                membersListView.getItems().clear();
+                membersListViewFP.getItems().clear();
                 if (selectedForum.getListMembers() != null && !selectedForum.getListMembers().isEmpty()) {
                     String[] members = selectedForum.getListMembers().split(",");
                     for (String member : members) {
-                        membersListView.getItems().add(member);
+                        membersListViewFP.getItems().add(member);
                     }
                 }
             } else {
@@ -673,7 +673,7 @@ public class PostController {
             editAnnouncementTagsField.setText(announcement.getAnnouncementTags());
             editAnnouncementFileField.setText(announcement.getCheminFichier());
             editAnnouncementStatusComboBox.setValue(announcement.getStatus());
-            editAnnouncementUserField.setText(forumService.getEmailById(post.getIdUser()));
+            editAnnouncementUserField.setText(forumServiceFP.getEmailById(post.getIdUser()));
 
         } else if (post instanceof Survey survey) {
             editAnnouncementFields.setVisible(false);
@@ -683,7 +683,7 @@ public class PostController {
             editSurveyTagsField.setText(survey.getSurveyTags());
             editSurveyFileField.setText(survey.getCheminFichier());
             editSurveyStatusComboBox.setValue(survey.getStatus());
-            editSurveyAuthorField.setText(forumService.getEmailById(post.getIdUser()));
+            editSurveyAuthorField.setText(forumServiceFP.getEmailById(post.getIdUser()));
 
             editChoicesListView.getItems().clear();
             List<Choix> choices = choixService.rechercher().stream()
@@ -827,19 +827,19 @@ public class PostController {
             if (content.length() > 500) errors.append("- Content must not exceed 500 characters\n");
 
             if (!errors.isEmpty()) {
-                showAlert("Validation Error", errors.toString(), AlertType.ERROR);
+                showAlertFP("Validation Error", errors.toString(), AlertType.ERROR);
                 return;
             }
 
             String userEmail = announcementUserField.getText().trim();
 
             if (userEmail.isEmpty()) {
-                showAlert("Validation Error", "User email cannot be empty", AlertType.ERROR);
+                showAlertFP("Validation Error", "User email cannot be empty", AlertType.ERROR);
                 return;
             }
-            int userId = forumService.getUserByEmail(userEmail);
+            int userId = forumServiceFP.getUserByEmail(userEmail);
             if (userId == -1) {
-                showAlert("Validation Error", "User not found", AlertType.ERROR);
+                showAlertFP("Validation Error", "User not found", AlertType.ERROR);
                 return;
             }
 
@@ -859,11 +859,11 @@ public class PostController {
                         tags
                 );
                 postService.ajouter(newAnnouncement);
-                showAlert("Success", "Announcement posted successfully", AlertType.INFORMATION);
+                showAlertFP("Success", "Announcement posted successfully", AlertType.INFORMATION);
                 refreshPosts();
-                clearFields();
+                clearFieldsFB();
             } catch (Exception e) {
-                showAlert("Error", "Failed to post announcement: " + e.getMessage(), AlertType.ERROR);
+                showAlertFP("Error", "Failed to post announcement: " + e.getMessage(), AlertType.ERROR);
             }
 
         } else if ("Survey".equals(selectedType)) {
@@ -879,19 +879,19 @@ public class PostController {
             if (choices.size() < 2) errors.append("- Survey must have at least two choices\n");
 
             if (!errors.isEmpty()) {
-                showAlert("Validation Error", errors.toString(), AlertType.ERROR);
+                showAlertFP("Validation Error", errors.toString(), AlertType.ERROR);
                 return;
             }
 
             String userEmail = surveyAuthorField.getText().trim();
 
             if (userEmail.isEmpty()) {
-                showAlert("Validation Error", "User email cannot be empty", AlertType.ERROR);
+                showAlertFP("Validation Error", "User email cannot be empty", AlertType.ERROR);
                 return;
             }
-            int userId = forumService.getUserByEmail(userEmail);
+            int userId = forumServiceFP.getUserByEmail(userEmail);
             if (userId == -1) {
-                showAlert("Validation Error", "User not found", AlertType.ERROR);
+                showAlertFP("Validation Error", "User not found", AlertType.ERROR);
                 return;
             }
 
@@ -917,16 +917,16 @@ public class PostController {
                     choixService.ajouter(choice);
                 }
 
-                showAlert("Success", "Survey posted successfully", AlertType.INFORMATION);
+                showAlertFP("Success", "Survey posted successfully", AlertType.INFORMATION);
                 refreshPosts();
-                clearFields();
+                clearFieldsFB();
             } catch (Exception e) {
-                showAlert("Error", "Failed to post survey: " + e.getMessage(), AlertType.ERROR);
+                showAlertFP("Error", "Failed to post survey: " + e.getMessage(), AlertType.ERROR);
             }
         }
     }
 
-    private void clearFields() {
+    private void clearFieldsFB() {
 
         announcementTitleField.clear();
         announcementContentField.clear();
@@ -964,7 +964,7 @@ public class PostController {
         forumPrivacyLabel.setText("");
         forumDateLabel.setText("");
         memberCountLabel.setText("");
-        membersListView.getItems().clear();
+        membersListViewFP.getItems().clear();
         membersSection.setVisible(false);
 
         newCommentField.clear();
@@ -1013,7 +1013,7 @@ public class PostController {
         } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             addSurveyUserButton.setDisable(true);
             showError(surveyUserField, surveyUserErrorLabel, "Format d'email invalide");
-        } else if (forumService.getUserByEmail(email) == -1) {
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
             addSurveyUserButton.setDisable(true);
             showError(surveyUserField, surveyUserErrorLabel, "Cet utilisateur n'existe pas");
         } else if (surveyUsersListView.getItems().contains(email)) {
@@ -1084,11 +1084,11 @@ public class PostController {
             if (userEmail.isEmpty()) errors.append("- User email cannot be empty\n");
             if (!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) errors.append("- Invalid email format\n");
 
-            int userId = forumService.getUserByEmail(userEmail);
+            int userId = forumServiceFP.getUserByEmail(userEmail);
             if (userId == -1) errors.append("- User not found\n");
 
             if (!errors.isEmpty()) {
-                showAlert("Validation Error", errors.toString(), AlertType.ERROR);
+                showAlertFP("Validation Error", errors.toString(), AlertType.ERROR);
                 return;
             }
 
@@ -1102,12 +1102,12 @@ public class PostController {
                 announcement.setIdUser(userId);
 
                 postService.modifier(announcement);
-                showAlert("Success", "Announcement updated successfully", AlertType.INFORMATION);
+                showAlertFP("Success", "Announcement updated successfully", AlertType.INFORMATION);
                 refreshPosts();
                 clearEditFields();
                 leftTabPane.getSelectionModel().select(0);
             } catch (Exception e) {
-                showAlert("Error", "Failed to update announcement: " + e.getMessage(), AlertType.ERROR);
+                showAlertFP("Error", "Failed to update announcement: " + e.getMessage(), AlertType.ERROR);
             }
 
         } else if (currentPost instanceof Survey survey) {
@@ -1126,11 +1126,11 @@ public class PostController {
             if (userEmail.isEmpty()) errors.append("- User email cannot be empty\n");
             if (!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) errors.append("- Invalid email format\n");
 
-            int userId = forumService.getUserByEmail(userEmail);
+            int userId = forumServiceFP.getUserByEmail(userEmail);
             if (userId == -1) errors.append("- User not found\n");
 
             if (!errors.isEmpty()) {
-                showAlert("Validation Error", errors.toString(), AlertType.ERROR);
+                showAlertFP("Validation Error", errors.toString(), AlertType.ERROR);
                 return;
             }
 
@@ -1161,12 +1161,12 @@ public class PostController {
                 }
 
                 postService.modifier(survey);
-                showAlert("Success", "Survey updated successfully", AlertType.INFORMATION);
+                showAlertFP("Success", "Survey updated successfully", AlertType.INFORMATION);
                 refreshPosts();
                 clearEditFields();
                 leftTabPane.getSelectionModel().select(0);
             } catch (Exception e) {
-                showAlert("Error", "Failed to update survey: " + e.getMessage(), AlertType.ERROR);
+                showAlertFP("Error", "Failed to update survey: " + e.getMessage(), AlertType.ERROR);
             }
         }
     }
@@ -1231,7 +1231,7 @@ public class PostController {
         } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             editAddSurveyUserButton.setDisable(true);
             showError(editSurveyUserField, editSurveyUserErrorLabel, "Format d'email invalide");
-        } else if (forumService.getUserByEmail(email) == -1) {
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
             editAddSurveyUserButton.setDisable(true);
             showError(editSurveyUserField, editSurveyUserErrorLabel, "Cet utilisateur n'existe pas");
         } else if (editSurveyUsersListView.getItems().contains(email)) {
@@ -1384,7 +1384,7 @@ public class PostController {
         postDetailsBox.getChildren().add(buttonsBox);
     }
 
-    private void showAlert(String title, String content, AlertType type) {
+    private void showAlertFP(String title, String content, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -1401,7 +1401,7 @@ public class PostController {
             field.getStyleClass().remove("valid-field");
             field.getStyleClass().add("text-field-error");
             showError(field, errorLabel, "Format d'email invalide");
-        } else if (forumService.getUserByEmail(email) == -1) {
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
             field.getStyleClass().remove("valid-field");
             field.getStyleClass().add("text-field-error");
             showError(field, errorLabel, "Cet utilisateur n'existe pas");

@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.7" prefHeight="751.0" prefWidth="1390.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.PostController">
+<SplitPane dividerPositions="0.7" prefHeight="751.0" prefWidth="1390.0" stylesheets="@stylesFP.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.PostController">
 
     <TabPane fx:id="leftTabPane" tabClosingPolicy="UNAVAILABLE" visible="true">
         <Tab text="Posts">
@@ -70,7 +70,7 @@
 
                     <VBox fx:id="membersSection" visible="false">
                         <Label text="Members:" />
-                        <ListView fx:id="membersListView" prefHeight="100" />
+                        <ListView fx:id="membersListViewFP" prefHeight="100" />
                     </VBox>
                     <Button fx:id="addPostButton" disable="true" onAction="#handleAddPostButton" text="Ajouter Post" />
                 </VBox>

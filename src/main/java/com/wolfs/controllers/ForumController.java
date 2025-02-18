@@ -102,7 +102,7 @@ public class ForumController {
         String email = memberEmailField.getText().trim();
         if (!email.isEmpty() && !membersListView.getItems().contains(email)) {
             if (forumService.getUserByEmail(email) != -1) {
-                membersListView.getItems().add(email);
+            membersListView.getItems().add(email);
                 memberEmailField.clear();
                 hideError(memberEmailField, memberEmailErrorLabel);
                 isMemberEmailValid = true;
@@ -191,7 +191,7 @@ public class ForumController {
 
         addButtonsToTable();
 
-        refreshTable();
+        refreshTableFB();
 
         addForumButton.setOnAction(event -> addForum());
         isPrivateCheckBox.setOnAction(event -> handlePrivateCheckbox());
@@ -246,10 +246,10 @@ public class ForumController {
 
     private void handleDelete(Forum forum) {
         forumService.supprimer(forum);
-        refreshTable();
+        refreshTableFB();
     }
 
-    private void refreshTable() {
+    private void refreshTableFB() {
         forumList.clear();
         forumList.addAll(forumService.rechercher());
         forumTableView.setItems(forumList);
@@ -279,7 +279,7 @@ public class ForumController {
 
     private void updateForum(Forum forum) {
         forumService.modifier(forum);
-        refreshTable();
+        refreshTableFB();
     }
 
     private void validateName(String name) {
@@ -398,7 +398,7 @@ public class ForumController {
         forum.setNbrMembers(membersListView.getItems().size());
 
         forumService.ajouter(forum);
-        refreshTable();
+        refreshTableFB();
     }
 
     private boolean validateTableEdit(Forum forum, String field, String newValue) {
@@ -452,7 +452,7 @@ public class ForumController {
             alert.setHeaderText("Veuillez corriger les erreurs suivantes:");
             alert.setContentText(errors.toString());
             alert.showAndWait();
-            refreshTable();
+            refreshTableFB();
             return false;
         }
 

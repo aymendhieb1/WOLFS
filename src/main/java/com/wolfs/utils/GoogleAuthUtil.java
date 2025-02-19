@@ -24,8 +24,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class GoogleAuthUtil {
-    private static final String CLIENT_ID = "937407664005-rainsgus7502a8lu206omhb6ffak5iqk.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
+    private static final String CLIENT_ID = "";
+    private static final String CLIENT_SECRET = "";
     private static final String REDIRECT_URI = "http://localhost:8081/callback";
 
 

@@ -26,7 +26,44 @@
     <children>
         <StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="1000.0" prefWidth="1900.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);">
             <children>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
+            <AnchorPane fx:id="RederictToLogin" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="575.0" prefWidth="655.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0);" visible="false">
+               <children>
+                  <Label layoutX="101.0" layoutY="223.0" prefHeight="65.0" prefWidth="453.0" style="-fx-background-color: transparent; -fx-font-size: 20px; -fx-border-width: 0px;" styleClass="text-field" stylesheets="@styles/style.css" text="Votre mot de passe a été réinitialisé avec succès" textFill="#e78d1e" />
+                  <ImageView fitHeight="151.0" fitWidth="161.0" layoutX="247.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/secondry.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="57.0" layoutY="256.0" prefHeight="65.0" prefWidth="574.0" style="-fx-background-color: transparent; -fx-font-size: 20px; -fx-border-width: 0px;" styleClass="text-field" stylesheets="@styles/style.css" text="connectez-vous maintenant avec votre nouveau mot de passe" textFill="#e78d1e" />
+                  <Button layoutX="159.0" layoutY="413.0" mnemonicParsing="false" onAction="#SwitchToLogin" prefHeight="55.0" prefWidth="338.0" style="-fx-background-radius: 50px; -fx-font-size: 20px; -fx-font-weight: Bold;" styleClass="submit-button" stylesheets="@styles/style.css" text="Login">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="forget_password" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="575.0" prefWidth="655.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0);" visible="false">
+               <children>
+                  <TextField fx:id="forget_password_mail" layoutX="135.0" layoutY="308.0" prefHeight="47.0" prefWidth="386.0" promptText="Entrer votre Email" stylesheets="@styles/style.css" />
+                  <Label layoutX="39.0" layoutY="111.0" prefHeight="65.0" prefWidth="587.0" style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-border-width: 0px;" styleClass="text-field" stylesheets="@styles/style.css" text="C'est bon ! Réinitialisez votre mot de passe" textFill="#e78d1e" />
+                  <Line endX="272.0" layoutX="341.0" layoutY="213.0" startX="-301.0" stroke="#fffefe" />
+                  <Button layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#back_to_se_connecter_page" prefHeight="43.0" prefWidth="62.0" style="-fx-background-color: transparent;" text="&quot;">
+                     <graphic>
+                        <Text fill="#e78d1e" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="46.0">
+                           <font>
+                              <Font size="52.0" />
+                           </font>
+                        </Text>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="164.0" layoutY="400.0" mnemonicParsing="false" onAction="#EnvoyerMail" prefHeight="55.0" prefWidth="338.0" style="-fx-background-radius: 50px; -fx-font-size: 20px; -fx-font-weight: Bold;" styleClass="submit-button" stylesheets="@styles/style.css" text="Continue">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -41,29 +78,37 @@
                             </image>
                         </ImageView>
                         <TextField fx:id="text_field_mdp" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" styleClass="text-field" stylesheets="@/styles/style.css" visible="false" />
-                        <Button id="mdp_oublié" layoutX="199.0" layoutY="375.0" mnemonicParsing="false" onAction="#EnvoyerMail" prefHeight="35.0" prefWidth="277.0" styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?" textFill="#e78d1e">
+                        <Button id="mdp_oublié" layoutX="199.0" layoutY="375.0" mnemonicParsing="false" onAction="#GoToForgetPassword" prefHeight="35.0" prefWidth="277.0" styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?" textFill="#e78d1e">
                             <font>
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
                         </Button>
-                        <Button fx:id="submit_button1" layoutX="209.0" layoutY="451.0" mnemonicParsing="false" onAction="#UserRole" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Se connecter" textFill="#d31818" />
+                        <Button fx:id="submit_button1" layoutX="153.0" layoutY="451.0" mnemonicParsing="false" onAction="#UserRole" prefHeight="52.0" prefWidth="359.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Se connecter" textFill="#d31818" />
                         <Line endX="250.0" layoutX="331.0" layoutY="558.0" startX="-250.0" stroke="#e1d8ce" />
-                        <Text fill="#e78d1e" layoutX="193.0" layoutY="599.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Devenez membre dès maintenant&#10;">
+                        <Text fill="#e78d1e" layoutX="192.0" layoutY="718.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Devenez membre dès maintenant&#10;">
                             <font>
                                 <Font name="SansSerif Bold" size="18.0" />
                             </font>
                         </Text>
-                        <Text fx:id="arrow_drop" fill="#e78d1e" layoutX="323.0" layoutY="628.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="29.000000000000227">
+                        <Text fx:id="arrow_drop" fill="#e78d1e" layoutX="322.0" layoutY="747.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="29.000000000000227">
                             <font>
                                 <Font size="32.0" />
                             </font>
                         </Text>
-                        <Button id="Create_account" layoutX="245.0" layoutY="636.0" mnemonicParsing="false" onAction="#switchToSignup" onMouseClicked="#switchToSignup" prefHeight="33.0" prefWidth="186.0" styleClass="btnConnexion" stylesheets="@/styles/style.css" text="Créer un compte " textFill="#e78d1e">
+                        <Button id="Create_account" layoutX="244.0" layoutY="755.0" mnemonicParsing="false" onAction="#switchToSignup" onMouseClicked="#switchToSignup" prefHeight="33.0" prefWidth="186.0" styleClass="btnConnexion" stylesheets="@/styles/style.css" text="Créer un compte " textFill="#e78d1e">
                             <font>
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
                         </Button>
                   <Button layoutX="527.0" layoutY="311.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" prefHeight="35.0" prefWidth="52.0" style="-fx-background-color: transparent;" />
+                  <Button fx:id="google_button_signin" layoutX="203.0" layoutY="590.0" mnemonicParsing="false" onAction="#handleGoogleAuth" prefHeight="62.0" prefWidth="269.0" styleClass="google-auth-button" stylesheets="@styles/style.css" text="       Se connecter via google">
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/google.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                     </children>
                 </AnchorPane>
                 <AnchorPane fx:id="Sinscrire_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
@@ -320,7 +365,7 @@
                                  <graphic>
                                     <ImageView fitHeight="63.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@images/pngwing.com%20(1).png" />
+                                          <Image url="@images/pngwing.com (1).png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -948,6 +993,7 @@
                               <TextField fx:id="page_vehicule_cylindre" layoutX="324.0" layoutY="279.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le cylindre" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="page_vehicule_prix" layoutX="324.0" layoutY="344.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
                               <TextField fx:id="page_vehicule_image" layoutX="324.0" layoutY="408.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ImageView fx:id="page_vehicule_image_View" fitHeight="175.0" fitWidth="242.0" layoutX="723.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_ajouter_contrat" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
@@ -1209,6 +1255,27 @@
                         </AnchorPane>
                      </children>
                   </StackPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="forget_password_reset" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="689.0" prefWidth="655.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0);" visible="false">
+               <children>
+                  <TextField fx:id="code_field" layoutX="134.0" layoutY="321.0" prefHeight="47.0" prefWidth="386.0" promptText="Entrer votre code" stylesheets="@styles/style.css" />
+                  <Label alignment="CENTER" layoutX="39.0" layoutY="111.0" prefHeight="65.0" prefWidth="587.0" style="-fx-background-color: transparent; -fx-font-size: 30px; -fx-border-width: 0px;" styleClass="text-field" stylesheets="@styles/style.css" text="Réinitialiser votre mot de passe" textFill="#e78d1e" />
+                  <Line endX="272.0" layoutX="341.0" layoutY="259.0" startX="-301.0" stroke="#fffefe" />
+                  <Button layoutX="23.0" layoutY="21.0" mnemonicParsing="false" onAction="#back_to_se_connecter_page" prefHeight="43.0" prefWidth="62.0" style="-fx-background-color: transparent;" text="&quot;" />
+                  <Button layoutX="212.0" layoutY="601.0" mnemonicParsing="false" onAction="#handlePasswordReset" prefHeight="55.0" prefWidth="226.0" style="-fx-background-radius: 50px; -fx-font-size: 20px; -fx-font-weight: Bold;" styleClass="submit-button" stylesheets="@styles/style.css" text="Confirmer">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Label alignment="CENTER" layoutX="127.0" layoutY="166.0" prefHeight="30.0" prefWidth="413.0" style="-fx-font-size: 15px;" stylesheets="@styles/style.css" text="Nous vous avons envoyé un six chiffres sur votre email" textFill="#e78d1e" />
+                  <PasswordField fx:id="password_field_reset" layoutX="134.0" layoutY="411.0" prefHeight="47.0" prefWidth="386.0" promptText="Entrer votre mot de passe" styleClass="text-field" stylesheets="@styles/style.css" />
+                  <PasswordField fx:id="confirmer_password_field_reset" layoutX="134.0" layoutY="503.0" prefHeight="47.0" prefWidth="386.0" promptText="Confirmer votre mot de passe" styleClass="text-field" stylesheets="@styles/style.css" />
+                  <Label fx:id="countdownLabel" alignment="CENTER" layoutX="182.0" layoutY="206.0" prefHeight="35.0" prefWidth="303.0" textFill="#e78d1e">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
                 

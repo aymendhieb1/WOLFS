@@ -1,5 +1,6 @@
 package com.wolfs.services;
 
+import com.google.api.services.oauth2.model.Userinfo;
 import com.wolfs.models.Client;
 import com.wolfs.utils.DataSource;
 import javafx.scene.image.Image;
@@ -97,7 +98,7 @@ public class ClientServices implements IUserServices<Client> {
         return clients;
     }
 
-    public Client verifierUser(String email, String password) {
+    public Client verifierUser(String email) {
         String req = "SELECT id_user, nom, prenom, mail, mdp, num_tel, role, status, photo_profil FROM user WHERE mail=?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(req);
@@ -118,7 +119,7 @@ public class ClientServices implements IUserServices<Client> {
                             rs.getString("nom"),
                             rs.getString("prenom"),
                             rs.getString("mail"),
-                            password,
+                            rs.getString("mdp"),
                             rs.getInt("num_tel"),
                             rs.getInt("role"),
                             rs.getInt("status"),
@@ -243,6 +244,44 @@ public class ClientServices implements IUserServices<Client> {
             e.printStackTrace();
         }}
 
+    public boolean updatePassword(String mail, String mdp) {
+        String req = "UPDATE user SET mdp=? WHERE mail=?";
+
+        try (PreparedStatement ps = this.connection.prepareStatement(req)) {
+            ps.setString(1, mdp);
+            ps.setString(2, mail);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Mot de passe modifié avec succès.");
+                return true;
+            } else {
+                System.out.println("Aucun utilisateur trouvé avec cet email.");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la mise à jour du mot de passe : " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean userExists(String email) {
+        String req = "SELECT COUNT(*) FROM user WHERE mail=?";
+        try (PreparedStatement ps = this.connection.prepareStatement(req)) { // try-with-resources
+            ps.setString(1, email);
+
+            try (ResultSet rs = ps.executeQuery()) { // try-with-resources pour ResultSet
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Si le compteur est supérieur à 0, l'utilisateur existe
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur SQL : " + e.getMessage());
+        }
+        return false; // L'utilisateur n'existe pas
+    }
 
 
 }

@@ -1,9 +1,12 @@
 package com.wolfs.controllers.user;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.services.oauth2.model.Userinfo;
 import com.wolfs.models.*;
 import com.wolfs.services.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import com.wolfs.utils.GoogleAuthUtil;
+import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +31,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +43,33 @@ import java.util.Optional;
 
 
 public class CrudUser {
+
+    private Timeline timeline;
+
+@FXML
+private Label countdownLabel;
+
+    @FXML
+    private AnchorPane forget_password;
+    @FXML
+    private TextField forget_password_mail;
+    @FXML
+    private AnchorPane forget_password_reset;
+    @FXML
+    private AnchorPane RederictToLogin;
+
+    private String codeEnvoye;
+    @FXML
+    private TextField code_field;
+    @FXML
+    private PasswordField password_field_reset;
+    @FXML
+    private PasswordField confirmer_password_field_reset;
+
+    private final ClientServices ClientService_user = new ClientServices(); // Service pour gérer les utilisateurs en DB
+
+
+    /*********************NEWWWWWWWWWWWWWWWWWWWWW********************************/
 
     @FXML
     private AnchorPane Modifier_page;
@@ -608,6 +639,8 @@ public class CrudUser {
     @FXML
     private ImageView hotel_imageView;
 
+    @FXML
+    private ImageView page_vehicule_image_View;
 
 //FXML VOL
 @FXML
@@ -1128,7 +1161,7 @@ private TableView<Vol> tableViewVols;
 
 
 
-
+        page_vehicule_id.setVisible(false);
 
         TableView_vehicule_matricule.setCellValueFactory(new PropertyValueFactory<>("matricule"));
         TableView_vehicule_status.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -1212,6 +1245,8 @@ private TableView<Vol> tableViewVols;
                 }
             };
         });
+        page_vehicule_image.setVisible(false);
+
         TableView_vehicule_supprimer.setCellFactory(column -> {
             return new TableCell<Vehicule, Void>() {
                 private final Button btn = new Button("Supprimer");
@@ -1328,6 +1363,10 @@ private TableView<Vol> tableViewVols;
 
 
         //tableView
+
+        contrat_id2.setVisible(false);
+
+
         TableView_contrat_debut.setCellValueFactory(new PropertyValueFactory<>("dateD"));
         TableView_contrat_fin.setCellValueFactory(new PropertyValueFactory<>("dateF"));
         TableView_contrat_cin.setCellValueFactory(new PropertyValueFactory<>("cinLocateur"));
@@ -1796,6 +1835,11 @@ private TableView<Vol> tableViewVols;
         hotel_imageView.setOnMouseClicked(this::handleImageClick_hotel);
         hotel_image.setVisible(false);
 
+//vehicule
+        //image
+
+        page_vehicule_image_View.setOnMouseClicked(this::handleImageClick_vehicule);
+
 
 
 //Hotel
@@ -1916,6 +1960,18 @@ private TableView<Vol> tableViewVols;
             hotel_image.setText(image.getUrl());
         }
     }
+    private void handleImageClick_vehicule (MouseEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            page_vehicule_image_View.setImage(image);
+            page_vehicule_image.setText(image.getUrl());
+        }
+    }
     private void startAnimation() {
         TranslateTransition transition_2 = new TranslateTransition(Duration.millis(600), arrow_drop_2);
         transition_2.setByY(10);
@@ -1966,6 +2022,7 @@ private TableView<Vol> tableViewVols;
     @FXML
     private void handleUser(ActionEvent event, boolean isUpdate) throws IOException {
         if(!isUpdate){resetFieldStyles();};
+        ClientServices c=new ClientServices();
         boolean hasError = false;
 
         TextField nomField = isUpdate ? lastName_field_update : lastName_field;
@@ -1991,6 +2048,11 @@ private TableView<Vol> tableViewVols;
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             setFieldError(emailField, true);
             showAlert("Erreur", "Veuillez entrer un email valide", Alert.AlertType.ERROR);
+            return;
+        }
+        if (c.userExists(email)) {
+            setFieldError(emailField, true);
+            showAlert("Erreur", "Cet email est déjà utilisé.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -2111,7 +2173,7 @@ private TableView<Vol> tableViewVols;
     @FXML
     private void UserRole(ActionEvent event) {
         ClientServices C1 = new ClientServices();
-        Client client = C1.verifierUser(email_field_signin.getText(), password_field_signin.getText());
+        Client client = C1.verifierUser(email_field_signin.getText());
 
         if (client == null) {
             showAlert("Erreur", "Email ou mot de passe incorrect.", Alert.AlertType.ERROR);
@@ -2121,11 +2183,11 @@ private TableView<Vol> tableViewVols;
             switch (client.getRole()) {
                 case 0:
                 case 1:
-                    showAlert("Bienvenue", "Bonjour" + " " + client.getPrenom().toUpperCase() + " " + client.getName().toUpperCase(), Alert.AlertType.INFORMATION);
+                    showAlert("Connexion réussie", "Bienvenue" + " " + client.getPrenom() + " " + client.getName(), Alert.AlertType.INFORMATION);
                     animateTransition(Se_connecter_page, background_back, 0);
                     break;
                 case 2:
-                    showAlert("Bienvenue", "Bonjour" + " " + client.getPrenom().toUpperCase() + " " + client.getName().toUpperCase(), Alert.AlertType.INFORMATION);
+                    showAlert("Bienvenue", "Bonjour" + " " + client.getPrenom() + " " + client.getName(), Alert.AlertType.INFORMATION);
                     UserAccount();
                     animateTransition(Se_connecter_page, background_front, 0);
                     ClientServices c=new ClientServices();
@@ -2139,7 +2201,7 @@ private TableView<Vol> tableViewVols;
     private void UserAccount() {
         try {
             ClientServices C1 = new ClientServices();
-            Client client = C1.verifierUser(email_field_signin.getText(), password_field_signin.getText());
+            Client client = C1.verifierUser(email_field_signin.getText());
             labal_prenom.setText(client.getPrenom().toUpperCase());
             labal_tel.setText(String.valueOf(client.getNum_tel()).toUpperCase());
             label_mail.setText(client.getEmail());
@@ -2640,7 +2702,7 @@ private TableView<Vol> tableViewVols;
                 hotel_description.getText().trim()
         ));
 
-
+        loadComboBox_hotel_nom();
         showAlert("Confirmation", "L'hôtel a été ajouté avec succès", Alert.AlertType.INFORMATION);
 
         hotel_nom.clear();
@@ -2729,21 +2791,7 @@ private TableView<Vol> tableViewVols;
 
     }
 
-    @FXML
-        private void EnvoyerMail(){
-            String email = email_field_signin.getText();
-            if (email.isEmpty()) {
-                showAlert("Erreur", "Veuillez entrer votre email.",Alert.AlertType.INFORMATION);
-                return;
-            }
-            ClientServices C1=new ClientServices();
-            Client cLient=C1.verifierUserByMail(email_field_signin.getText());
-            EmailService.sendEmail(email, "Réinitialisation de mot de passe",
-                    "Votre mot de passe :  "  + cLient.getPassword());
 
-            showAlert("Succès", "Un email de réinitialisation a été envoyé.",Alert.AlertType.INFORMATION);
-
-        }
 
         @FXML
         private void SwitchToMonProfile(ActionEvent event){
@@ -3254,6 +3302,8 @@ private TableView<Vol> tableViewVols;
         contrat_imageView.setImage(null);
         contrat_matricule.getSelectionModel().clearSelection();
         RefreshTableView_Contrat();
+        page_ajouter_contrat.setVisible(false);
+        page_contrat.setVisible(true);
     }
 
 
@@ -3267,10 +3317,11 @@ private TableView<Vol> tableViewVols;
             return;
         }
 
-        if (!page_vehicule_matricule.getText().matches("^\\d{1,3}}TUN\\d{1,4}$")) {
-            showAlert("Erreur", "Veuillez entrer un matricule valide (ex: 123TUN1, 456TUN12,456TUN123, 789TUN1234)", Alert.AlertType.ERROR);
+        if (!page_vehicule_matricule.getText().matches("^\\d{3}TUN\\d{1,4}$")) {
+            showAlert("Erreur", "Veuillez entrer un matricule valide (ex: 123TUN1, 456TUN12, 456TUN123, 789TUN1234)", Alert.AlertType.ERROR);
             return;
         }
+
 // Vérification du format du cylindre (uniquement des chiffres)
         if (!page_vehicule_cylindre.getText().matches("^\\d+$")) {
             showAlert("Erreur", "Le cylindre doit contenir uniquement des chiffres", Alert.AlertType.ERROR);
@@ -3307,6 +3358,7 @@ private TableView<Vol> tableViewVols;
         ;
         page_ajouter_vehicule.setVisible(false);
         page_vehicule.setVisible(true);
+
     }
 
     @FXML
@@ -3453,8 +3505,11 @@ private TableView<Vol> tableViewVols;
         chambre_disponibilite.getSelectionModel().clearSelection();
         chambre_hotel_nom.getSelectionModel().clearSelection();
         chambre_description.clear();
-        page_ajouter_contrat.setVisible(false);
-        page_contrat.setVisible(true);
+        page_ajouter_chambre.setVisible(false);
+        page_chambre.setVisible(true);
+        RefreshTableView_Chambre();
+        RefreshTableView_Hotel();
+        loadComboBoxVehicules();
     }
 
 
@@ -3843,5 +3898,194 @@ private TableView<Vol> tableViewVols;
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+
+    /**********************************NEWWWWWWWW******************************************/
+
+    @FXML
+    private void back_to_se_connecter_page(ActionEvent event)
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation d annulation de récupiration de mot de passe");
+        alert.setHeaderText("Voulez-vous vraiment vous quitter ?");
+        alert.setContentText("Cliquez sur OK pour confirmer.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            animateTransition(forget_password,Se_connecter_page,0);
+            forget_password_mail.clear();
+
+        }
+
+    }
+    @FXML
+    private void GoToForgetPassword(ActionEvent event)
+    {
+            animateTransition(Se_connecter_page,forget_password,0);
+    }
+    @FXML
+    private void EnvoyerMail() {
+        String email = forget_password_mail.getText();
+        if (email.isEmpty()) {
+            showAlert("Erreur", "Veuillez entrer votre email.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        ClientServices C1 = new ClientServices();
+        Client cLient = C1.verifierUserByMail(email);
+
+        if (cLient != null) {
+             codeEnvoye = genererCodeVerification();
+
+
+            // Envoyer le mail avec le code
+            EmailService.sendEmail(email, "Réinitialisation de mot de passe",
+                    "Votre code de réinitialisation : " + codeEnvoye + "\n\nCe code est valable pour une durée limitée.");
+            startCountdown(20);
+
+
+            showAlert("Succès", "Un email avec un code de réinitialisation a été envoyé.", Alert.AlertType.INFORMATION);
+            animateTransition(forget_password,forget_password_reset,0);
+        } else {
+            showAlert("Erreur", "Votre mail n'existe pas.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private String genererCodeVerification() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder code = new StringBuilder(6);
+
+        for (int i = 0; i < 6; i++) {
+            int index = random.nextInt(caracteres.length());
+            code.append(caracteres.charAt(index));
+        }
+
+        return code.toString();
+    }
+    @FXML
+    private void handlePasswordReset() {
+        String codeSaisi = code_field.getText().trim();
+        String newPassword = password_field_reset.getText();
+        String confirmPassword = confirmer_password_field_reset.getText();
+
+        // Vérification du code
+        if (codeEnvoye == null) {
+            showAlert("Erreur", "Veuillez d'abord demander un code de réinitialisation.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!codeSaisi.equals(codeEnvoye)) {
+            showAlert("Erreur", "Le code que vous avez donné est incorrect.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérification des champs de mot de passe
+        if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            showAlert("Erreur", "Veuillez remplir les champs de mot de passe.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (newPassword.length() < 8 || !newPassword.matches(".*[A-Z].*") || !newPassword.matches(".*\\d.*")) {
+            showAlert("Erreur", "Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showAlert("Erreur", "Le mot de passe ne correspond pas.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Mise à jour du mot de passe
+        ClientServices C1 = new ClientServices();
+        String haspass = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
+        if (C1.updatePassword(forget_password_mail.getText(), haspass)) {
+            showAlert("Succès", "Votre mot de passe a été changé avec succès.", Alert.AlertType.INFORMATION);
+            animateTransition(forget_password_reset,RederictToLogin,0);
+            return;
+        } else {
+            showAlert("Erreur", "Une erreur s'est produite lors de la mise à jour du mot de passe.", Alert.AlertType.ERROR);
+        }
+    }
+    @FXML
+    public void handleGoogleAuth() {
+        try {
+            Credential credential = GoogleAuthUtil.authenticate();
+            Userinfo userInfo = GoogleAuthUtil.getUserInfo(credential);
+            String email = userInfo.getEmail();
+
+            if (ClientService_user.userExists(email)) {
+                email_field_signin.setText(email);
+                UserRole(null);
+                UserAccount();
+
+
+            }
+            else {
+                showAlert("Connexion échouée", "Votre compte n'existe pas, veuillez vous inscrire.", Alert.AlertType.ERROR);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "L'authentification Google a échoué", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void SwitchToLogin(){
+        animateTransition(RederictToLogin,Se_connecter_page,0);
+    }
+
+    private void startCountdown(int totalSeconds) {
+        final int[] remainingTime = {totalSeconds};
+
+        if (timeline != null) {
+            timeline.stop();
+        }
+
+        Platform.runLater(() -> countdownLabel.setText("Temps restant : " + String.format("%02d:%02d", 0, 0)));
+
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    int minutes = remainingTime[0] / 60;
+                    int seconds = remainingTime[0] % 60;
+
+                    String timeLeft = String.format("%02d:%02d", minutes, seconds);
+
+                    Platform.runLater(() -> countdownLabel.setText("Temps restant : " + timeLeft));
+
+                    remainingTime[0]--;
+
+                    if (remainingTime[0] <= 0) {
+                        timeline.stop();
+                        Platform.runLater(() -> {
+                            countdownLabel.setText("Temps écoulé.");
+
+                            codeEnvoye = "";
+
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Confirmation");
+                            alert.setHeaderText("Votre session a expiré.");
+                            alert.setContentText("Le temps imparti pour la réinitialisation est écoulé.");
+
+                            Platform.runLater(() -> {
+                                alert.showAndWait();
+                            });
+                            animateTransition(forget_password_reset, Se_connecter_page, 0);
+                        });
+                    }
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        timeline.play();
+    }
+
+
+
+
 
 }

@@ -104,6 +104,33 @@
     -fx-background-color: #132a3e;
     -fx-border-color: #132a3e;
 }
+.google-auth-button {
+    -fx-background-color: #4285F4; /* Couleur de fond bleue Google */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-font-size: 25px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-background-radius: 5px; /* Coins arrondis pour le fond */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+}
+
+.google-auth-button:hover {
+    -fx-background-color: #357ABD; /* Changement de couleur au survol */
+}
+
+.google-auth-button:pressed {
+    -fx-background-color: #2C6BB0; /* Couleur au clic */
+}
+
+
+
+.google-auth-button .text {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
 
 
 

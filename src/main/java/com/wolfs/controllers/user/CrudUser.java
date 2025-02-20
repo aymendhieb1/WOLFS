@@ -4082,6 +4082,7 @@ private TableView<Vol> tableViewVols;
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeline.play();
+
     }
 
 

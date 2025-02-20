@@ -66,7 +66,7 @@ private Label countdownLabel;
     @FXML
     private PasswordField confirmer_password_field_reset;
 
-    private final ClientServices ClientService_user = new ClientServices(); // Service pour gérer les utilisateurs en DB
+    private final ClientServices ClientService_user = new ClientServices();
 
 
     /*********************NEWWWWWWWWWWWWWWWWWWWWW********************************/
@@ -2102,6 +2102,7 @@ private TableView<Vol> tableViewVols;
         } else {
             Client newClient = new Client(nomField.getText(), prenomField.getText(), email, hashedPassword, Integer.parseInt(number), 2, 0,  photo_profile_signin.getImage().getUrl());
             C1.ajouterUser(newClient);
+
             showAlert("Confirmation", "Votre compte a été créé", Alert.AlertType.INFORMATION);
             switchToSignIn();
             RefreshTableView_User();
@@ -3943,11 +3944,12 @@ private TableView<Vol> tableViewVols;
             // Envoyer le mail avec le code
             EmailService.sendEmail(email, "Réinitialisation de mot de passe",
                     "Votre code de réinitialisation : " + codeEnvoye + "\n\nCe code est valable pour une durée limitée.");
-            startCountdown(20);
-
-
+            startCountdown(60);
             showAlert("Succès", "Un email avec un code de réinitialisation a été envoyé.", Alert.AlertType.INFORMATION);
             animateTransition(forget_password,forget_password_reset,0);
+            code_field.clear();
+            password_field_reset.clear();
+            confirmer_password_field_reset.clear();
         } else {
             showAlert("Erreur", "Votre mail n'existe pas.", Alert.AlertType.ERROR);
         }
@@ -4003,6 +4005,9 @@ private TableView<Vol> tableViewVols;
         String haspass = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
         if (C1.updatePassword(forget_password_mail.getText(), haspass)) {
+            if (timeline != null) {
+                timeline.stop();
+            }
             showAlert("Succès", "Votre mot de passe a été changé avec succès.", Alert.AlertType.INFORMATION);
             animateTransition(forget_password_reset,RederictToLogin,0);
             return;
@@ -4015,7 +4020,20 @@ private TableView<Vol> tableViewVols;
         try {
             Credential credential = GoogleAuthUtil.authenticate();
             Userinfo userInfo = GoogleAuthUtil.getUserInfo(credential);
+            String profilePicUrl = userInfo.getPicture();
+            String highResUrl = profilePicUrl.replace("=s96", "=s800");
+
             String email = userInfo.getEmail();
+            String fullName = userInfo.getName();
+            String[] parts = fullName.split(" ");
+
+            String firstName = parts[0];
+            String lastName = (parts.length > 1) ? parts[1] : "";
+
+            System.out.println("Prénom : " + firstName);
+            System.out.println("Nom : " + lastName);
+
+
 
             if (ClientService_user.userExists(email)) {
                 email_field_signin.setText(email);
@@ -4025,7 +4043,12 @@ private TableView<Vol> tableViewVols;
 
             }
             else {
-                showAlert("Connexion échouée", "Votre compte n'existe pas, veuillez vous inscrire.", Alert.AlertType.ERROR);
+                ClientService_user.ajouterUser(new Client(lastName, firstName, userInfo.getEmail(), "", 22334455, 2, 0, highResUrl));
+                email_field_signin.setText(email);
+                UserRole(null);
+                UserAccount();
+
+
             }
 
         } catch (IOException e) {
@@ -4082,7 +4105,6 @@ private TableView<Vol> tableViewVols;
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeline.play();
-
     }
 
 

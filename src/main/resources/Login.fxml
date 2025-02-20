@@ -78,7 +78,10 @@
                             </image>
                         </ImageView>
                         <TextField fx:id="text_field_mdp" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" styleClass="text-field" stylesheets="@/styles/style.css" visible="false" />
-                        <Button id="mdp_oublié" layoutX="199.0" layoutY="375.0" mnemonicParsing="false" onAction="#GoToForgetPassword" prefHeight="35.0" prefWidth="277.0" styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?" textFill="#e78d1e">
+                        <Button id="mdp_oublié" layoutX="234.0" layoutY="384.0" mnemonicParsing="false"
+                                onAction="#GoToForgetPassword" prefHeight="35.0" prefWidth="197.0"
+                                styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?"
+                                textFill="#e78d1e">
                             <font>
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
@@ -101,7 +104,10 @@
                             </font>
                         </Button>
                   <Button layoutX="527.0" layoutY="311.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" prefHeight="35.0" prefWidth="52.0" style="-fx-background-color: transparent;" />
-                  <Button fx:id="google_button_signin" layoutX="203.0" layoutY="590.0" mnemonicParsing="false" onAction="#handleGoogleAuth" prefHeight="62.0" prefWidth="269.0" styleClass="google-auth-button" stylesheets="@styles/style.css" text="       Se connecter via google">
+                        <Button fx:id="google_button_signin" layoutX="81.0" layoutY="590.0" mnemonicParsing="false"
+                                onAction="#handleGoogleAuth" prefHeight="60.0" prefWidth="501.0"
+                                styleClass="google-auth-button" stylesheets="@styles/style.css"
+                                text="       Se connecter via google">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>

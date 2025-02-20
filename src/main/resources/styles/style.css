@@ -3,10 +3,10 @@
     -fx-border-width: 1px;
     -fx-border-color: #ccc;
     -fx-border-radius: 5px;
-    -fx-background-color: #e0e0e0; /* Couleur grise par défaut */
+    -fx-background-color: #e0e0e0;
     -fx-font-size: 16px;
     -fx-background-radius: 10px;
-    -fx-prompt-text-fill: rgba(150, 150, 150, 0.7); /* Placeholder en gris */
+    -fx-prompt-text-fill: rgba(150, 150, 150, 0.7);
 }
 
 
@@ -107,7 +107,7 @@
 .google-auth-button {
     -fx-background-color: #4285F4; /* Couleur de fond bleue Google */
     -fx-text-fill: white; /* Texte en blanc */
-    -fx-font-size: 25px; /* Taille de la police */
+    -fx-font-size: 15px; /* Taille de la police */
     -fx-font-weight: bold; /* Texte en gras */
     -fx-padding: 10px 20px; /* Espacement interne */
     -fx-border-radius: 5px; /* Coins arrondis */
@@ -116,19 +116,18 @@
 }
 
 .google-auth-button:hover {
-    -fx-background-color: #357ABD; /* Changement de couleur au survol */
+    -fx-background-color: #357ABD;
 }
 
 .google-auth-button:pressed {
-    -fx-background-color: #2C6BB0; /* Couleur au clic */
-}
+    -fx-background-color: #2C6BB0;
 
 
-
-.google-auth-button .text {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-fill: white;
+    .google-auth-button .text {
+        -fx-font-size: 14px;
+        -fx-font-weight: bold;
+        -fx-fill: white;
+    }
 }
 
 

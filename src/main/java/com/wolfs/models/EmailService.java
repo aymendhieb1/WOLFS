@@ -87,4 +87,6 @@ public class EmailService {
             System.out.println("❌ Une erreur est survenue lors de l'envoi de l'email.");
         }
     }
+
 }
+

@@ -1,0 +1,1656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1900.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.user.CrudUser">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="1000.0" prefWidth="1900.0" style="-fx-background-color: linear-gradient(to bottom right, #132A3E, #E78D1E);">
+            <children>
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
+                    <children>
+                        <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
+                            <image>
+                                <Image url="@/images/secondry.png" />
+                            </image>
+                        </ImageView>
+                        <TextField fx:id="email_field_signin" layoutX="152.0" layoutY="225.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer email" style="-fx-background-radius: 10px;" styleClass="text-field" stylesheets="@/styles/style.css" />
+                        <PasswordField fx:id="password_field_signin" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" stylesheets="@/styles/style.css" />
+                        <ImageView fx:id="eye_icon1" fitHeight="33.0" fitWidth="29.0" layoutX="538.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/eye_icon.png" />
+                            </image>
+                        </ImageView>
+                        <TextField fx:id="text_field_mdp" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" styleClass="text-field" stylesheets="@/styles/style.css" visible="false" />
+                        <Button id="mdp_oublié" layoutX="199.0" layoutY="375.0" mnemonicParsing="false" onAction="#EnvoyerMail" prefHeight="35.0" prefWidth="277.0" styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?" textFill="#e78d1e">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="submit_button1" layoutX="209.0" layoutY="451.0" mnemonicParsing="false" onAction="#UserRole" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Se connecter" textFill="#d31818" />
+                        <Line endX="250.0" layoutX="331.0" layoutY="558.0" startX="-250.0" stroke="#e1d8ce" />
+                        <Text fill="#e78d1e" layoutX="193.0" layoutY="599.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Devenez membre dès maintenant&#10;">
+                            <font>
+                                <Font name="SansSerif Bold" size="18.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="arrow_drop" fill="#e78d1e" layoutX="323.0" layoutY="628.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="29.000000000000227">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Text>
+                        <Button id="Create_account" layoutX="245.0" layoutY="636.0" mnemonicParsing="false" onAction="#switchToSignup" onMouseClicked="#switchToSignup" prefHeight="33.0" prefWidth="186.0" styleClass="btnConnexion" stylesheets="@/styles/style.css" text="Créer un compte " textFill="#e78d1e">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Button>
+                  <Button layoutX="527.0" layoutY="311.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" prefHeight="35.0" prefWidth="52.0" style="-fx-background-color: transparent;" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="Sinscrire_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
+                    <children>
+                        <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
+                            <image>
+                                <Image url="@/images/secondry.png" />
+                            </image>
+                        </ImageView>
+                        <TextField fx:id="lastName_field" layoutX="152.0" layoutY="200.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                        <PasswordField fx:id="password_field_signup" layoutX="152.0" layoutY="480.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre mot de passe" stylesheets="@/styles/style.css" />
+                        <Button layoutX="209.0" layoutY="764.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="S'inscrire" textFill="#d31818" />
+                        <Line endX="250.0" layoutX="331.0" layoutY="841.0" startX="-250.0" stroke="#e1d8ce" />
+                        <Text fill="#e78d1e" layoutX="203.0" layoutY="882.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connectez-vous a votre espace">
+                            <font>
+                                <Font name="SansSerif Bold" size="18.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="arrow_drop_2" fill="#e78d1e" layoutX="323.0" layoutY="911.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="29.000000000000227">
+                            <font>
+                                <Font size="32.0" />
+                            </font>
+                        </Text>
+                        <Button id="Create_account" layoutX="245.0" layoutY="919.0" mnemonicParsing="false" onAction="#switchToSignIn" prefHeight="33.0" prefWidth="186.0" styleClass="btnConnexion" stylesheets="@/styles/style.css" text="Se connecter" textFill="#e78d1e">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Button>
+                        <TextField fx:id="firstName_field" layoutX="152.0" layoutY="270.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                        <TextField fx:id="email_field_signup" layoutX="152.0" layoutY="340.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                        <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
+                        <TextField fx:id="number_field" layoutX="152.0" layoutY="410.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <ImageView fx:id="photo_profile_signin" fitHeight="114.0" fitWidth="197.0" layoutX="286.0" layoutY="635.0" pickOnBounds="true" preserveRatio="true" />               </children>
+                </AnchorPane>
+            <AnchorPane fx:id="background_front" maxHeight="1000.0" maxWidth="1900.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" prefWidth="1784.0">
+               <children>
+                  <ImageView fitHeight="1065.0" fitWidth="1882.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/front_background.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="428.0" layoutY="95.0" mnemonicParsing="false" onAction="#SwitchToAcceuil" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Acceuil" />
+                  <Button layoutX="670.0" layoutY="95.0" mnemonicParsing="false" onAction="#SwitchToOffres" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Nos offres" />
+                  <Button layoutX="896.0" layoutY="95.0" mnemonicParsing="false" onAction="#SwitchToForum" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Forum" />
+                  <Button layoutX="1135.0" layoutY="95.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="146.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Support" />
+                  <Button layoutX="1373.0" layoutY="95.0" mnemonicParsing="false" onAction="#SwitchToMonProfile" prefHeight="70.0" prefWidth="161.0" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="Mon profile" />
+                  <ImageView fitHeight="70.0" fitWidth="67.0" layoutX="1717.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/logout-512.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="1692.0" layoutY="85.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="90.0" prefWidth="117.0" style="-fx-background-color: transparent;" />
+                  <AnchorPane fx:id="background_mon_profil" layoutX="58.0" layoutY="209.0" prefHeight="741.0" prefWidth="1751.0" visible="false">
+                     <children>
+                        <ImageView fx:id="photo_profile_front" fitHeight="267.0" fitWidth="429.0" layoutX="35.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true" />
+                        <Separator layoutX="566.0" layoutY="9.0" orientation="VERTICAL" prefHeight="724.0" prefWidth="2.0" />
+                        <Label alignment="CENTER" layoutX="653.0" layoutY="135.0" prefHeight="96.0" prefWidth="127.0" text="Nom:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="1337.0" layoutY="135.0" prefHeight="96.0" prefWidth="127.0" text="Prénom:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="653.0" layoutY="433.0" prefHeight="96.0" prefWidth="127.0" text="E-MAIL:">
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="1331.0" layoutY="423.0" prefHeight="96.0" prefWidth="179.0" text="Télèphone">
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="label_nom" alignment="TOP_LEFT" layoutX="690.0" layoutY="195.0" prefHeight="96.0" prefWidth="179.0" textFill="#e78d1e">
+                           <font>
+                              <Font name="SansSerif Bold" size="33.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labal_prenom" alignment="TOP_LEFT" layoutX="1369.0" layoutY="195.0" prefHeight="96.0" prefWidth="269.0" textFill="#e78d1e">
+                           <font>
+                              <Font name="SansSerif Bold" size="33.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="label_mail" alignment="TOP_LEFT" layoutX="680.0" layoutY="500.0" prefHeight="96.0" prefWidth="442.0" textFill="#e78d1e">
+                           <font>
+                              <Font name="SansSerif Bold" size="33.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labal_tel" alignment="TOP_LEFT" layoutX="1369.0" layoutY="488.0" prefHeight="96.0" prefWidth="226.0" textFill="#e78d1e">
+                           <font>
+                              <Font name="SansSerif Bold" size="33.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="997.0" layoutY="616.0" mnemonicParsing="false" onAction="#SwitchToUpdateUser" prefHeight="40.0" prefWidth="202.0" style="-fx-background-radius: 50px; -fx-font-size: 25px; -fx-font-weight: Bold;" styleClass="submit-button" stylesheets="@styles/style.css" text="Editer profile">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="background_front_forum" layoutX="48.0" layoutY="210.0" prefHeight="753.0" prefWidth="1816.0" />
+                  <AnchorPane fx:id="background_front_offres" layoutX="45.0" layoutY="205.0" prefHeight="759.0" prefWidth="1816.0" />
+                  <AnchorPane fx:id="background_front_acceuil" layoutX="48.0" layoutY="209.0" prefHeight="753.0" prefWidth="1816.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </AnchorPane>
+            <AnchorPane fx:id="Modifier_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
+               <children>
+                  <ImageView fitHeight="162.0" fitWidth="179.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="243.0">
+                     <image>
+                        <Image url="@/images/secondry.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="lastName_field_update" layoutX="152.0" layoutY="191.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <PasswordField fx:id="password_field_update" layoutX="152.0" layoutY="591.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre mot de passe" stylesheets="@/styles/style.css" />
+                  <Button layoutX="209.0" layoutY="814.0" mnemonicParsing="false" onAction="#UpdateUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Confirmer" textFill="#d31818" />
+                  <TextField fx:id="firstName_field_update" layoutX="152.0" layoutY="291.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <TextField fx:id="email_field_update" layoutX="152.0" layoutY="391.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <PasswordField fx:id="password_field_match_update" layoutX="152.0" layoutY="691.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
+                  <TextField fx:id="number_field_update" layoutX="152.0" layoutY="491.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />
+                  <Text fill="#e78d1e" layoutX="41.0" layoutY="76.0" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="↓" textAlignment="CENTER" wrappingWidth="29.000000000000227">
+                     <font>
+                        <Font size="49.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="30.0" layoutY="43.0" mnemonicParsing="false" onAction="#GoBackFront" prefHeight="25.0" prefWidth="46.0" style="-fx-background-color: transparent;" />
+                  <TextField fx:id="fixed_email" layoutX="643.0" layoutY="43.0" prefHeight="25.0" prefWidth="17.0" style="-fx-background-color: transparent;" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0">
+               <children>
+                  <VBox alignment="BOTTOM_LEFT" layoutX="-1.0" layoutY="58.0" maxHeight="1333.0" maxWidth="387.0" minHeight="753.0" minWidth="200.0" prefHeight="1273.0" prefWidth="303.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-1.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;&#10;&#10;&#10;" wrappingWidth="248.5367546081543" />
+                        <ImageView fitHeight="175.0" fitWidth="234.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/secondry.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets left="50.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <VBox prefHeight="987.0" prefWidth="303.0">
+                           <children>
+                              <Button fx:id="bt_menu_dashboard" mnemonicParsing="false" onAction="#changeForum" prefHeight="76.0" prefWidth="303.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="    Dashboard" textAlignment="CENTER" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/dashboard.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="Arial" size="25.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_user" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="333.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  User" textAlignment="CENTER" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/user (1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="Bell MT Bold" size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_hotel" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="326.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Hotel" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/hotel.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_Circuit" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="345.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Circuit" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/motorway.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_vol" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="290.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="     Vol" textFill="WHITE">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/airplane.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_location" layoutX="10.0" layoutY="209.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="350.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text=" Location" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/rental-car.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_forum" layoutX="10.0" layoutY="256.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="329.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="  Forum" textFill="WHITE">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/group.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="0.0" prefWidth="303.0" style="-fx-background-color: transparent;" />
+                              <Button fx:id="bt_menu_offre" layoutX="10.0" layoutY="302.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="70.0" prefWidth="534.0" style="-fx-background-color: transparent;" styleClass="button-front_office-hover" stylesheets="@styles/style.css" text="     Offre" textFill="WHITE">
+                                 <font>
+                                    <Font name="Bell MT" size="20.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/email.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#LogOut_back" prefHeight="90.0" prefWidth="345.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="63.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/pngwing.com (1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <StackPane layoutX="302.0" layoutY="374.0" maxHeight="1000.0" maxWidth="1600.0" minHeight="600.0" minWidth="1000.0" prefHeight="864.0" prefWidth="1392.0">
+                     <children>
+                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="DEMANDE DE &#10;RECLAMATION" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="114.0" prefWidth="260.0" text="    COMPTE BLOQUER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="count_bloque" alignment="CENTER" prefHeight="35.0" prefWidth="383.0" text="2" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="95.0" prefWidth="460.0" text="TOTALE DES CLIENTS" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="count_client" alignment="CENTER" prefHeight="35.0" prefWidth="472.0" text="0" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_hotel" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_Hotel" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="hotel_col_name" prefWidth="100.0" text="Nom" />
+                                    <TableColumn fx:id="hotel_col_location" prefWidth="100.0" text="Localisation" />
+                                    <TableColumn fx:id="hotel_col_phone" prefWidth="100.0" text="Num_telephone" />
+                                    <TableColumn fx:id="hotel_col_email" prefWidth="100.0" text="Email" />
+                                    <TableColumn fx:id="hotel_col_image" prefWidth="100.0" text="Image" />
+                                    <TableColumn fx:id="hotel_col_description" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="hotel_col_modifier" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="hotel_col_supprimer" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField fx:id="page_hotel_chercher" layoutX="985.0" layoutY="43.0" onKeyReleased="#ChercherTableView_hotel" promptText="CHERCHER" styleClass="text-field" />
+                              <Button fx:id="page_hotel_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_hotel_bt_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="page_hotel_refresh" layoutX="442.0" layoutY="23.0" mnemonicParsing="false" onAction="#RefreshTableView_Hotel" prefHeight="29.0" prefWidth="36.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="27.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/return%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <ComboBox fx:id="page_hotel_combo_chercher" layoutX="806.0" layoutY="43.0" onKeyReleased="#ChercherTableView_hotel" prefWidth="150.0" />
+                              <Button fx:id="page_hotel_bt_pdf" layoutX="681.0" layoutY="26.0" mnemonicParsing="false" onAction="#exportTableViewToPDF" prefHeight="35.0" prefWidth="29.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="27.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/return%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_chambre" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_chambre" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="TableView_chambre_type" prefWidth="100.0" text="Type" />
+                                    <TableColumn fx:id="TableView_chambre_prix" prefWidth="100.0" text="Prix" />
+                                    <TableColumn fx:id="TableView_chambre_disponibilite" prefWidth="100.0" text="Disponibilite" />
+                                    <TableColumn fx:id="TableView_chambre_description" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="TableView_chambre_nom_hotel" prefWidth="100.0" text="Nom du Hotel" />
+                                    <TableColumn fx:id="TableView_chambre_modifier" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="TableView_chambre_supprimer" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_chambre_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_chambre_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_acceuil_gestion_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="        CHAMBRE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="35.0" prefWidth="254.0" text="2" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_hotel_go_to_chambre" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="HOTELS" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_hotel_bt_go_to_hotel" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_acceuil_gestion_circuit" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="SESSION" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_gestion_circuit_go_to_session" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="ACTIVITE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_gestion_circuit_go_to_activite" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_acceuil_gestion_location" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="CONTRAT" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_location_go_to_contrat" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 1px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="VEHICULE" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_location_go_to_vehicule" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_vehicule" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_vehicule" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="TableView_vehicule_matricule" prefWidth="100.0" text="MATRICULE" />
+                                    <TableColumn fx:id="TableView_vehicule_status" prefWidth="100.0" text="STATUS" />
+                                    <TableColumn fx:id="TableView_vehicule_nb_place" prefWidth="100.0" text="NBR_PLACE" />
+                                    <TableColumn fx:id="TableView_vehicule_cylindre" prefWidth="100.0" text="CYLINDRE" />
+                                    <TableColumn fx:id="TableView_vehicule_prix" prefWidth="100.0" text="PRIX" />
+                                    <TableColumn fx:id="TableView_vehicule_modifier" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="TableView_vehicule_supprimer" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_vehicule_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_vehicule_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="page_vehicule_refresh" layoutX="415.0" layoutY="25.0" mnemonicParsing="false" onAction="#RefreshTableView_Vehicule" style="-fx-background-color: transparent;" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_contrat" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_contrat" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="TableView_contrat_debut" prefWidth="100.0" text="Date de debut" />
+                                    <TableColumn fx:id="TableView_contrat_fin" prefWidth="100.0" text="Date de fin" />
+                                    <TableColumn fx:id="TableView_contrat_cin" prefWidth="100.0" text="CIN Locateur" />
+                                    <TableColumn fx:id="TableView_contrat_matricule" prefWidth="100.0" text="Matricule du vehicule" />
+                                    <TableColumn fx:id="TableView_contrat_modifier" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="TableView_contrat_supprimer" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_contrat_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_contrat_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_acceuil_gestion_vol" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="CHECKOUT VOL" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="gestion_acceuil_bt_go_to_checkout" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="VOL" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="gestion_acceuil_bt_go_to_vol" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_vol" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="tableViewVols" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="colDeparture" prefWidth="100.0" text="Départ" />
+                                    <TableColumn fx:id="colDestination" prefWidth="100.0" text="Destination" />
+                                    <TableColumn fx:id="colDepartureTime" prefWidth="100.0" text="Heure de départ" />
+                                    <TableColumn fx:id="colArrivalTime" prefWidth="100.0" text="Heure d'arrivée" />
+                                    <TableColumn fx:id="colClasseChaise" prefWidth="100.0" text="Classe de Chaise" />
+                                    <TableColumn fx:id="colAirline" prefWidth="100.0" text="Compagnie aérienne" />
+                                    <TableColumn fx:id="colFlightPrice" prefWidth="100.0" text="Prix du vol" />
+                                    <TableColumn fx:id="colAvailableSeats" prefWidth="100.0" text="Sièges disponibles" />
+                                    <TableColumn fx:id="colDescription" prefWidth="100.0" text="Description" />
+                                    <TableColumn fx:id="colModify" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="colDelete" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_vol_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_vol_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_checkout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Date de reservation" />
+                                    <TableColumn prefWidth="100.0" text="Nb total de passagers" />
+                                    <TableColumn prefWidth="100.0" text="Statut de la réservation" />
+                                    <TableColumn prefWidth="100.0" text="Prix ​​total" />
+                                    <TableColumn prefWidth="100.0" text="Modifier" />
+                                    <TableColumn prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_checkout_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_checkout_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_utilisateur" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_Utilisateur" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="cl_user_nom" prefWidth="100.0" text="nom" />
+                                    <TableColumn fx:id="cl_user_prenom" prefWidth="100.0" text="prenom" />
+                                    <TableColumn fx:id="cl_user_mail" prefWidth="100.0" text="mail" />
+                                    <TableColumn fx:id="cl_user_num_tel" prefWidth="100.0" text="Telephone" />
+                                    <TableColumn fx:id="cl_user_status" prefWidth="100.0" text="status" />
+                                    <TableColumn fx:id="cl_user_bloquer" prefWidth="100.0" text="Bloquer" />
+                                    <TableColumn fx:id="cl_user_debloquer" prefWidth="100.0" text="Debloquer" />
+                                    <TableColumn fx:id="cl_user_supprimer" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_utilisateur_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_acceuil_gestion_forum" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="POST" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_forum_go_to_post" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_RIGHT" layoutX="143.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                                 <children>
+                                    <Label prefHeight="96.0" prefWidth="258.0" text="FORUM" textFill="WHITE">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="#310f76">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="page_acceuil_forum_bt_forum" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@images/arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_chambre" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddChambre" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="chambre_id" layoutX="481.0" layoutY="218.0" prefHeight="33.0" prefWidth="46.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="chambre_description" layoutX="324.0" layoutY="359.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_chambre_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="521.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateChambre" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAMBRE" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="chambre_prix" layoutX="324.0" layoutY="211.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ComboBox fx:id="chambre_type" layoutX="324.0" layoutY="134.0" prefHeight="47.0" prefWidth="359.0" />
+                              <ComboBox fx:id="chambre_disponibilite" layoutX="324.0" layoutY="284.0" prefHeight="47.0" prefWidth="359.0" />
+                              <ComboBox fx:id="chambre_hotel_nom" layoutX="324.0" layoutY="432.0" prefHeight="47.0" prefWidth="359.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_vehicule" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddVehicule" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="page_vehicule_id" layoutX="631.0" layoutY="165.0" prefHeight="33.0" prefWidth="52.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="page_vehicule_matricule" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le matricule" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_vehicule_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="506.0" layoutY="513.0" mnemonicParsing="false" onAction="#UPDATEVoiture" prefHeight="52.0" prefWidth="174.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VEHICULE" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="page_vehicule_status" layoutX="324.0" layoutY="158.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer  status" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="page_vehicule_nb_place" layoutX="324.0" layoutY="218.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le nombre de place" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="page_vehicule_cylindre" layoutX="324.0" layoutY="279.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le cylindre" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="page_vehicule_prix" layoutX="324.0" layoutY="344.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer le prix" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="page_vehicule_image" layoutX="324.0" layoutY="408.0" prefHeight="47.0" prefWidth="359.0" promptText="Entre le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ImageView fx:id="page_vehicule_image_View" fitHeight="175.0" fitWidth="242.0" layoutX="723.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_contrat" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button layoutX="337.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddContrat" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="contrat_id2" layoutX="607.0" layoutY="190.0" prefHeight="38.0" prefWidth="65.0" promptText="Cin locateur" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="contrat_cin" layoutX="338.0" layoutY="98.0" prefHeight="52.0" prefWidth="338.0" promptText="Cin locateur" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_contrat_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="515.0" layoutY="512.0" mnemonicParsing="false" onAction="#UpdateContrat" prefHeight="52.0" prefWidth="161.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CONTRAT" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="contrat_photo_permit" layoutX="338.0" layoutY="337.0" prefHeight="52.0" prefWidth="338.0" promptText="photo de permit" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ComboBox fx:id="contrat_matricule" layoutX="338.0" layoutY="419.0" prefHeight="52.0" prefWidth="338.0" />
+                              <TextField fx:id="contrat_date_debut" layoutX="338.0" layoutY="183.0" prefHeight="52.0" prefWidth="338.0" promptText="Date de Debut" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="contrat_date_fin" layoutX="338.0" layoutY="256.0" prefHeight="52.0" prefWidth="338.0" promptText="Date de fin" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ImageView fx:id="contrat_imageView" fitHeight="212.0" fitWidth="258.0" layoutX="712.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_vol" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button fx:id="Ajouter_Vol" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#addVol" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="tfDeparture" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Départ" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_vol_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VOL" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="tfDestination" layoutX="324.0" layoutY="163.0" prefHeight="47.0" prefWidth="359.0" promptText="Destination" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfDepartureTime" layoutX="324.0" layoutY="234.0" prefHeight="47.0" prefWidth="359.0" promptText="Heure de départ (yyyy-MM-ddTHH:mm)" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfAirline" layoutX="719.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Compagnie aérienne" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfArrivalTime" layoutX="324.0" layoutY="307.0" prefHeight="47.0" prefWidth="359.0" promptText="Heure d'arrivée (yyyy-MM-ddTHH:mm)" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ComboBox fx:id="cbClasseChaise" layoutX="324.0" layoutY="378.0" prefHeight="47.0" prefWidth="359.0" promptText="Classe de Chaise" />
+
+                              <TextField fx:id="tfFlightPrice" layoutX="719.0" layoutY="163.0" prefHeight="47.0" prefWidth="359.0" promptText="Prix du vol" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfAvailableSeats" layoutX="719.0" layoutY="234.0" prefHeight="47.0" prefWidth="359.0" promptText="Sièges disponibles" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="tfDescription" layoutX="719.0" layoutY="307.0" prefHeight="47.0" prefWidth="359.0" promptText="Description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_checkout" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="email_field_signup11111111" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_checkout_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="381.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHECKOUT" wrappingWidth="226.3999999999998">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_activite" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <TextField fx:id="fixed_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" style="-fx-background-color: parent;" styleClass="text-field" />
+                              <Button fx:id="activite_bt_ajouter" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddActivte" prefHeight="52.0" prefWidth="179.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="nom_activite" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="description_activite" layoutX="324.0" layoutY="164.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre Description" />
+                              <TextField fx:id="localisation_activite" layoutX="325.0" layoutY="238.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre localisation" />
+                              <TextField fx:id="type_activite" layoutX="325.0" layoutY="306.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre type" />
+                              <TextField fx:id="prix_activite" layoutX="324.0" layoutY="375.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prix" />
+                              <Button fx:id="page_ajouter_activiter_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="activite_bt_modifier" layoutX="505.0" layoutY="513.0" mnemonicParsing="false" onAction="#Mod_act" prefHeight="52.0" prefWidth="179.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ACTIVITE" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_session" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_Session" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1169.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1076.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="sess_col_nomact" prefWidth="135.0" text="NOM ACTIVITE" />
+                                    <TableColumn fx:id="sess_col_date" prefWidth="130.0" text="DATE" />
+                                    <TableColumn fx:id="sess_col_time" prefWidth="100.0" text="TIME" />
+                                    <TableColumn fx:id="sess_col_capacite" prefWidth="157.0" text="CAPACITE" />
+                                    <TableColumn fx:id="sess_col_nbrplace" prefWidth="151.0" text="NBR_PLACE" />
+                                    <TableColumn fx:id="sess_col_mod" prefWidth="128.0" text="Modifier" />
+                                    <TableColumn fx:id="sess_col_supp" prefWidth="147.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_session_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_session_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_post" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="email_field_signup1111111111" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_post_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="619.0" layoutY="512.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="381.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="POST" wrappingWidth="226.3999999999998">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_activite" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="TableView_Activite" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" tableMenuButtonVisible="true">
+                                 <columns>
+                                    <TableColumn fx:id="act_col_nom" prefWidth="100.0" text="NOM" />
+                                    <TableColumn fx:id="act_col_desc" prefWidth="100.0" text="DESCRIPTION" />
+                                    <TableColumn fx:id="act_col_loc" prefWidth="100.0" text="LOCALISATION" />
+                                    <TableColumn fx:id="act_col_type" prefWidth="100.0" text="TYPE" />
+                                    <TableColumn fx:id="act_col_prix" prefWidth="100.0" text="PRIX" />
+                                    <TableColumn fx:id="act_col_mod" prefWidth="100.0" text="Modifier" />
+                                    <TableColumn fx:id="act_col_supp" prefWidth="100.0" text="Supprimer" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_activite_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_activite_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_session" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <DatePicker fx:id="fixed_nom_sess" layoutX="347.0" layoutY="204.0" />
+                              <Button fx:id="session_bt_ajouter" layoutX="324.0" layoutY="513.0" mnemonicParsing="false" onAction="#AddSession" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <Button fx:id="page_ajouter_session_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="sessio_bt_modifier" layoutX="514.0" layoutY="513.0" mnemonicParsing="false" onAction="#Mod_sess" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="379.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SESSION" wrappingWidth="202.39999999999986">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker fx:id="date_sess" layoutX="324.0" layoutY="195.0" prefHeight="43.0" prefWidth="372.0" promptText="Entre la date du session" />
+                              <ComboBox fx:id="combo_activite" layoutX="324.0" layoutY="107.0" prefHeight="43.0" prefWidth="372.0" promptText="Choisir votre actvité" />
+                              <TextField fx:id="time_sess" layoutX="324.0" layoutY="267.0" prefHeight="47.0" prefWidth="372.0" promptText="Entre l'heure du session" />
+                              <TextField fx:id="sess_cap" layoutX="324.0" layoutY="343.0" prefHeight="47.0" prefWidth="372.0" promptText="Entre la capacité du session" />
+                              <TextField fx:id="sess_nbr_places" layoutX="324.0" layoutY="424.0" prefHeight="47.0" prefWidth="372.0" promptText="Entrer le nombre du places du session" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_hotel" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button fx:id="hotel_bt_ajouter" layoutX="324.0" layoutY="528.0" mnemonicParsing="false" onAction="#AddHotel" prefHeight="52.0" prefWidth="174.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818" />
+                              <TextField fx:id="hotel_nom" layoutX="324.0" layoutY="94.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le nom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_id" layoutX="480.0" layoutY="168.0" prefHeight="33.0" prefWidth="118.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <Button fx:id="page_ajouter_hotel_return" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="hotel_bt_modifier" layoutX="503.0" layoutY="528.0" mnemonicParsing="false" onAction="#UPDATEHotel" prefHeight="52.0" prefWidth="186.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Modifier" textFill="#d31818" />
+                              <Text fill="#e78d1e" layoutX="377.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hotel" wrappingWidth="126.800048828125">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="hotel_localisation" layoutX="324.0" layoutY="161.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le localisation" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_num_tel" layoutX="324.0" layoutY="237.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le numero de telephone" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_email" layoutX="324.0" layoutY="309.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_image" layoutX="324.0" layoutY="384.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le image" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <TextField fx:id="hotel_description" layoutX="324.0" layoutY="447.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrez le description" styleClass="text-field" stylesheets="@/styles/style.css" />
+                              <ImageView fx:id="hotel_imageView" fitHeight="175.0" fitWidth="242.0" layoutX="725.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_post" prefHeight="806.0" prefWidth="1403.0">
+                           <children>
+                              <SplitPane dividerPositions="0.7" layoutX="64.0" layoutY="7.0" minWidth="-Infinity" prefHeight="734.0" prefWidth="1325.0" snapToPixel="false" stylesheets="@/styles/stylesFP.css">
+                                 <items>
+                                    <TabPane fx:id="leftTabPane" prefWidth="864.0" tabClosingPolicy="UNAVAILABLE" visible="true">
+                                       <tabs>
+                                          <Tab text="Posts">
+                                             <content>
+                                                <VBox spacing="10">
+                                                   <padding>
+                                                      <Insets />
+                                                   </padding>
+                                                   <children>
+                                                      <HBox alignment="CENTER_RIGHT" spacing="10" />
+                                                      <ScrollPane fx:id="postsContainer" fitToWidth="true" maxWidth="-Infinity" prefWidth="902.0" VBox.vgrow="ALWAYS">
+                                                         <content>
+                                                            <VBox fx:id="postsVBox" alignment="TOP_CENTER" maxWidth="-Infinity" prefWidth="850.0" spacing="15" />
+                                                         </content>
+                                                         <VBox.margin>
+                                                            <Insets left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </Tab>
+                                          <Tab text="Comments">
+                                             <content>
+                                                <VBox spacing="10">
+                                                   <children>
+                                                      <Button fx:id="backButton" onAction="#handleBackButton" prefHeight="37.0" prefWidth="107.0" styleClass="submit-button" text="← Back to Posts">
+                                                         <padding>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </padding>
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                      </Button>
+                                                      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="643.0" prefWidth="909.0">
+                                                         <content>
+                                                            <VBox prefHeight="644.0" prefWidth="911.0">
+                                                               <children>
+                                                                  <VBox fx:id="postDetailsBox" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="404.0" prefWidth="922.0" spacing="10" styleClass="post-details">
+                                                                     <VBox.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </VBox.margin>
+                                                                  </VBox>
+                                                                  <VBox spacing="5">
+                                                                     <children>
+                                                                        <TextArea fx:id="newCommentField" prefHeight="38.0" prefWidth="902.0" promptText="Write a comment...">
+                                                                           <VBox.margin>
+                                                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                           </VBox.margin>
+                                                                        </TextArea>
+                                                                        <Label fx:id="commentErrorLabel" prefHeight="17.0" prefWidth="901.0" styleClass="error-label">
+                                                                           <VBox.margin>
+                                                                              <Insets left="10.0" />
+                                                                           </VBox.margin>
+                                                                        </Label>
+                                                                        <Button fx:id="addCommentButton" onAction="#handleAddComment" prefHeight="25.0" prefWidth="913.0" styleClass="submit-button" text="Add Comment">
+                                                                           <VBox.margin>
+                                                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                           </VBox.margin>
+                                                                        </Button>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <VBox fx:id="commentsVBox" prefHeight="77.0" prefWidth="920.0" spacing="10">
+                                                                     <VBox.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </VBox.margin>
+                                                                  </VBox>
+                                                               </children>
+                                                            </VBox>
+                                                         </content>
+                                                      </ScrollPane>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </Tab>
+                                       </tabs>
+                                    </TabPane>
+                                    <TabPane fx:id="rightTabPane" styleClass="white-label">
+                                       <tabs>
+                                          <Tab closable="false" text="Forum Info">
+                                             <content>
+                                                <VBox spacing="10">
+                                                   <children>
+                                                      <ComboBox fx:id="forumComboBox" maxWidth="Infinity" promptText="Select Forum">
+                                                         <VBox.margin>
+                                                            <Insets left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin></ComboBox>
+                                                      <VBox fx:id="forumInfoBox" spacing="5">
+                                                         <children>
+                                                            <TextArea fx:id="forumDescription" disable="true" editable="false" wrapText="true">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                               </VBox.margin></TextArea>
+                                                            <HBox spacing="10">
+                                                               <children>
+                                                                  <VBox>
+                                                                     <children>
+                                                                        <Label fx:id="forumPrivacyLabel" styleClass="white-label">
+                                                                           <font>
+                                                                              <Font size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label fx:id="forumDateLabel" styleClass="white-label">
+                                                                           <font>
+                                                                              <Font size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                     </children>
+                                                                  </VBox>
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                                                               </VBox.margin>
+                                                            </HBox>
+                                                            <Label fx:id="memberCountLabel" styleClass="white-label">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                                                               </VBox.margin>
+                                                               <font>
+                                                                  <Font size="19.0" />
+                                                               </font></Label>
+                                                            <VBox fx:id="membersSection" visible="false">
+                                                               <children>
+                                                                  <ListView fx:id="membersListViewFP" prefHeight="100" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                               </VBox.margin>
+                                                            </VBox>
+                                                            <Button fx:id="addPostButton" mnemonicParsing="false" onAction="#handleAddPostButton" prefHeight="52.0" prefWidth="394.0" styleClass="submit-button" text="Ajouter Post">
+                                                               <VBox.margin>
+                                                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                               </VBox.margin></Button>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </Tab>
+                                          <Tab closable="false" text="Add Post">
+                                             <content>
+                                                <VBox spacing="10">
+                                                   <children>
+                                                      <Button fx:id="submitPostButton" mnemonicParsing="false" onAction="#handleBackLeft" styleClass="submit-button" text="← Back">
+                                                         <VBox.margin>
+                                                            <Insets left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin></Button>
+                                                      <ComboBox fx:id="postTypeComboBox" prefHeight="33.0" prefWidth="393.0" promptText="Select Post Type">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin></ComboBox>
+                                                      <ScrollPane fitToWidth="true">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                         <content>
+                                                            <StackPane>
+                                                               <children>
+                                                                  <VBox fx:id="announcementFields" spacing="5" visible="false">
+                                                                     <children>
+                                                                        <TextField fx:id="announcementUserField" promptText="User Email" />
+                                                                        <Label fx:id="announcementUserErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="announcementTitleField" promptText="Title" />
+                                                                        <Label fx:id="titleErrorLabel" styleClass="error-label" />
+                                                                        <TextArea fx:id="announcementContentField" promptText="Content" />
+                                                                        <Label fx:id="contentErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="announcementTagsField" promptText="Tags (comma-separated)" />
+                                                                        <Label fx:id="tagsErrorLabel" styleClass="error-label" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="announcementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+                                                                              <Button onAction="#handleBrowseAnnouncementFile" text="Browse" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <Label fx:id="announcementFileErrorLabel" styleClass="error-label" />
+                                                                        <ComboBox fx:id="announcementStatusComboBox" promptText="Status">
+                                                                           <items>
+                                                                              <FXCollections fx:factory="observableArrayList" />
+                                                                           </items>
+                                                                        </ComboBox>
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </StackPane.margin>
+                                                                  </VBox>
+                                                                  <VBox fx:id="surveyFields" prefHeight="300.0" spacing="5" visible="false">
+                                                                     <children>
+                                                                        <TextField fx:id="surveyAuthorField" promptText="User Email" />
+                                                                        <Label fx:id="surveyAuthorErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="surveyQuestionField" promptText="Question" />
+                                                                        <Label fx:id="questionErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="surveyTagsField" promptText="Tags (comma-separated)" />
+                                                                        <Label fx:id="surveyTagsErrorLabel" styleClass="error-label" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="choiceField" promptText="Enter choice" />
+                                                                              <Button fx:id="addChoiceButton" disable="true" onAction="#handleAddChoice" text="+" />
+                                                                           </children>
+                                                                           <VBox.margin>
+                                                                              <Insets bottom="1.0" top="1.0" />
+                                                                           </VBox.margin>
+                                                                        </HBox>
+                                                                        <Label fx:id="choiceErrorLabel" prefWidth="348.0" styleClass="error-label" />
+                                                                        <ListView fx:id="choicesListView" prefHeight="100">
+                                                                           <VBox.margin>
+                                                                              <Insets right="10.0" />
+                                                                           </VBox.margin>
+                                                                        </ListView>
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="surveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+                                                                              <Button onAction="#handleBrowseSurveyFile" text="Browse" />
+                                                                           </children>
+                                                                           <VBox.margin>
+                                                                              <Insets bottom="1.0" top="1.0" />
+                                                                           </VBox.margin>
+                                                                        </HBox>
+                                                                        <Label fx:id="surveyFileErrorLabel" styleClass="error-label" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="surveyUserField" promptText="Add user email" HBox.hgrow="ALWAYS" />
+                                                                              <Button fx:id="addSurveyUserButton" disable="true" onAction="#handleAddSurveyUser" text="+" />
+                                                                           </children>
+                                                                           <VBox.margin>
+                                                                              <Insets bottom="1.0" top="1.0" />
+                                                                           </VBox.margin>
+                                                                        </HBox>
+                                                                        <Label fx:id="surveyUserErrorLabel" styleClass="error-label" />
+                                                                        <ListView fx:id="surveyUsersListView" prefHeight="100">
+                                                                           <VBox.margin>
+                                                                              <Insets right="10.0" />
+                                                                           </VBox.margin>
+                                                                        </ListView>
+                                                                        <ComboBox fx:id="surveyStatusComboBox" prefHeight="25.0" prefWidth="351.0" promptText="Status">
+                                                                           <items>
+                                                                              <FXCollections fx:factory="observableArrayList">
+                                                                                 <String fx:value="active" />
+                                                                                 <String fx:value="inactive" />
+                                                                              </FXCollections>
+                                                                           </items>
+                                                                        </ComboBox>
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </StackPane.margin>
+                                                                  </VBox>
+                                                               </children>
+                                                            </StackPane>
+                                                         </content>
+                                                      </ScrollPane>
+                                                      <Button fx:id="submitPostButton1" layoutX="20.0" layoutY="640.0" mnemonicParsing="false" onAction="#handleSubmitPost" prefHeight="52.0" prefWidth="394.0" styleClass="submit-button" text="Ajouter">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" />
+                                                         </VBox.margin>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </Tab>
+                                          <Tab fx:id="editTab" closable="false" text="Modifier Post">
+                                             <content>
+                                                <VBox spacing="10">
+                                                   <children>
+                                                      <Button fx:id="submitPostButton2" mnemonicParsing="false" onAction="#handleBackLeft" styleClass="submit-button" text="← Back">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                      </Button>
+                                                      <ScrollPane fitToWidth="true">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin>
+                                                         <content>
+                                                            <StackPane>
+                                                               <children>
+                                                                  <VBox fx:id="editAnnouncementFields" spacing="5" visible="false">
+                                                                     <children>
+                                                                        <TextField fx:id="editAnnouncementUserField" promptText="User Email" />
+                                                                        <Label fx:id="editAnnouncementUserErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="editAnnouncementTitleField" promptText="Title" />
+                                                                        <Label fx:id="editTitleErrorLabel" styleClass="error-label" />
+                                                                        <TextArea fx:id="editAnnouncementContentField" promptText="Content" />
+                                                                        <Label fx:id="editContentErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="editAnnouncementTagsField" promptText="Tags (comma-separated)" />
+                                                                        <Label fx:id="editTagsErrorLabel" styleClass="error-label" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="editAnnouncementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+                                                                              <Button onAction="#handleBrowseFile" text="Browse" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <Label fx:id="editAnnouncementFileErrorLabel" styleClass="error-label" />
+                                                                        <ComboBox fx:id="editAnnouncementStatusComboBox" promptText="Status">
+                                                                           <items>
+                                                                              <FXCollections fx:factory="observableArrayList">
+                                                                                 <String fx:value="active" />
+                                                                                 <String fx:value="inactive" />
+                                                                              </FXCollections>
+                                                                           </items>
+                                                                        </ComboBox>
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </StackPane.margin>
+                                                                  </VBox>
+                                                                  <VBox fx:id="editSurveyFields" spacing="5" visible="false">
+                                                                     <children>
+                                                                        <TextField fx:id="editSurveyAuthorField" promptText="User Email" />
+                                                                        <Label fx:id="editSurveyAuthorErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="editSurveyQuestionField" promptText="Question" />
+                                                                        <Label fx:id="editSurveyQuestionErrorLabel" styleClass="error-label" />
+                                                                        <TextField fx:id="editSurveyTagsField" promptText="Tags (comma-separated)" />
+                                                                        <Label fx:id="editSurveyTagsErrorLabel" styleClass="error-label" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="editChoiceField" promptText="Enter choice" />
+                                                                              <Button fx:id="editAddChoiceButton" disable="true" onAction="#handleAddEditChoice" text="+" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <Label fx:id="editChoiceErrorLabel" styleClass="error-label" />
+                                                                        <ListView fx:id="editChoicesListView" prefHeight="100" />
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="editSurveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+                                                                              <Button onAction="#handleBrowseFile" text="Browse" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <Label fx:id="editSurveyFileErrorLabel" styleClass="error-label" />
+                                                                        <ComboBox fx:id="editSurveyStatusComboBox" promptText="Status">
+                                                                           <items>
+                                                                              <FXCollections fx:factory="observableArrayList">
+                                                                                 <String fx:value="active" />
+                                                                                 <String fx:value="inactive" />
+                                                                              </FXCollections>
+                                                                           </items>
+                                                                        </ComboBox>
+                                                                        <HBox spacing="5">
+                                                                           <children>
+                                                                              <TextField fx:id="editSurveyUserField" promptText="Add user email" HBox.hgrow="ALWAYS" />
+                                                                              <Button fx:id="editAddSurveyUserButton" disable="true" onAction="#handleAddEditSurveyUser" text="+" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <Label fx:id="editSurveyUserErrorLabel" styleClass="error-label" />
+                                                                        <ListView fx:id="editSurveyUsersListView" prefHeight="100" />
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                                     </StackPane.margin>
+                                                                  </VBox>
+                                                               </children>
+                                                            </StackPane>
+                                                         </content>
+                                                      </ScrollPane>
+                                                      <Button fx:id="updatePostButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleUpdatePost" prefHeight="52.0" prefWidth="394.0" styleClass="submit-button" text="Modifier">
+                                                         <VBox.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </VBox.margin></Button>
+                                                   </children>
+                                                </VBox>
+                                             </content>
+                                          </Tab>
+                                       </tabs>
+                                    </TabPane>
+                                 </items>
+                              </SplitPane>
+                              <Button fx:id="page_post_retour" layoutX="23.0" layoutY="23.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_ajouter_forum" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
+                           <children>
+                              <Button fx:id="addForumButton" layoutX="329.0" layoutY="572.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="214.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="Ajouter" textFill="#d31818">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font></Button>
+                              <Button fx:id="page_ajouter_forum_retour" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Text fill="#e78d1e" layoutX="323.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FORUM" textAlignment="CENTER" wrappingWidth="226.3999999999998">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                              <GridPane hgap="10" layoutX="165.0" layoutY="113.0" snapToPixel="false" vgap="10">
+                                 <columnConstraints>
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
+                                 <children>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                       <children>
+                                          <TextField fx:id="nameField" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre Nom et Prenom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                                          <Label fx:id="nameErrorLabel" styleClass="error-label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <TextField fx:id="createdByField" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                                          <Label fx:id="emailErrorLabel" styleClass="error-label" />
+                                       </children>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <TextField fx:id="descriptionField" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre Nom et Prenom" styleClass="text-field" stylesheets="@/styles/style.css" />
+                                          <Label fx:id="descriptionErrorLabel" styleClass="error-label" />
+                                       </children>
+                                    </VBox>
+                                    <CheckBox fx:id="isPrivateCheckBox" prefHeight="17.0" prefWidth="19.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <HBox alignment="CENTER" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <children>
+                                          <ListView fx:id="membersListView" disable="true" prefHeight="115.0" prefWidth="548.0" />
+                                       </children>
+                                    </HBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <children>
+                                          <TextField fx:id="memberEmailField" disable="true" prefHeight="47.0" prefWidth="548.0" promptText="Entrer Member email" styleClass="text-field" stylesheets="@/styles/style.css" />
+                                          <Label fx:id="memberEmailErrorLabel" styleClass="error-label" />
+                                       </children>
+                                    </VBox>
+                                    <Button fx:id="addMemberButton" disable="true" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="66.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="+" textFill="#d31818" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font name="System Bold" size="24.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="page_forum" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <TableView fx:id="forumTableView" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@../../../../../../Users/nnaga/OneDrive/Desktop/Projet_Pidev/src/main/resources/styles/style.css" tableMenuButtonVisible="true">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn fx:id="forumIdColumn" prefWidth="75.0" text="Forum ID" visible="false" />
+                                    <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name" />
+                                    <TableColumn fx:id="createdByColumn" prefWidth="100.0" text="Created By" />
+                                    <TableColumn fx:id="postCountColumn" prefWidth="100.0" text="Post Count" />
+                                    <TableColumn fx:id="membersColumn" prefWidth="75.0" text="Members" />
+                                    <TableColumn fx:id="descriptionColumn" prefWidth="150.0" text="Description" />
+                                    <TableColumn fx:id="dateColumn" prefWidth="150.0" text="Date Created" />
+                                    <TableColumn fx:id="privateColumn" prefWidth="75.0" text="Private" />
+                                 </columns>
+                              </TableView>
+                              <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
+                              <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
+                              <Button fx:id="page_forum_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button2" stylesheets="@../../../../../../Users/nnaga/OneDrive/Desktop/Projet_Pidev/src/main/resources/styles/style.css" text="Ajouter" />
+                              <Button fx:id="page_forum_retour" layoutX="23.0" layoutY="23.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../../../Users/nnaga/OneDrive/Desktop/Projet_Pidev/src/main/resources/images/back-button.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+                
+
+
+            </children>
+        </StackPane>
+    </children>
+</VBox>

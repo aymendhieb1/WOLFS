@@ -79,4 +79,73 @@ public class HotelService implements IService<Hotel> {
 
         return hot;
     }
+<<<<<<< Updated upstream
+=======
+
+    public int ChercherId(String email) {
+        String req = "SELECT id_hotel FROM hotel WHERE email_hotel = ?";
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setString(1, email);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_hotel");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return 0;
+    }
+    public int getIdHotelBynom(String nom) {
+        Chambre chambre = null;
+        String sql = "SELECT (id_hotel) FROM hotel WHERE nom_hotel = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, nom);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                System.out.println(rs.getInt("id_hotel"));
+                return rs.getInt("id_hotel");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public String getnomHotelByid(int id) {
+        Chambre chambre = null;
+        String sql = "SELECT (nom_hotel) FROM hotel WHERE id_hotel = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nom_hotel");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    public List<Hotel> chercher(String column , String text) {
+        List<Hotel> hot = new ArrayList<>();
+
+        String req = "SELECT * FROM hotel WHERE "+column+" Like '%"+text+"%'";
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(req);
+            while (rs.next()) {
+                hot.add(new Hotel(rs.getInt("id_hotel"), rs.getString("nom_hotel"), rs.getString("localisation_hotel"), rs.getString("num_telephone_hotel"), rs.getString("email_hotel"), rs.getString("image_hotel"), rs.getString("description_hotel")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return hot;
+    }
+>>>>>>> Stashed changes
 }

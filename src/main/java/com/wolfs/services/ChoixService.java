@@ -3,7 +3,14 @@ package com.wolfs.services;
 import com.wolfs.models.Choix;
 import com.wolfs.utils.DataSource;
 
+<<<<<<< Updated upstream
 import java.sql.*;
+=======
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +102,10 @@ public class ChoixService implements IService<Choix> {
         return choixList;
     }
 
+<<<<<<< Updated upstream
     @Override
+=======
+>>>>>>> Stashed changes
     public void afficher() {
         List<Choix> choixList = rechercher();
         System.out.println("📜 All Choices:");

@@ -813,7 +813,7 @@ private TableView<Vol> tableViewVols;
 
 
 
-        setCircularImage("images//user_icon_001.jpg");
+        setCircularImage("images/user_icon_001.jpg");
 
          photo_profile_signin.setOnMouseClicked(this::handleImageClick);
 
@@ -2102,7 +2102,9 @@ private TableView<Vol> tableViewVols;
         } else {
             Client newClient = new Client(nomField.getText(), prenomField.getText(), email, hashedPassword, Integer.parseInt(number), 2, 0,  photo_profile_signin.getImage().getUrl());
             C1.ajouterUser(newClient);
-
+            //NEW
+            EmailService.sendWelcomeEmail(email);
+            //
             showAlert("Confirmation", "Votre compte a été créé", Alert.AlertType.INFORMATION);
             switchToSignIn();
             RefreshTableView_User();
@@ -3939,11 +3941,7 @@ private TableView<Vol> tableViewVols;
 
         if (cLient != null) {
              codeEnvoye = genererCodeVerification();
-
-
-            // Envoyer le mail avec le code
-            EmailService.sendEmail(email, "Réinitialisation de mot de passe",
-                    "Votre code de réinitialisation : " + codeEnvoye + "\n\nCe code est valable pour une durée limitée.");
+            EmailService.sendPasswordResetEmail(email, codeEnvoye);
             startCountdown(60);
             showAlert("Succès", "Un email avec un code de réinitialisation a été envoyé.", Alert.AlertType.INFORMATION);
             animateTransition(forget_password,forget_password_reset,0);

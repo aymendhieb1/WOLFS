@@ -63,7 +63,7 @@
                   </Button>
                </children>
             </AnchorPane>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
+                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -78,10 +78,7 @@
                             </image>
                         </ImageView>
                         <TextField fx:id="text_field_mdp" layoutX="152.0" layoutY="308.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer mot de passe" styleClass="text-field" stylesheets="@/styles/style.css" visible="false" />
-                        <Button id="mdp_oublié" layoutX="234.0" layoutY="384.0" mnemonicParsing="false"
-                                onAction="#GoToForgetPassword" prefHeight="35.0" prefWidth="197.0"
-                                styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?"
-                                textFill="#e78d1e">
+                        <Button id="mdp_oublié" layoutX="234.0" layoutY="384.0" mnemonicParsing="false" onAction="#GoToForgetPassword" prefHeight="35.0" prefWidth="197.0" styleClass="button-hover" stylesheets="@/styles/style.css" text="Mot de passe oublié?" textFill="#e78d1e">
                             <font>
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
@@ -104,10 +101,7 @@
                             </font>
                         </Button>
                   <Button layoutX="527.0" layoutY="311.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" prefHeight="35.0" prefWidth="52.0" style="-fx-background-color: transparent;" />
-                        <Button fx:id="google_button_signin" layoutX="81.0" layoutY="590.0" mnemonicParsing="false"
-                                onAction="#handleGoogleAuth" prefHeight="60.0" prefWidth="501.0"
-                                styleClass="google-auth-button" stylesheets="@styles/style.css"
-                                text="       Se connecter via google">
+                  <Button fx:id="google_button_signin" layoutX="81.0" layoutY="590.0" mnemonicParsing="false" onAction="#handleGoogleAuth" prefHeight="60.0" prefWidth="501.0" styleClass="google-auth-button" stylesheets="@styles/style.css" text="       Se connecter via google">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -249,7 +243,7 @@
                   <TextField fx:id="fixed_email" layoutX="643.0" layoutY="43.0" prefHeight="25.0" prefWidth="17.0" style="-fx-background-color: transparent;" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0" visible="false">
+            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0" style="-fx-background-color: white;">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-1.0" layoutY="58.0" maxHeight="1333.0" maxWidth="387.0" minHeight="753.0" minWidth="200.0" prefHeight="1273.0" prefWidth="303.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-1.0">
                      <children>

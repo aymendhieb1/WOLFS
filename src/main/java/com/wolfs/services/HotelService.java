@@ -147,5 +147,8 @@ public class HotelService implements IService<Hotel> {
 
         return hot;
     }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

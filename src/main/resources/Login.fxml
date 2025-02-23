@@ -1331,7 +1331,11 @@
                                                                         <Label fx:id="tagsErrorLabel" styleClass="error-label" />
                                                                         <HBox spacing="5">
                                                                            <children>
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="announcementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="announcementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
                                                                               <Button onAction="#handleBrowseAnnouncementFile" text="Browse" />
                                                                            </children>
                                                                         </HBox>
@@ -1371,7 +1375,11 @@
                                                                         </ListView>
                                                                         <HBox spacing="5">
                                                                            <children>
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="surveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="surveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
                                                                               <Button onAction="#handleBrowseSurveyFile" text="Browse" />
                                                                            </children>
                                                                            <VBox.margin>
@@ -1448,7 +1456,11 @@
                                                                         <Label fx:id="editTagsErrorLabel" styleClass="error-label" />
                                                                         <HBox spacing="5">
                                                                            <children>
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="editAnnouncementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="editAnnouncementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
                                                                               <Button onAction="#handleBrowseFile" text="Browse" />
                                                                            </children>
                                                                         </HBox>
@@ -1484,7 +1496,11 @@
                                                                         <ListView fx:id="editChoicesListView" prefHeight="100" />
                                                                         <HBox spacing="5">
                                                                            <children>
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="editSurveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="editSurveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
                                                                               <Button onAction="#handleBrowseFile" text="Browse" />
                                                                            </children>
                                                                         </HBox>

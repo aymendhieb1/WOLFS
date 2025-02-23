@@ -156,4 +156,24 @@ public class ForumService implements IService<Forum> {
         return "Unknown User";
     }
 
+<<<<<<< Updated upstream
+=======
+    public String getUserFullNameById(int userId) {
+        String sql = "SELECT prenom, nom FROM User WHERE id_user = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("prenom") + " " + rs.getString("nom");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving full name by user ID: " + e.getMessage());
+        }
+        return "Unknown User";
+    }
+
+
+>>>>>>> Stashed changes
 }

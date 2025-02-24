@@ -91,12 +91,65 @@
     -fx-border-color: transparent transparent #E78D1E transparent;
     -fx-border-width: 0 0 2px 0;
 }
-.table-view .column-header .label {
-    -fx-text-fill: white;
+
+/* Style général pour l'en-tête de la colonne */
+.table-view .column-header .label,
+.table-view2 .column-header .label {
     -fx-font-weight: bold;
     -fx-font-size: 14px;
-    -fx-background-color: #E78D1E;
+    -fx-text-fill: white;
+    -fx-padding: 8px;
+    -fx-alignment: center;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 5);
+    -fx-background-color: #E78D1E; /* Default background color for table-view */
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-transition: background-color 0.3s ease, border-color 0.3s ease;
 }
+
+/* Style spécifique pour la table-view2 */
+.table-view2 .column-header .label {
+    -fx-background-color: #132a3e; /* Dark blue color */
+    -fx-border-color: #1E4C68; /* Lighter border to match the theme */
+}
+
+/* Effet de survol : couleur de fond changeante et bordure */
+.table-view .column-header .label:hover,
+.table-view2 .column-header .label:hover {
+    -fx-background-color: #F5B15C; /* Lighter color for hover effect */
+    -fx-border-color: #E78D1E; /* Highlight border on hover */
+}
+
+/* Effet d'ombre sur les labels */
+.table-view .column-header .label:hover,
+.table-view2 .column-header .label:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 15, 0, 0, 5);
+}
+
+/* Focus sur le label */
+.table-view .column-header .label:focused,
+.table-view2 .column-header .label:focused {
+    -fx-background-color: #F5B15C;
+    -fx-border-color: #E78D1E;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 12, 0, 0, 5);
+}
+
+/* Style pour les bordures */
+.table-view .column-header,
+.table-view2 .column-header {
+    -fx-border-color: #E78D1E; /* En-tête avec bordure colorée */
+    -fx-border-width: 0 0 2px 0;
+}
+
+/* Ajout d'ombre sur la ligne de l'en-tête */
+.table-view .column-header,
+.table-view2 .column-header {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0, 0, 5);
+}
+
 .table-view2 .column-header .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -104,6 +157,52 @@
     -fx-background-color: #132a3e;
     -fx-border-color: #132a3e;
 }
+
+/* Style général des cellules */
+.table-view2 .cell {
+    -fx-font-size: 15px; /* Police légèrement plus grande pour plus de confort */
+    -fx-padding: 10px 10px; /* Espacement vertical (haut et bas) de 5px et espacement horizontal de 10px */
+    -fx-alignment: center; /* Centrer le texte dans les cellules */
+    -fx-background-color: #ffffff; /* Fond blanc pour la clarté */
+    -fx-border-color: #f0f0f0; /* Bordure très fine et discrète */
+    -fx-border-width: 1px;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Lignes impaires (fond alternatif pour la lisibilité) */
+.table-view2 .row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Fond gris très clair pour les lignes impaires */
+    -fx-text-fill: #333333; /* Texte sombre pour une bonne lisibilité */
+}
+
+/* Lignes paires */
+.table-view2 .row-cell:even {
+    -fx-background-color: #ffffff; /* Fond blanc pour les lignes paires */
+    -fx-text-fill: #333333; /* Texte sombre pour la lisibilité */
+}
+
+/* Effet de survol pour les lignes */
+.table-view2 .row-cell:hover {
+    -fx-background-color: #e6e6e6; /* Fond gris clair au survol pour indiquer l'interaction */
+    -fx-cursor: hand; /* Changer le curseur pour pointer la ligne */
+    -fx-effect: dropshadow(gaussian, #888888, 5, 0.3, 0, 0); /* Ombre douce au survol */
+}
+
+
+/* Effet de focus sur l'en-tête de colonne */
+.table-view2 .column-header .label {
+    -fx-background-color: #132a3e; /* Fond bleu foncé pour l'en-tête */
+    -fx-text-fill: white; /* Texte blanc sur fond sombre */
+    -fx-font-size: 16px; /* Texte un peu plus grand pour les en-têtes */
+    -fx-font-weight: bold; /* En-tête en gras pour plus de visibilité */
+    -fx-border-radius: 4px; /* Coins arrondis pour une interface plus douce */
+}
+
+/* Couleur d'arrière-plan pour la ligne active ou sélectionnée */
+.table-view2 .focused .column-header .label {
+    -fx-background-color: #e78d1e; /* Changer l'arrière-plan en doré au focus */
+}
+
 .google-auth-button {
     -fx-background-color: #4285F4; /* Couleur de fond bleue Google */
     -fx-text-fill: white; /* Texte en blanc */
@@ -129,6 +228,7 @@
         -fx-fill: white;
     }
 }
+
 
 
 

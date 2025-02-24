@@ -85,8 +85,6 @@
         </dependency>
 
 
-
-
         <!-- JavaFX Dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -102,6 +100,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>20.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>21</version>
         </dependency>
 
 
@@ -135,8 +138,16 @@
             <version>1.43.3</version>
         </dependency>
 
-
-
+        <dependency>
+            <groupId>com.restfb</groupId>
+            <artifactId>restfb</artifactId>
+            <version>2.26.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
 
 
     </dependencies>
@@ -152,7 +163,6 @@
 
                 <configuration>
                     <mainClass>com.wolfs.tests.Projet</mainClass>
-
                 </configuration>
             </plugin>
 

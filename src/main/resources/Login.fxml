@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -63,7 +64,9 @@
                   </Button>
                </children>
             </AnchorPane>
-                <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;" visible="false">
+               <AnchorPane fx:id="Se_connecter_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                           minWidth="-Infinity" prefHeight="842.0" prefWidth="662.0"
+                           style="-fx-background-color: #132a3e; -fx-effect: dropshadow(gaussian, rgba(19, 42, 62, 0.5), 20, 0, 0, 0); -fx-background-radius: 10px;">
                     <children>
                         <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
                             <image>
@@ -113,13 +116,12 @@
                 </AnchorPane>
                 <AnchorPane fx:id="Sinscrire_page" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="983.0" prefWidth="662.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" visible="false">
                     <children>
-                        <ImageView fitHeight="180.0" fitWidth="197.0" layoutX="233.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="232.0">
-                            <image>
-                                <Image url="@/images/secondry.png" />
-                            </image>
-                        </ImageView>
-                        <TextField fx:id="lastName_field" layoutX="152.0" layoutY="200.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field" stylesheets="@/styles/style.css" />
-                        <PasswordField fx:id="password_field_signup" layoutX="152.0" layoutY="480.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre mot de passe" stylesheets="@/styles/style.css" />
+                       <TextField fx:id="lastName_field" layoutX="152.0" layoutY="205.0" prefHeight="47.0"
+                                  prefWidth="359.0" promptText="Entrer votre nom" styleClass="text-field"
+                                  stylesheets="@/styles/style.css"/>
+                       <PasswordField fx:id="password_field_signup" layoutX="152.0" layoutY="485.0" prefHeight="47.0"
+                                      prefWidth="359.0" promptText="Entrer votre mot de passe"
+                                      stylesheets="@/styles/style.css"/>
                         <Button layoutX="209.0" layoutY="764.0" mnemonicParsing="false" onAction="#AddUser" prefHeight="52.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@/styles/style.css" text="S'inscrire" textFill="#d31818" />
                         <Line endX="250.0" layoutX="331.0" layoutY="841.0" startX="-250.0" stroke="#e1d8ce" />
                         <Text fill="#e78d1e" layoutX="203.0" layoutY="882.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connectez-vous a votre espace">
@@ -137,11 +139,27 @@
                                 <Font name="SansSerif Regular" size="18.0" />
                             </font>
                         </Button>
-                        <TextField fx:id="firstName_field" layoutX="152.0" layoutY="270.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field" stylesheets="@/styles/style.css" />
-                        <TextField fx:id="email_field_signup" layoutX="152.0" layoutY="340.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field" stylesheets="@/styles/style.css" />
-                        <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="550.0" prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe" stylesheets="@/styles/style.css" />
-                        <TextField fx:id="number_field" layoutX="152.0" layoutY="410.0" prefHeight="47.0" prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field" stylesheets="@/styles/style.css" />
-                  <ImageView fx:id="photo_profile_signin" fitHeight="114.0" fitWidth="197.0" layoutX="286.0" layoutY="635.0" pickOnBounds="true" preserveRatio="true" />               </children>
+                       <TextField fx:id="firstName_field" layoutX="152.0" layoutY="275.0" prefHeight="47.0"
+                                  prefWidth="359.0" promptText="Entrer votre prénom" styleClass="text-field"
+                                  stylesheets="@/styles/style.css"/>
+                       <TextField fx:id="email_field_signup" layoutX="152.0" layoutY="345.0" prefHeight="47.0"
+                                  prefWidth="359.0" promptText="Entrer votre email" styleClass="text-field"
+                                  stylesheets="@/styles/style.css"/>
+                       <PasswordField fx:id="password_field_signup_match" layoutX="152.0" layoutY="555.0"
+                                      prefHeight="47.0" prefWidth="359.0" promptText="Confimer votre mot de passe"
+                                      stylesheets="@/styles/style.css"/>
+                       <TextField fx:id="number_field" layoutX="152.0" layoutY="415.0" prefHeight="47.0"
+                                  prefWidth="359.0" promptText="Entrer votre numéro téléphone" styleClass="text-field"
+                                  stylesheets="@/styles/style.css"/>
+                       <ImageView fx:id="photo_profile_signin" fitHeight="114.0" fitWidth="197.0" layoutX="286.0"
+                                  layoutY="630.0" pickOnBounds="true" preserveRatio="true"/>
+                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="231.0" layoutY="26.0" pickOnBounds="true"
+                                  preserveRatio="true">
+                          <image>
+                             <Image url="@images/secondry.png"/>
+                          </image>
+                       </ImageView>
+                    </children>
                 </AnchorPane>
             <AnchorPane fx:id="background_front" maxHeight="1000.0" maxWidth="1900.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="1000.0" prefWidth="1784.0" visible="false">
                <children>
@@ -243,7 +261,8 @@
                   <TextField fx:id="fixed_email" layoutX="643.0" layoutY="43.0" prefHeight="25.0" prefWidth="17.0" style="-fx-background-color: transparent;" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0" style="-fx-background-color: white;">
+               <AnchorPane fx:id="background_back" prefHeight="1000.0" prefWidth="1900.0"
+                           style="-fx-background-color: #F5F5F5;" visible="false">
                <children>
                   <VBox alignment="BOTTOM_LEFT" layoutX="-1.0" layoutY="58.0" maxHeight="1333.0" maxWidth="387.0" minHeight="753.0" minWidth="200.0" prefHeight="1273.0" prefWidth="303.0" style="-fx-background-color: #132A3E;" AnchorPane.leftAnchor="-1.0">
                      <children>
@@ -374,32 +393,46 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <StackPane layoutX="414.0" layoutY="469.0" maxHeight="1000.0" maxWidth="1600.0" minHeight="600.0" minWidth="1000.0" prefHeight="864.0" prefWidth="1392.0">
+                  <StackPane layoutX="402.0" layoutY="208.0" maxHeight="1178.0" maxWidth="1600.0" minHeight="600.0"
+                             minWidth="1000.0" prefHeight="1178.0" prefWidth="1392.0">
                      <children>
-                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0">
+                        <AnchorPane fx:id="page_dashboard" prefHeight="844.0" prefWidth="1368.0" visible="false">
                            <children>
-                              <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" styleClass="submit-button" stylesheets="@styles/style.css">
+                              <PieChart fx:id="ChatStatus" labelsVisible="false" layoutX="357.0" layoutY="389.0"
+                                        legendVisible="false" prefHeight="400.0" prefWidth="628.0"
+                                        title="Répartition des Utilisateurs : Bloqués vs Non Bloqués"/>
+                              <Label fx:id="bloquer_label" layoutX="321.0" layoutY="488.0" prefHeight="122.0"
+                                     prefWidth="186.0"/>
+                              <VBox alignment="TOP_RIGHT" layoutX="923.0" layoutY="81.0" prefHeight="199.0"
+                                    prefWidth="258.0"
+                                    style="-fx-background-color: #132a3e; -fx-background-radius: 10px;"
+                                    styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
                                     <Label prefHeight="96.0" prefWidth="258.0" text="DEMANDE DE &#10;RECLAMATION" textFill="WHITE">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="2" textAlignment="CENTER" textFill="WHITE">
+                                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="202.0" text="0"
+                                           textAlignment="CENTER" textFill="WHITE">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </VBox>
-                              <VBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" style="-fx-background-color: #132a3e; -fx-background-radius: 10px;" stylesheets="@styles/style.css">
+                              <VBox alignment="TOP_RIGHT" layoutX="542.0" layoutY="81.0" prefHeight="199.0"
+                                    prefWidth="258.0"
+                                    style="-fx-background-color: #132a3e; -fx-background-radius: 10px;"
+                                    stylesheets="@styles/style.css">
                                  <children>
                                     <Label prefHeight="114.0" prefWidth="260.0" text="    COMPTE BLOQUER" textFill="WHITE">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="count_bloque" alignment="CENTER" prefHeight="35.0" prefWidth="383.0" text="2" textAlignment="CENTER" textFill="WHITE">
+                                    <Label fx:id="count_bloque" alignment="CENTER" prefHeight="35.0" prefWidth="383.0"
+                                           text="0" textAlignment="CENTER" textFill="WHITE">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
@@ -420,6 +453,8 @@
                                     </Label>
                                  </children>
                               </VBox>
+                              <Label fx:id="nonBloquer_label" layoutX="321.0" layoutY="598.0" prefHeight="122.0"
+                                     prefWidth="186.0"/>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_hotel" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -803,9 +838,12 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_utilisateur" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                        <AnchorPane fx:id="page_utilisateur" layoutX="10.0" layoutY="10.0" prefHeight="200.0"
+                                    prefWidth="200.0">
                            <children>
-                              <TableView fx:id="TableView_Utilisateur" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css" tableMenuButtonVisible="true">
+                              <TableView fx:id="TableView_Utilisateur" layoutX="82.0" layoutY="80.0" maxHeight="500.0"
+                                         maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0"
+                                         prefWidth="1052.0" styleClass="table-view2" stylesheets="@styles/style.css">
                                  <columns>
                                     <TableColumn fx:id="cl_user_nom" prefWidth="100.0" text="nom" />
                                     <TableColumn fx:id="cl_user_prenom" prefWidth="100.0" text="prenom" />

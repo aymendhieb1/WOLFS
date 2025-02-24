@@ -6,6 +6,7 @@ import com.wolfs.models.*;
 import com.wolfs.services.*;
 import com.wolfs.utils.GoogleAuthUtil;
 import javafx.animation.*;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,7 +14,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -44,10 +51,24 @@ import java.util.Optional;
 
 public class CrudUser {
 
+
+    @FXML
+    private Label nonBloquer_label;
+    @FXML
+    private Label bloquer_label;
+
+    @FXML
+    private Label count_client;
+    @FXML
+    private Label count_bloque;
+
+    @FXML
+    private PieChart ChatStatus;
+
     private Timeline timeline;
 
-@FXML
-private Label countdownLabel;
+    @FXML
+    private Label countdownLabel;
 
     @FXML
     private AnchorPane forget_password;
@@ -57,6 +78,7 @@ private Label countdownLabel;
     private AnchorPane forget_password_reset;
     @FXML
     private AnchorPane RederictToLogin;
+
 
     private String codeEnvoye;
     @FXML
@@ -516,8 +538,7 @@ private Label countdownLabel;
     @FXML
     private TableColumn<Client, Integer> cl_user_num_tel;
 
-    @FXML
-    private TableColumn<Client, String> cl_user_photo;
+
 
     @FXML
     private TableColumn<Client, String> cl_user_prenom;
@@ -1502,11 +1523,33 @@ private TableView<Vol> tableViewVols;
 
 
         //tableView USER Back
+
         cl_user_nom.setCellValueFactory(new PropertyValueFactory<>("name"));
         cl_user_prenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         cl_user_mail.setCellValueFactory(new PropertyValueFactory<>("email"));
         cl_user_num_tel.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
         cl_user_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        cl_user_status.setCellFactory(col -> new TableCell<Client, Integer>() {
+            @Override
+            protected void updateItem(Integer status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    // Vérifier le statut
+                    if (status != null) {
+                        if (status == 0) {
+                            setText("Active");
+                            setStyle("-fx-text-fill: green;"); // Couleur verte pour "Active"
+                        } else if (status == 1) {
+                            setText("Bloqué");
+                            setStyle("-fx-text-fill: red;"); // Couleur rouge pour "Bloqué"
+                        }
+                    }
+                }
+            }
+        });
         cl_user_bloquer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
                 private final Button btn = new Button("Bloquer");
@@ -1674,6 +1717,7 @@ private TableView<Vol> tableViewVols;
         ClientServices ClS = new ClientServices();
         List<Client> ClientList = ClS.rechercherUser();
         ObservableList<Client> observableClientList = FXCollections.observableArrayList(ClientList);
+
 
         TableView_Utilisateur.setItems(observableClientList);
 
@@ -1902,8 +1946,86 @@ private TableView<Vol> tableViewVols;
         });
 
         refreshTable();
+        //NEWWWW
+        refreshData();
+
 
     }
+
+
+    //NEWWWWWWWWWWWW
+
+
+    public void refreshData() {
+        ClientServices C1 = new ClientServices();
+        int blockedUsers = C1.UserAccountBlocked();
+        int notBlockedUsers = C1.UserAccountNotBlocked();
+        int totalUsers = blockedUsers + notBlockedUsers;
+
+        count_client.setText(String.valueOf(C1.CountUsers()));
+        count_bloque.setText(String.valueOf(blockedUsers));
+
+        double blockedPercentage = (blockedUsers / (double) totalUsers) * 100;
+        double notBlockedPercentage = (notBlockedUsers / (double) totalUsers) * 100;
+
+        bloquer_label.setText("Bloqués: " + String.format("%.1f", blockedPercentage) + "%");
+        nonBloquer_label.setText("Non Bloqués: " + String.format("%.1f", notBlockedPercentage) + "%");
+
+        bloquer_label.setTextFill(Color.web("#E78D1E"));
+        nonBloquer_label.setTextFill(Color.web("#132a3e"));
+
+        bloquer_label.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        nonBloquer_label.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Bloqués", blockedUsers),
+                new PieChart.Data("Non Bloqués", notBlockedUsers)
+        );
+        ChatStatus.setData(pieChartData);
+
+        for (PieChart.Data data : pieChartData) {
+            double percentage = (data.getPieValue() / totalUsers) * 100;
+            data.setName(data.getName() + " (" + String.format("%.1f", percentage) + "%)");
+
+            if (data.getName().startsWith("Bloqués")) {
+                data.getNode().setStyle("-fx-pie-color: #E78D1E;");
+            } else if (data.getName().startsWith("Non Bloqués")) {
+                data.getNode().setStyle("-fx-pie-color:#132a3e;");
+            }
+
+            data.getNode().setStyle(data.getNode().getStyle() + "-fx-border-color: #FFFFFF; -fx-border-width: 2;");
+
+            Tooltip tooltip = new Tooltip(data.getName());
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.getNode().setOnMouseEntered(event -> {
+                data.getNode().setStyle(data.getNode().getStyle() + "-fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);");
+                tooltip.show(data.getNode(), event.getScreenX(), event.getScreenY());
+            });
+
+            data.getNode().setOnMouseExited(event -> {
+                data.getNode().setStyle(data.getNode().getStyle().replace("-fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);", ""));
+                tooltip.hide();
+            });
+
+            if (data.getName().startsWith("Bloqués")) {
+                data.getNode().setTranslateX(10);
+                data.getNode().setTranslateY(5);
+            }
+
+            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), data.getNode());
+            rotateTransition.setByAngle(360);
+            rotateTransition.setCycleCount(1);
+            rotateTransition.setAutoReverse(false);
+            rotateTransition.play();
+        }
+
+    }
+
+
+    //ENDNEWWWWWWWWWWWW
+
+
     private void setCircularImage(String imagePath) {
         Image image = new Image(imagePath);
          photo_profile_signin.setImage(image);
@@ -2102,7 +2224,7 @@ private TableView<Vol> tableViewVols;
         } else {
             Client newClient = new Client(nomField.getText(), prenomField.getText(), email, hashedPassword, Integer.parseInt(number), 2, 0,  photo_profile_signin.getImage().getUrl());
             C1.ajouterUser(newClient);
-            //NEW
+            //NEWW
             EmailService.sendWelcomeEmail(email);
             //
             showAlert("Confirmation", "Votre compte a été créé", Alert.AlertType.INFORMATION);
@@ -2297,6 +2419,7 @@ private TableView<Vol> tableViewVols;
     @FXML
     private void changeForum(javafx.event.ActionEvent actionEvent) {
         if (actionEvent.getSource() == bt_menu_dashboard) {
+            refreshData();
             page_chambre.setVisible(false);
             page_hotel.setVisible(false);
             page_forum.setVisible(false);
@@ -4104,9 +4227,6 @@ private TableView<Vol> tableViewVols;
 
         timeline.play();
     }
-
-
-
 
 
 }

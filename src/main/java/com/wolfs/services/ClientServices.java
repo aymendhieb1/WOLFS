@@ -269,19 +269,71 @@ public class ClientServices implements IUserServices<Client> {
 
     public boolean userExists(String email) {
         String req = "SELECT COUNT(*) FROM user WHERE mail=?";
-        try (PreparedStatement ps = this.connection.prepareStatement(req)) { // try-with-resources
+        try (PreparedStatement ps = this.connection.prepareStatement(req)) {
             ps.setString(1, email);
 
-            try (ResultSet rs = ps.executeQuery()) { // try-with-resources pour ResultSet
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // Si le compteur est supérieur à 0, l'utilisateur existe
+                    return rs.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
             System.out.println("Erreur SQL : " + e.getMessage());
         }
-        return false; // L'utilisateur n'existe pas
+        return false;
     }
+
+    public int UserAccountBlocked() {
+        int count = 0;
+        String req = "SELECT COUNT(*) FROM user WHERE status='1'";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(req);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public int UserAccountNotBlocked() {
+        int count = 0;
+        String req = "SELECT COUNT(*) FROM user WHERE status='0'";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(req);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    public int CountUsers() {
+        int count = 0;
+        String req = "SELECT COUNT(*) FROM user";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(req);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
 
 
 }

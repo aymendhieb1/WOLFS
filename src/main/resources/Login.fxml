@@ -229,7 +229,7 @@
                   </VBox>
                   <StackPane layoutX="414.0" layoutY="469.0" maxHeight="1000.0" maxWidth="1600.0" minHeight="600.0" minWidth="1000.0" prefHeight="864.0" prefWidth="1392.0">
                      <children>
-                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0">
+                        <AnchorPane fx:id="page_dashboard" prefHeight="1000.0" prefWidth="1600.0" visible="false">
                            <children>
                               <VBox alignment="TOP_RIGHT" layoutX="813.0" layoutY="81.0" prefHeight="199.0" prefWidth="258.0" styleClass="submit-button" stylesheets="@styles/style.css">
                                  <children>
@@ -478,7 +478,7 @@
                               </Button>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="page_session" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+                        <AnchorPane fx:id="page_session" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <TableView fx:id="TableView_Session" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1169.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1076.0" tableMenuButtonVisible="true">
                                  <columns>
@@ -496,7 +496,7 @@
                               </TableView>
                               <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
-                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button fx:id="calendar_sess" layoutX="829.0" layoutY="17.0" mnemonicParsing="false" onAction="#showCalendar" prefHeight="52.0" prefWidth="120.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Calendar" />
                               <Button fx:id="page_session_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_session_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>

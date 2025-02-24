@@ -1,12 +1,10 @@
 package com.wolfs.controllers.user;
 
-import com.wolfs.models.Activite;
+import com.wolfs.models.*;
 import com.wolfs.services.ActiviteService2;
+import com.wolfs.models.CalendarView;
 import java.time.LocalDate;
 import com.wolfs.services.SessionService;
-import com.wolfs.models.Session;
-import com.wolfs.models.Client;
-import com.wolfs.models.Hotel;
 import com.wolfs.services.ActiviteService2;
 import com.wolfs.services.HotelService;
 import javafx.animation.FadeTransition;
@@ -16,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -23,8 +22,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import com.wolfs.models.User;
 import com.wolfs.services.ClientServices;
 
 import javafx.event.ActionEvent;
@@ -39,6 +38,15 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.HttpResponse;
+
 
 public class CrudUser {
     @FXML
@@ -391,7 +399,9 @@ private Button page_hotel_bt_go_to_hotel;
 
 
 
-
+// calendar button
+    @FXML
+    private Button calendar_sess;
 
 
 
@@ -1792,15 +1802,22 @@ private Button page_hotel_bt_go_to_hotel;
         page_session.setVisible(true);
     }
 
+    @FXML
+    private void showCalendar(ActionEvent event) {
+        if (TableView_Session.getItems().isEmpty()) {
+            showAlert("Erreur", "Aucune session disponible", Alert.AlertType.ERROR);
+            return;
+        }
 
+        Stage calendarStage = new Stage();
+        CalendarView calendarView = new CalendarView();
+        calendarView.loadSessionsFromTableView(TableView_Session); // Load date and time directly
 
-
-
-
-
-
-
-
+        Scene calendarScene = new Scene(calendarView, 600, 600);
+        calendarStage.setTitle("Sessions Calendar");
+        calendarStage.setScene(calendarScene);
+        calendarStage.show();
+    }
 
 
 

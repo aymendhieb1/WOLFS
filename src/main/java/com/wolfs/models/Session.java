@@ -63,6 +63,9 @@ public class Session {
     public void setIdAct(int idAct) {
         this.id_act  = idAct;
     }
+    public Session() {
+        // No-argument constructor required for CalendarView
+    }
 
     public void setTime_sess(LocalTime time_sess) {
         this.time_sess = time_sess;

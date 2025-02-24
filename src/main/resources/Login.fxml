@@ -1157,7 +1157,11 @@
                               <ImageView fx:id="hotel_imageView" fitHeight="175.0" fitWidth="242.0" layoutX="725.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </AnchorPane>
+<<<<<<< Updated upstream
                         <AnchorPane fx:id="page_post" prefHeight="806.0" prefWidth="1403.0">
+=======
+                        <AnchorPane fx:id="page_post" prefHeight="806.0" prefWidth="1403.0" visible="false">
+>>>>>>> Stashed changes
                            <children>
                               <SplitPane dividerPositions="0.7" layoutX="64.0" layoutY="7.0" minWidth="-Infinity" prefHeight="734.0" prefWidth="1325.0" snapToPixel="false" stylesheets="@/styles/stylesFP.css">
                                  <items>
@@ -1195,7 +1199,11 @@
                                                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                                          </VBox.margin>
                                                       </Button>
+<<<<<<< Updated upstream
                                                       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="643.0" prefWidth="909.0">
+=======
+                                                      <ScrollPane fx:id="ScrollPostDaitails" fitToHeight="true" fitToWidth="true" prefHeight="643.0" prefWidth="909.0">
+>>>>>>> Stashed changes
                                                          <content>
                                                             <VBox prefHeight="644.0" prefWidth="911.0">
                                                                <children>
@@ -1332,7 +1340,11 @@
                                                                         <HBox spacing="5">
                                                                            <children>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="announcementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="announcementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
 =======
                                                                               <TextField fx:id="announcementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
 >>>>>>> Stashed changes
@@ -1376,7 +1388,11 @@
                                                                         <HBox spacing="5">
                                                                            <children>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="surveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="surveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
 =======
                                                                               <TextField fx:id="surveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
 >>>>>>> Stashed changes
@@ -1457,7 +1473,11 @@
                                                                         <HBox spacing="5">
                                                                            <children>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="editAnnouncementFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="editAnnouncementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
 =======
                                                                               <TextField fx:id="editAnnouncementFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
 >>>>>>> Stashed changes
@@ -1497,7 +1517,11 @@
                                                                         <HBox spacing="5">
                                                                            <children>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                                                               <TextField fx:id="editSurveyFileField" promptText="File path" HBox.hgrow="ALWAYS" />
+=======
+                                                                              <TextField fx:id="editSurveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
+>>>>>>> Stashed changes
 =======
                                                                               <TextField fx:id="editSurveyFileField" editable="false" promptText="File path" HBox.hgrow="ALWAYS" />
 >>>>>>> Stashed changes
@@ -1628,9 +1652,15 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
+<<<<<<< Updated upstream
                         <AnchorPane fx:id="page_forum" prefHeight="200.0" prefWidth="200.0" visible="false">
                            <children>
                               <TableView fx:id="forumTableView" layoutX="82.0" layoutY="80.0" maxHeight="500.0" maxWidth="1052.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@../../../../../../Users/nnaga/OneDrive/Desktop/Projet_Pidev/src/main/resources/styles/style.css" tableMenuButtonVisible="true">
+=======
+                        <AnchorPane fx:id="page_forum" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="forumTableView" editable="true" layoutX="82.0" layoutY="80.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="500.0" prefWidth="1052.0" styleClass="table-view2" stylesheets="@../../../../../../Users/nnaga/OneDrive/Desktop/Projet_Pidev/src/main/resources/styles/style.css" tableMenuButtonVisible="true">
+>>>>>>> Stashed changes
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>

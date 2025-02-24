@@ -5,8 +5,11 @@ import com.wolfs.utils.DataSource;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import java.sql.*;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import java.sql.Connection;
@@ -14,6 +17,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -110,7 +116,10 @@ public class ChoixService implements IService<Choix> {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @Override
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

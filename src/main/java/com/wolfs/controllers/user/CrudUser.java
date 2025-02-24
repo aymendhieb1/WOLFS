@@ -2,9 +2,12 @@ package com.wolfs.controllers.user;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.oauth2.model.Userinfo;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import com.itextpdf.text.*;
@@ -12,6 +15,9 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -66,6 +72,7 @@ public class CrudUser {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private Timeline timeline;
 
 @FXML
@@ -94,6 +101,8 @@ private Label countdownLabel;
     /*********************NEWWWWWWWWWWWWWWWWWWWWW********************************/
 
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     //new aymen
@@ -270,6 +279,9 @@ private static final long POST_COOLDOWN = 60000; // 1 minute cooldown in millise
 
     //old
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -4334,6 +4346,7 @@ private TableView<Vol> tableViewVols;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     /**********************************NEWWWWWWWW******************************************/
 
     @FXML
@@ -4541,6 +4554,10 @@ private TableView<Vol> tableViewVols;
 
 //--------------------------------NajdForumF------------------------------------------------------------------------
 >>>>>>> Stashed changes
+=======
+
+//--------------------------------NajdForumF------------------------------------------------------------------------
+>>>>>>> Stashed changes
     @FXML
     private void handlePrivateCheckbox() {
         boolean isPrivate = isPrivateCheckBox.isSelected();
@@ -4720,6 +4737,30 @@ private TableView<Vol> tableViewVols;
     }
 
     @FXML
+<<<<<<< Updated upstream
+=======
+    private void clearFieldsFP() {
+
+        nameField.clear();
+        createdByField.clear();
+        descriptionField.clear();
+        memberEmailField.clear();
+
+        nameErrorLabel.setText("");
+        emailErrorLabel.setText("");
+        descriptionErrorLabel.setText("");
+        memberEmailErrorLabel.setText("");
+
+        membersListView.getItems().clear();
+
+        isPrivateCheckBox.setSelected(false);
+
+        isNameValid = false;
+        isEmailValid = false;
+        isDescriptionValid = false;
+    }
+    @FXML
+>>>>>>> Stashed changes
     private void addForum() {
         validateName(nameField.getText());
         validateEmail(createdByField.getText());
@@ -4758,7 +4799,20 @@ private TableView<Vol> tableViewVols;
         forum.setNbrMembers(membersListView.getItems().size());
 
         forumService.ajouter(forum);
+<<<<<<< Updated upstream
         refreshTableFB();
+=======
+
+        refreshTableFB();
+        clearFieldsFP();
+        refreshPosts2();
+        
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Succès");
+        successAlert.setHeaderText("Forum ajouté avec succès");
+        successAlert.setContentText("Le forum a été ajouté à la base de données.");
+        successAlert.showAndWait();
+>>>>>>> Stashed changes
     }
 
     private boolean validateTableEdit(Forum forum, String field, String newValue) {
@@ -4832,8 +4886,12 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     //***************************************
 
+=======
+//***************************************
+>>>>>>> Stashed changes
 =======
 //***************************************
 >>>>>>> Stashed changes
@@ -4917,6 +4975,31 @@ private TableView<Vol> tableViewVols;
                 validateComment(newValue));
     }
 
+<<<<<<< Updated upstream
+=======
+    private void refreshPosts2() {
+        // Clear the current posts in the VBox
+        postsVBox.getChildren().clear();
+
+        // Get the currently selected forum
+        Forum selectedForum = forumComboBox.getValue();
+
+        if (selectedForum != null) {
+            // Fetch posts from the database that belong to the selected forum
+            List<Post> posts = postService.rechercher().stream()
+                    .filter(p -> p.getForumId() == selectedForum.getForumId())
+                    .filter(p -> (p instanceof Announcement) || (p instanceof Survey))
+                    .toList();
+
+            // Display each post in the VBox
+            for (Post post : posts) {
+                VBox postBox = displayPost(post); // Create a VBox for the post
+                postsVBox.getChildren().add(postBox); // Add the post to the VBox
+            }
+        }
+    }
+
+>>>>>>> Stashed changes
     private void refreshPosts() {
         postsVBox.getChildren().clear();
         Forum selectedForum = forumComboBox.getValue();
@@ -4939,9 +5022,14 @@ private TableView<Vol> tableViewVols;
         postBox.getStyleClass().add("post-box");
         postBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 15;");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         postBox.setAlignment(Pos.CENTER); // Center everything in the postBox
 
         // Post Title
+=======
+        postBox.setAlignment(Pos.CENTER);
+
+>>>>>>> Stashed changes
 =======
         postBox.setAlignment(Pos.CENTER);
 
@@ -4950,6 +5038,7 @@ private TableView<Vol> tableViewVols;
         postTitle.getStyleClass().add("post-title");
         postTitle.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         // Post Content
         Label postContent = new Label();
@@ -4967,12 +5056,20 @@ private TableView<Vol> tableViewVols;
         postTags.getStyleClass().add("post-tags");
 
 >>>>>>> Stashed changes
+=======
+        Label postTags = new Label();
+        postTags.getStyleClass().add("post-tags");
+
+>>>>>>> Stashed changes
         Label postDate = new Label();
         postDate.getStyleClass().add("post-metadata");
         postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Voting Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         HBox voteBox = new HBox(5);
@@ -5006,8 +5103,12 @@ private TableView<Vol> tableViewVols;
         voteBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // View Comments Button
         Button viewCommentsButton = new Button("Voir les Commentaires");
+=======
+        Button viewCommentsButton = new Button("Voir Plus des détails");
+>>>>>>> Stashed changes
 =======
         Button viewCommentsButton = new Button("Voir Plus des détails");
 >>>>>>> Stashed changes
@@ -5016,7 +5117,10 @@ private TableView<Vol> tableViewVols;
         viewCommentsButton.setOnAction(e -> showComments(post));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Edit and Delete Buttons (Bottom Right Corner)
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         HBox bottomRightControls = new HBox(10);
@@ -5043,7 +5147,10 @@ private TableView<Vol> tableViewVols;
         bottomRightControls.getChildren().addAll(editPostButton, deletePostButton);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Image Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         ImageView imageView = null;
@@ -5060,7 +5167,10 @@ private TableView<Vol> tableViewVols;
         }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Post Content Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         VBox centerContent = new VBox(10);
@@ -5069,9 +5179,13 @@ private TableView<Vol> tableViewVols;
         if (post instanceof Announcement announcement) {
             postTitle.setText(announcement.getAnnouncementTitle());
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             postContent.setText(announcement.getAnnouncementContent());
 
             // Format tags as "Tags : #test #tags #fun"
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -5094,7 +5208,10 @@ private TableView<Vol> tableViewVols;
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Style tags with color #e78d1e and bold
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
@@ -5102,16 +5219,22 @@ private TableView<Vol> tableViewVols;
             postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Add image, title, and content to centerContent
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
             centerContent.getChildren().addAll(postTitle, postContent);
 =======
+=======
+>>>>>>> Stashed changes
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
             centerContent.getChildren().addAll(postTitle);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
         } else if (post instanceof Survey survey) {
@@ -5137,7 +5260,10 @@ private TableView<Vol> tableViewVols;
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Style tags with color #e78d1e and bold
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
@@ -5145,7 +5271,10 @@ private TableView<Vol> tableViewVols;
             postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Add image and title to centerContent
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             if (imageView != null) {
@@ -5154,7 +5283,10 @@ private TableView<Vol> tableViewVols;
             centerContent.getChildren().add(postTitle);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Survey Choices
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             VBox choicesBox = new VBox(5);
@@ -5186,6 +5318,7 @@ private TableView<Vol> tableViewVols;
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Add survey choices to centerContent
             centerContent.getChildren().add(choicesBox);
         }
@@ -5197,6 +5330,8 @@ private TableView<Vol> tableViewVols;
 
         // Add all sections to the postBox
 =======
+=======
+>>>>>>> Stashed changes
             centerContent.getChildren().add(choicesBox);
         }
 
@@ -5204,6 +5339,9 @@ private TableView<Vol> tableViewVols;
         leftContent.setAlignment(Pos.CENTER_LEFT);
         leftContent.getChildren().addAll(postTags, postDate, viewCommentsButton);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         postBox.getChildren().addAll(centerContent, leftContent, voteBox, bottomRightControls);
 
@@ -5216,8 +5354,11 @@ private TableView<Vol> tableViewVols;
         postDetailsBox.setAlignment(Pos.CENTER); // Center everything in the postDetailsBox
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Post Title
 =======
+=======
+>>>>>>> Stashed changes
         // User Image and Name
         HBox userInfoBox = new HBox(10);
         userInfoBox.setAlignment(Pos.CENTER_LEFT);
@@ -5241,13 +5382,19 @@ private TableView<Vol> tableViewVols;
 
         userInfoBox.getChildren().addAll(userImageView, userNameLabel);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         Label titleLabel = new Label();
         titleLabel.getStyleClass().add("post-title");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Post Content
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         Label contentLabel = new Label(); // Use Label instead of Text for better styling
@@ -5255,6 +5402,7 @@ private TableView<Vol> tableViewVols;
         contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
         contentLabel.setWrapText(true); // Wrap text to fit the width
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         // Post Tags
         Label tagsLabel = new Label();
@@ -5266,12 +5414,20 @@ private TableView<Vol> tableViewVols;
         tagsLabel.getStyleClass().add("post-tags");
 
 >>>>>>> Stashed changes
+=======
+        Label tagsLabel = new Label();
+        tagsLabel.getStyleClass().add("post-tags");
+
+>>>>>>> Stashed changes
         Label postDate = new Label();
         postDate.getStyleClass().add("post-metadata");
         postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Voting Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         HBox votingBox = new HBox(5);
@@ -5296,6 +5452,7 @@ private TableView<Vol> tableViewVols;
         votingBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // View Comments Button
         Button viewCommentsButton = new Button("Voir les Commentaires");
         viewCommentsButton.getStyleClass().add("view-comments-button");
@@ -5303,6 +5460,8 @@ private TableView<Vol> tableViewVols;
         viewCommentsButton.setOnAction(e -> showComments(post));
 
         // Edit and Delete Buttons (Bottom Right Corner)
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         HBox bottomRightControls = new HBox(10);
@@ -5322,7 +5481,10 @@ private TableView<Vol> tableViewVols;
         bottomRightControls.getChildren().addAll(editBtn, deleteBtn);
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Image Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         ImageView imageView = null;
@@ -5339,7 +5501,10 @@ private TableView<Vol> tableViewVols;
         }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Post Content Section
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         VBox centerContent = new VBox(10);
@@ -5350,7 +5515,10 @@ private TableView<Vol> tableViewVols;
             contentLabel.setText(announcement.getAnnouncementContent()); // Use Label for content
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Format tags as "Tags : #test #tags #fun"
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             String tags = announcement.getAnnouncementTags();
@@ -5372,7 +5540,10 @@ private TableView<Vol> tableViewVols;
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Style tags with color #e78d1e and bold
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
@@ -5380,7 +5551,10 @@ private TableView<Vol> tableViewVols;
             postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Add image, title, and content to centerContent
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             if (imageView != null) {
@@ -5392,7 +5566,10 @@ private TableView<Vol> tableViewVols;
             titleLabel.setText(survey.getSurveyQuestion());
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Format tags as "Tags : #test #tags #fun"
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
             String tags = survey.getSurveyTags();
@@ -5401,7 +5578,11 @@ private TableView<Vol> tableViewVols;
                 StringBuilder formattedTags = new StringBuilder("Tags : ");
                 for (String tag : tagArray) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     if (!tag.isEmpty()) { // Skip empty strings
+=======
+                    if (!tag.isEmpty()) {
+>>>>>>> Stashed changes
 =======
                     if (!tag.isEmpty()) {
 >>>>>>> Stashed changes
@@ -5413,9 +5594,15 @@ private TableView<Vol> tableViewVols;
                     }
                 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 tagsLabel.setText(formattedTags.toString().trim()); // Remove trailing space
             } else {
                 tagsLabel.setText("Tags : "); // No tags
+=======
+                tagsLabel.setText(formattedTags.toString().trim());
+            } else {
+                tagsLabel.setText("Tags : ");
+>>>>>>> Stashed changes
 =======
                 tagsLabel.setText(formattedTags.toString().trim());
             } else {
@@ -5437,7 +5624,11 @@ private TableView<Vol> tableViewVols;
             // Survey Choices
             VBox choicesBox = new VBox(5);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             choicesBox.setAlignment(Pos.CENTER); // Center the survey choices
+=======
+            choicesBox.setAlignment(Pos.CENTER);
+>>>>>>> Stashed changes
 =======
             choicesBox.setAlignment(Pos.CENTER);
 >>>>>>> Stashed changes
@@ -5468,6 +5659,7 @@ private TableView<Vol> tableViewVols;
             }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // Add survey choices to centerContent
             centerContent.getChildren().add(choicesBox);
         }
@@ -5482,6 +5674,8 @@ private TableView<Vol> tableViewVols;
     }
 
 =======
+=======
+>>>>>>> Stashed changes
             centerContent.getChildren().add(choicesBox);
         }
 
@@ -5493,6 +5687,129 @@ private TableView<Vol> tableViewVols;
         mainContent.getChildren().addAll(userInfoBox, centerContent);
 
         postDetailsBox.getChildren().addAll(mainContent, leftContent, votingBox, bottomRightControls);
+    }
+<<<<<<< Updated upstream
+
+//+++++++++++
+>>>>>>> Stashed changes
+=======
+    //+++++++++++
+    private void showComments(Post post) {
+        currentPost = post;
+
+        leftTabPane.getSelectionModel().select(1);
+
+        showPostDetails(post);
+
+        loadComments();
+    }
+
+    private void loadComments() {
+
+        commentsVBox.getChildren().clear();
+
+        List<Comment> comments = postService.rechercher().stream()
+                .filter(p -> p instanceof Comment)
+                .map(p -> (Comment) p)
+                .filter(c -> c.getParentId() == currentPost.getPostId())
+                .toList();
+
+        for (Comment comment : comments) {
+            displayComment(comment);
+        }
+    }
+
+    private void displayComment(Comment comment) {
+        HBox commentBox = new HBox(10);
+        commentBox.getStyleClass().add("comment-box");
+        commentBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 10;");
+
+        HBox topSection = new HBox(10);
+        topSection.setAlignment(Pos.TOP_LEFT);
+
+        HBox buttonsBox = new HBox(5);
+        buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+
+        Button editBtn = new Button("Editer");
+        editBtn.getStyleClass().add("edit-button");
+        editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        Button deleteBtn = new Button("Supprimer");
+        deleteBtn.getStyleClass().add("delete-button");
+        deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        editBtn.setOnAction(e -> handleEditComment(comment));
+        deleteBtn.setOnAction(e -> handleDeleteComment(comment));
+
+
+        HBox userInfoBox = new HBox(10);
+        userInfoBox.setAlignment(Pos.TOP_RIGHT);
+
+        ImageView userImageView = new ImageView();
+        userImageView.setFitWidth(30);
+        userImageView.setFitHeight(30);
+        userImageView.setPreserveRatio(true);
+        userImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 15;");
+
+        ClientServices clientServices = new ClientServices();
+        String userEmail = forumService.getEmailById(comment.getIdUser());
+        Image userImage = clientServices.loadImageFromDatabase(userEmail);
+        if (userImage != null) {
+            userImageView.setImage(userImage);
+        }
+
+        Label userNameLabel = new Label(forumService.getUserFullNameById(comment.getIdUser()));
+        userNameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+
+        userInfoBox.getChildren().addAll(userImageView, userNameLabel);
+
+        topSection.getChildren().addAll(userInfoBox);
+
+        Label contentLabel = new Label(comment.getCommentContent());
+        contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-wrap-text: true;");
+
+        Label dateLabel = new Label(formatDateTime(comment.getDateCreation()).toString());
+        dateLabel.getStyleClass().add("comment-date");
+        dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
+
+        Button replyBtn = new Button("Répondre");
+        replyBtn.getStyleClass().add("reply-button");
+        replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        buttonsBox.getChildren().addAll(replyBtn,editBtn, deleteBtn);
+
+        VBox contentBox = new VBox(5);
+        contentBox.setAlignment(Pos.CENTER_LEFT);
+        contentBox.getChildren().addAll(topSection, contentLabel, dateLabel,buttonsBox);
+
+        commentBox.getChildren().add(contentBox);
+
+        commentsVBox.getChildren().add(commentBox);
+    }
+
+    private void handleEditComment(Comment comment) {
+        TextInputDialog dialog = new TextInputDialog(comment.getCommentContent());
+        dialog.setTitle("Edit Comment");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Enter new comment:");
+
+        dialog.showAndWait().ifPresent(newContent -> {
+            comment.setCommentContent(newContent);
+            postService.modifier(comment);
+            loadComments();
+        });
+    }
+
+    private void handleDeleteComment(Comment comment) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Comment");
+        confirm.setHeaderText("Are you sure you want to delete this comment?");
+        confirm.setContentText("This action cannot be undone.");
+
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+            postService.supprimer(comment);
+            loadComments();
+        }
     }
 
 //+++++++++++
@@ -5512,7 +5829,10 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     private void clearFieldsFB() {
 
         announcementTitleField.clear();
@@ -5625,6 +5945,9 @@ private TableView<Vol> tableViewVols;
         return true;
     }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     private void validateAnnouncementTitle(String title) {
         if (title.isEmpty()) {
@@ -5647,6 +5970,7 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private void validateSurveyQuestion(String question) {
         if (question.isEmpty()) {
             showError(surveyQuestionField, questionErrorLabel, "La question ne peut pas être vide");
@@ -5657,6 +5981,8 @@ private TableView<Vol> tableViewVols;
         }
     }
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     private void validateTags(String tags, Label errorLabel) {
@@ -5726,7 +6052,10 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     private void validateSurveyQuestion(String question) {
         if (question.isEmpty()) {
             showError(surveyQuestionField, questionErrorLabel, "La question ne peut pas être vide");
@@ -5868,6 +6197,9 @@ private TableView<Vol> tableViewVols;
         hideError(field, errorLabel);
     }
 //+++++++++++
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     private void showError(TextInputControl field, Label errorLabel, String message) {
         if (field != null) {
@@ -5890,6 +6222,7 @@ private TableView<Vol> tableViewVols;
             errorLabel.setVisible(false);
         }
     }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 =======
@@ -6012,6 +6345,10 @@ private TableView<Vol> tableViewVols;
 //+++++++++++
        private void editPost(Post post) {
 >>>>>>> Stashed changes
+=======
+//+++++++++++
+       private void editPost(Post post) {
+>>>>>>> Stashed changes
         currentPost = post;
 
         if (post instanceof Announcement announcement) {
@@ -6054,7 +6391,11 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private void handleEditButton(Post post) {
+=======
+       private void handleEditButton(Post post) {
+>>>>>>> Stashed changes
 =======
        private void handleEditButton(Post post) {
 >>>>>>> Stashed changes
@@ -6063,6 +6404,7 @@ private TableView<Vol> tableViewVols;
         rightTabPane.getSelectionModel().select(2);
         editPost(post);
     }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     @FXML
     private void handleBackLeft() {
@@ -6213,6 +6555,10 @@ private TableView<Vol> tableViewVols;
 
        private void handleDeletePost(Post post) {
 >>>>>>> Stashed changes
+=======
+
+       private void handleDeletePost(Post post) {
+>>>>>>> Stashed changes
         if (currentPost == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -6226,6 +6572,7 @@ private TableView<Vol> tableViewVols;
         }
     }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     private String formatDateTime(LocalDateTime dateTime) {
         return dateTime.toString().replace("T", " ");
@@ -6254,6 +6601,8 @@ private TableView<Vol> tableViewVols;
     @FXML
     private void handleUpdatePost(ActionEvent actionEvent) {
 =======
+=======
+>>>>>>> Stashed changes
  @FXML private void handleDeletePost() {
         if (currentPost == null) return;
 
@@ -6269,6 +6618,9 @@ private TableView<Vol> tableViewVols;
     }
 
  @FXML private void handleUpdatePost() {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         if (currentPost == null) return;
 
@@ -6377,6 +6729,7 @@ private TableView<Vol> tableViewVols;
         }
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     private void clearEditFields() {
         editAnnouncementTitleField.clear();
         editAnnouncementContentField.clear();
@@ -6480,6 +6833,8 @@ private TableView<Vol> tableViewVols;
         }
     }
 =======
+=======
+>>>>>>> Stashed changes
 //+++++++++++
     @FXML
     private void handleBackButton() {
@@ -6503,6 +6858,9 @@ private TableView<Vol> tableViewVols;
     private String formatDateTime(LocalDateTime dateTime) {
     return dateTime.toString().replace("T", " ");
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     private void handleVote(Post post, boolean isUpvote) {
@@ -6527,6 +6885,7 @@ private TableView<Vol> tableViewVols;
         alert.showAndWait();
     }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     private void validateUserEmail(TextField field, Label errorLabel, String email) {
         if (email.isEmpty()) {
@@ -6571,6 +6930,8 @@ private TableView<Vol> tableViewVols;
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     private void handleChoiceVote(Choix choice) {
         choice.setChoiceVotesCount(choice.getChoiceVotesCount() + 1);
         choixService.modifier(choice);
@@ -6581,6 +6942,7 @@ private TableView<Vol> tableViewVols;
         }
     }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     private void validateEditTags(String tags, Label errorLabel) {
         TextField field = tags.equals(editSurveyTagsField.getText()) ? editSurveyTagsField : editAnnouncementTagsField;
@@ -6623,6 +6985,8 @@ private TableView<Vol> tableViewVols;
 
     //NewForumNajd
 =======
+=======
+>>>>>>> Stashed changes
     private void addRemoveButton(ListView<String> listView, String itemToRemove) {
         listView.setCellFactory(lv -> new ListCell<String>() {
             @Override
@@ -6733,6 +7097,9 @@ private TableView<Vol> tableViewVols;
 
 
 //****** New ForumNajdAvance
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     private boolean containsBadWords(Post post) {
@@ -6803,7 +7170,10 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     // Helper method to check if a specific string contains bad words
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     private boolean containsBadWords(String content, List<String> badWords) {
@@ -7031,7 +7401,10 @@ private TableView<Vol> tableViewVols;
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     //
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 //--------------------------------------------------------------------------------------------------------
@@ -7139,6 +7512,9 @@ private void ChercherTableView_hotel() {
             e.printStackTrace();
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -7150,8 +7526,11 @@ private void ChercherTableView_hotel() {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 }
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -7162,6 +7541,9 @@ private void ChercherTableView_hotel() {
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

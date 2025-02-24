@@ -157,7 +157,10 @@ public class ForumService implements IService<Forum> {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     public String getUserFullNameById(int userId) {
         String sql = "SELECT prenom, nom FROM User WHERE id_user = ?";
         try {
@@ -175,5 +178,8 @@ public class ForumService implements IService<Forum> {
     }
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

@@ -324,7 +324,7 @@
 
 .tab-pane {
     -fx-background-color: transparent;
-    -fx-tab-max-height: 0 ;
+    -fx-tab-max-height: 1000 ;
 }
 .tab-pane .tab-header-area {
     visibility: hidden ;

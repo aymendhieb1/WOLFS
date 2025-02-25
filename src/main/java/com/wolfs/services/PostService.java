@@ -2,6 +2,8 @@ package com.wolfs.services;
 
 import com.wolfs.models.*;
 import com.wolfs.utils.DataSource;
+import com.wolfs.models.Post;
+
 import java.util.ArrayList;
 import java.sql.*;
 import java.util.List;
@@ -52,6 +54,7 @@ public class PostService implements IService<Post> {
                 post.setPostId(generatedKeys.getInt(1));
             }
             System.out.println("✅ Post ajouté avec succès!");
+            incrementPostCount(post.getForumId());
         } catch (SQLException e) {
             System.out.println("❌ Erreur lors de l'ajout du post: " + e.getMessage());
         }
@@ -224,6 +227,20 @@ public class PostService implements IService<Post> {
             }
 
             System.out.println();
+        }
+    }
+
+
+    public void incrementPostCount(int forumId) {
+        String sql = "UPDATE Forum SET post_count = post_count + 1 WHERE id = ?";
+
+        try {
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setInt(1, forumId);
+            int rowsUpdated = pst.executeUpdate();
+            System.out.println(rowsUpdated > 0 ? "✅ Post count incremented successfully!" : "❌ Failed to increment post count.");
+        } catch (SQLException e) {
+            System.out.println("❌ Erreur lors de l'incrémentation du post count: " + e.getMessage());
         }
     }
 

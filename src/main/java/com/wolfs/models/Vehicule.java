@@ -7,13 +7,22 @@ public class Vehicule  {
     private int idVehicule;
     protected String matricule;
     private String status;
+    private int prix ;
     private List<Contrat> contrats = new ArrayList<>();
 
     // Constructor
-    public Vehicule(int idVehicule, String matricule, String status) {
+    public Vehicule(int idVehicule, String matricule, String status,int prix) {
         this.idVehicule = idVehicule;
         this.matricule = matricule;
         this.status = status;
+        this.prix = prix;
+    }
+    // Constructor
+    public Vehicule( String matricule, String status,int prix) {
+
+        this.matricule = matricule;
+        this.status = status;
+        this.prix = prix;
     }
 
     public Vehicule() {
@@ -26,6 +35,14 @@ public class Vehicule  {
 
     public void setIdVehicule(int idVehicule) {
         this.idVehicule = idVehicule;
+    }
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
     }
 
     public String getMatricule() {

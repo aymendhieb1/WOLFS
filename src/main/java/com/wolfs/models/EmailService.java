@@ -8,8 +8,8 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 public class EmailService {
-    private static final String USERNAME = "youssef.dhib@esprit.tn";
-    private static final String PASSWORD = "sgqf mada uavi abfm";
+    private static final String USERNAME = "triptogo2025@gmail.com";
+    private static final String PASSWORD = "rove ikbd nqpl xlnv";
     private static final String LOGO_PATH = "C:/Users/Dhib/IdeaProjects/Projet_Pidev/src/main/resources/images/primary.png";
 
     public static void sendEmail(String recipient, String subject, String messageContent) {
@@ -18,12 +18,18 @@ public class EmailService {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.connectiontimeout", "5000");
+        props.put("mail.smtp.timeout", "5000");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
 
         javax.mail.Session session = javax.mail.Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(USERNAME, PASSWORD);
             }
         });
+
 
         try {
             Message message = new MimeMessage(session);

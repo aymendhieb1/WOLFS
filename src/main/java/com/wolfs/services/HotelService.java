@@ -1,12 +1,10 @@
 package com.wolfs.services;
 
+import com.wolfs.models.Chambre;
 import com.wolfs.models.Hotel;
 import com.wolfs.utils.DataSource;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +77,6 @@ public class HotelService implements IService<Hotel> {
 
         return hot;
     }
-<<<<<<< Updated upstream
-=======
 
     public int ChercherId(String email) {
         String req = "SELECT id_hotel FROM hotel WHERE email_hotel = ?";
@@ -129,29 +125,4 @@ public class HotelService implements IService<Hotel> {
         }
         return "";
     }
-
-
-    public List<Hotel> chercher(String column , String text) {
-        List<Hotel> hot = new ArrayList<>();
-
-        String req = "SELECT * FROM hotel WHERE "+column+" Like '%"+text+"%'";
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(req);
-            while (rs.next()) {
-                hot.add(new Hotel(rs.getInt("id_hotel"), rs.getString("nom_hotel"), rs.getString("localisation_hotel"), rs.getString("num_telephone_hotel"), rs.getString("email_hotel"), rs.getString("image_hotel"), rs.getString("description_hotel")));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return hot;
-    }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }

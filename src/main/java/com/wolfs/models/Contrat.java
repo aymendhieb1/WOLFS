@@ -1,20 +1,49 @@
 package com.wolfs.models;
 
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 
 public class Contrat {
     private int idLocation;
-    private Date dateD;
-    private Date dateF;
+    private String dateD;  // Change to String
+    private String dateF;  // Change to String
     private int cinLocateur;
     private String photoPermit;
     private Vehicule vehicule; // Relationship with Vehicule
+    private int idVehicule;
+    private String nomVehicule;
 
-    public Contrat() {
+    public Contrat(String dateD, String dateF, int cinLocateur, String photoPermit) {
+        this.dateD = dateD;
+        this.dateF = dateF;
+        this.cinLocateur = cinLocateur;
+        this.photoPermit = photoPermit;
     }
 
-    // Constructor
-    public Contrat(int idLocation, Date dateD, Date dateF, int cinLocateur, String photoPermit, Vehicule vehicule) {
+    public Contrat() {
+
+    }
+
+    public void setDateD(String dateD) {
+        this.dateD = dateD;
+    }
+
+    public void setDateF(String dateF) {
+        this.dateF = dateF;
+    }
+
+    public String getNomVehicule() {
+        return nomVehicule;
+    }
+
+    public void setNomVehicule(String nomVehicule) {
+        this.nomVehicule = nomVehicule;
+    }
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");  // Date format
+
+
+    // Constructor with String dates formatted as yyyy/MM/dd
+    public Contrat(int idLocation, String dateD, String dateF, int cinLocateur, String photoPermit, Vehicule vehicule) {
         this.idLocation = idLocation;
         this.dateD = dateD;
         this.dateF = dateF;
@@ -23,7 +52,33 @@ public class Contrat {
         this.vehicule = vehicule;
     }
 
-    // Getters and Setters
+    // Constructor with String dates formatted as yyyy/MM/dd
+    public Contrat(int cinLocateur, String dateD, String dateF, String photoPermit, int idVehicule) {
+        this.cinLocateur = cinLocateur;
+        this.dateD =dateD;
+        this.dateF = dateF;
+        this.photoPermit = photoPermit;
+        this.idVehicule = idVehicule;
+    }
+
+    public Contrat(int idLocation, int cinLocateur, String dateD, String dateF, String photoPermit, int idVehicule) {
+        this.idLocation = idLocation;
+        this.cinLocateur = cinLocateur;
+        this.dateD = dateD;
+        this.dateF = dateF;
+        this.photoPermit = photoPermit;
+        this.idVehicule = idVehicule;
+    }
+
+    public int getIdVehicule() {
+        return idVehicule;
+    }
+
+    public void setIdVehicule(int idVehicule) {
+        this.idVehicule = idVehicule;
+    }
+
+    // Getters and Setters for String dates
     public int getIdLocation() {
         return idLocation;
     }
@@ -32,23 +87,17 @@ public class Contrat {
         this.idLocation = idLocation;
     }
 
-    public Date getDateD() {
+    public  String getDateD() {
         return dateD;
     }
 
-    public void setDateD(Date dateD) {
-        this.dateD = dateD;
-    }
 
-    public Date getDateF() {
+    public  String getDateF() {
         return dateF;
     }
 
-    public void setDateF(Date dateF) {
-        this.dateF = dateF;
-    }
 
-    public int getCinLocateur() {
+    public  int getCinLocateur() {
         return cinLocateur;
     }
 
@@ -56,7 +105,7 @@ public class Contrat {
         this.cinLocateur = cinLocateur;
     }
 
-    public String getPhotoPermit() {
+    public  String getPhotoPermit() {
         return photoPermit;
     }
 
@@ -71,6 +120,8 @@ public class Contrat {
     public void setVehicule(Vehicule vehicule) {
         this.vehicule = vehicule;
     }
+
+
 
     // Methods
     public void ajouterLocation() {
@@ -93,4 +144,3 @@ public class Contrat {
         return this.idLocation;
     }
 }
-

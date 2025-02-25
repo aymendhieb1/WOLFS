@@ -7,6 +7,7 @@ import com.wolfs.models.Voiture;
 import com.wolfs.utils.DataSource;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,67 +36,51 @@ public class ContratService implements IService<Contrat> {
 
     // Add a contract
     public void ajouter(Contrat contrat) {
-        String sql = "INSERT INTO Contrat (dateD, dateF, cinLocateur, photo_permit, id_vehicule) VALUES (?, ?, ?, ?, ?)";
-        Date sqlDateD = new Date(contrat.getDateD().getTime());
-        Date sqlDateF = new Date(contrat.getDateF().getTime());
+        String sql = "INSERT INTO contrat (dateD, dateF, cinLocateur, photo_permit, id_vehicule) VALUES (?, ?, ?, ?, ?)";
 
-        boolean verif = isVehiculeAvailable(contrat.getVehicule().getIdVehicule(), sqlDateD, sqlDateF);
-        if (!verif) {
-            System.out.println("❌ Vehicle is already booked. Contract not added.");
-            return;
-        }
+        // Ensure dateD and dateF are Strings
+
 
         try {
+            // Prepare the SQL statement and set parameters
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setDate(1, sqlDateD);
-            stmt.setDate(2, sqlDateF);
+            stmt.setString(1, contrat.getDateD()); // Set dateD as String
+            stmt.setString(2, contrat.getDateF()); // Set dateF as String
             stmt.setInt(3, contrat.getCinLocateur());
             stmt.setString(4, contrat.getPhotoPermit());
-            stmt.setInt(5, contrat.getVehicule().getIdVehicule());
+            stmt.setInt(5, contrat.getIdVehicule());
+            stmt.executeUpdate();
 
-            int rowsInserted = stmt.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("✅ Contract added successfully!");
-                updateVehiculeStatus(contrat.getVehicule().getIdVehicule(), "indisponible");
-            } else {
-                System.out.println("❌ Contract insertion failed.");
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     // Update a contract
     public void modifier(Contrat contrat) {
+        // SQL update query
         String sql = "UPDATE contrat SET dateD=?, dateF=?, cinLocateur=?, photo_permit=?, id_vehicule=? WHERE id_location=?";
-        Date sqlDateD = new Date(contrat.getDateD().getTime());
-        Date sqlDateF = new Date(contrat.getDateF().getTime());
 
-        boolean verif = isVehiculeAvailable(contrat.getVehicule().getIdVehicule(), sqlDateD, sqlDateF);
-        if (!verif) {
-            System.out.println("❌ Vehicle is already booked. Contract not updated.");
-            return;
-        }
+
+
 
         try {
+            // Prepare the SQL statement and set parameters
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setDate(1, sqlDateD);
-            stmt.setDate(2, sqlDateF);
+            stmt.setString(1, contrat.getDateD()); // Set dateD
+            stmt.setString(2, contrat.getDateF()); // Set dateF
             stmt.setInt(3, contrat.getCinLocateur());
             stmt.setString(4, contrat.getPhotoPermit());
-            stmt.setInt(5, contrat.getVehicule().getIdVehicule());
-            stmt.setInt(6, contrat.getIdLocation());
+            stmt.setInt(5, contrat.getIdVehicule());
+            stmt.setInt(6, contrat.getIdLocation()); // Assuming getIdLocation() returns the contract's ID
+            stmt.executeUpdate();
 
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                System.out.println("✅ Contract updated successfully!");
-            } else {
-                System.out.println("❌ Contract update failed.");
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     // Delete a contract
     public void supprimer(Contrat contrat) {
@@ -126,9 +111,10 @@ public class ContratService implements IService<Contrat> {
     }
 
     // Get all contracts
+    /*
     public List<Contrat> getAllContrats() {
         List<Contrat> contrats = new ArrayList<>();
-        String sql = "SELECT c.*, v.id_vehicule, v.matricule, v.status, v.nbPlace, v.cylinder " +
+        String sql = "SELECT c.*, v.id_vehicule, v.matricule, v.status, v.prix, v.nbPlace, v.cylinder, v.image_vehicule " +
                 "FROM Contrat c " +
                 "JOIN Vehicule v ON c.id_vehicule = v.id_vehicule";
 
@@ -142,6 +128,7 @@ public class ContratService implements IService<Contrat> {
                 vehicule.setIdVehicule(rs.getInt("id_vehicule"));
                 vehicule.setMatricule(rs.getString("matricule"));
                 vehicule.setStatus(rs.getString("status"));
+                vehicule.setPrix(rs.getInt("prix"));
 
                 // Check the type of vehicle (Bus or Voiture) and set its specific attribute
                 if (rs.getInt("nbPlace") > 0) { // If nbPlace is greater than 0, it's a Bus
@@ -149,6 +136,7 @@ public class ContratService implements IService<Contrat> {
                             vehicule.getIdVehicule(),
                             vehicule.getMatricule(),
                             vehicule.getStatus(),
+                            vehicule.getPrix(),
                             rs.getInt("nbPlace")
                     );
                 } else if (rs.getInt("cylinder") > 0) { // If cylinder is greater than 0, it's a Voiture
@@ -156,15 +144,22 @@ public class ContratService implements IService<Contrat> {
                             vehicule.getIdVehicule(),
                             vehicule.getMatricule(),
                             vehicule.getStatus(),
-                            rs.getInt("cylinder")
+                            vehicule.getPrix(),
+                            rs.getInt("cylinder"),
+                            rs.getString("image_vehicule")
                     );
                 }
 
                 // Create a Contrat object and set its attributes
-                Contrat contrat = new Contrat();
+                Contrat contrat = new Contrat(String.valueOf(Contrat.getDateD()), String.valueOf(Contrat.getDateF()), Integer.valueOf(String.valueOf(Contrat.getCinLocateur())), String.valueOf(Contrat.getPhotoPermit()));
                 contrat.setIdLocation(rs.getInt("id_location"));
-                contrat.setDateD(rs.getDate("dateD"));
-                contrat.setDateF(rs.getDate("dateF"));
+
+                // Get the date values and check if they are not null before setting
+                LocalDate dateDebut = rs.getObject("dateD", LocalDate.class);
+                LocalDate dateFin = rs.getObject("dateF", LocalDate.class);
+
+
+
                 contrat.setCinLocateur(rs.getInt("cinLocateur"));
                 contrat.setPhotoPermit(rs.getString("photo_permit"));
                 contrat.setVehicule(vehicule); // Attach the full vehicle data
@@ -186,8 +181,6 @@ public class ContratService implements IService<Contrat> {
         return contrats;
     }
 
-
-
     // Fetch vehicle by ID
     public Vehicule getVehiculeById(int vehiculeId) {
         Vehicule vehicule = null;
@@ -201,12 +194,14 @@ public class ContratService implements IService<Contrat> {
                 vehicule.setIdVehicule(rs.getInt("id_vehicule"));
                 vehicule.setMatricule(rs.getString("matricule"));
                 vehicule.setStatus(rs.getString("status"));
+                vehicule.setPrix(rs.getInt("prix"));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return vehicule;
-    }
+    }*/
 
     // Update vehicle status
     private void updateVehiculeStatus(int idVehicule, String status) {
@@ -226,4 +221,65 @@ public class ContratService implements IService<Contrat> {
     public List<Contrat> rechercher() {
         return new ArrayList<>();
     }
+
+    // Get all contracts
+    public List<Contrat> getListContrats() {
+        List<Contrat> contrats = new ArrayList<>();
+        String sql = "SELECT id_location, dateD, dateF, cinLocateur, photo_permit, id_vehicule FROM Contrat";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            VehiculeService vehiculeService = new VehiculeService(); // Create it once
+
+            while (rs.next()) {
+                Contrat contrat = new Contrat(); // Create an empty object
+
+                // Set attributes from the ResultSet
+                contrat.setIdLocation(rs.getInt("id_location"));
+                contrat.setDateD(rs.getString("dateD"));
+                contrat.setDateF(rs.getString("dateF"));
+                contrat.setCinLocateur(rs.getInt("cinLocateur"));
+                contrat.setPhotoPermit(rs.getString("photo_permit"));
+
+                // Get vehicle matricule using its ID
+                int vehiculeId = rs.getInt("id_vehicule");
+                String matricule = vehiculeService.getMatriculeVehiculeById(vehiculeId);
+                contrat.setNomVehicule(matricule);
+
+                // Add to list
+                contrats.add(contrat);
+            }
+
+            if (contrats.isEmpty()) {
+                System.out.println("❌ No contracts found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contrats;
+    }
+
+    public int chercher_id(Contrat C) {
+        String sql = "SELECT id_location FROM contrat WHERE dateD = ? AND dateF = ? AND cinLocateur = ? AND photo_permit = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, C.getDateD());
+            stmt.setString(2, C.getDateF());
+            stmt.setInt(3, C.getCinLocateur());
+            stmt.setString(4, C.getPhotoPermit());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_location");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 if not found
+    }
+
+
 }

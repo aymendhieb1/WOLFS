@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -13,8 +14,11 @@ import javafx.application.Application;
 public class Projet extends Application{
 
 
-    public static void main(String[] args) {launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
     public void start(Stage primaryStage) throws IOException {
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
 

@@ -84,51 +84,6 @@ public class ForumService implements IService<Forum> {
         return forums;
     }
 
-    public List<Forum> rechercher(String searchKeyword) {
-        List<Forum> forums = new ArrayList<>();
-        String sql = "SELECT * FROM Forum WHERE " +
-                "LOWER(name) LIKE ? OR " +
-                "LOWER(description) LIKE ? OR " +
-                "CAST(created_by AS TEXT) LIKE ? OR " +
-                "CAST(post_count AS TEXT) LIKE ? OR " +
-                "CAST(nbr_members AS TEXT) LIKE ? OR " +
-                "TO_CHAR(date_creation, 'YYYY-MM-DD HH24:MI:SS') LIKE ? OR " +
-                "(CASE " +
-                "    WHEN is_private = true THEN 'private' " +
-                "    WHEN is_private = false THEN 'public' " +
-                "END) ILIKE ? OR " +
-                "LOWER(list_members) LIKE ?";
-
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            String searchPattern = "%" + searchKeyword.toLowerCase() + "%";
-
-            for (int i = 1; i <= 8; i++) {
-                stmt.setString(i, searchPattern);
-            }
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Forum forum = new Forum(
-                        rs.getInt("forum_id"),
-                        rs.getString("name"),
-                        rs.getInt("created_by"),
-                        rs.getInt("post_count"),
-                        rs.getInt("nbr_members"),
-                        rs.getString("description"),
-                        rs.getTimestamp("date_creation").toLocalDateTime(),
-                        rs.getBoolean("is_private"),
-                        rs.getString("list_members")
-                );
-                forums.add(forum);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur SQL : " + e.getMessage());
-        }
-
-        return forums;
-    }
 
     public void afficher() {
         List<Forum> forums = rechercher();

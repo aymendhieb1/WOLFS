@@ -8,8 +8,8 @@ public class Announcement extends Post {
 
     public Announcement(int postId, int forumId, int idUser, int votes, LocalDateTime dateCreation,
                         LocalDateTime dateModification, String cheminFichier, String status, int nbrSignal,
-                        String announcementTitle, String announcementContent, String announcementTags) {
-        super(postId, forumId, idUser, votes, dateCreation, dateModification, cheminFichier, "announcement", status,nbrSignal);
+                        String announcementTitle, String announcementContent, String announcementTags, String upVoteList, String downVoteList, String signalList) {
+        super(postId, forumId, idUser, votes, dateCreation, dateModification, cheminFichier, "announcement", status,nbrSignal,upVoteList,downVoteList,signalList);
         this.announcementTitle = announcementTitle;
         this.announcementContent = announcementContent;
         this.announcementTags = announcementTags;

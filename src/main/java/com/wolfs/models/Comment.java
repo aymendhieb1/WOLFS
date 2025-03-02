@@ -7,8 +7,8 @@ public class Comment extends Post {
 
     public Comment(int postId, int forumId, int idUser, int votes, LocalDateTime dateCreation,
                    LocalDateTime dateModification, String cheminFichier, String status, int nbrSignal,
-                   String commentContent, int parentId) {
-        super(postId, forumId, idUser, votes, dateCreation, dateModification, cheminFichier, "comment", status,nbrSignal);
+                   String commentContent, int parentId, String upVoteList, String downVoteList, String signalList) {
+        super(postId, forumId, idUser, votes, dateCreation, dateModification, cheminFichier, "comment", status,nbrSignal,upVoteList,downVoteList,signalList);
         this.commentContent = commentContent;
         this.parentId = parentId;
     }

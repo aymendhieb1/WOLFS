@@ -13,8 +13,11 @@ public class Post {
     protected String type;
     protected String status;
     protected int nbrSignal;
+    protected String upVoteList;
+    protected String downVoteList;
+    protected String signalList;
 
-    public Post(int postId, int forumId, int idUser, int votes, LocalDateTime dateCreation, LocalDateTime dateModification, String cheminFichier, String type, String status, int nbrSignal) {
+    public Post(int postId, int forumId, int idUser, int votes, LocalDateTime dateCreation, LocalDateTime dateModification, String cheminFichier, String type, String status, int nbrSignal , String upVoteList, String downVoteList, String signalList) {
         this.postId = postId;
         this.forumId = forumId;
         this.idUser = idUser;
@@ -25,6 +28,9 @@ public class Post {
         this.type = type;
         this.status = status;
         this.nbrSignal = nbrSignal;
+        this.upVoteList = upVoteList ;
+        this.downVoteList = downVoteList ;
+        this.signalList = signalList;
     }
 
     public Post() {
@@ -110,6 +116,30 @@ public class Post {
         this.nbrSignal = nbrSignal;
     }
 
+    public String getDownVoteList() {
+        return downVoteList;
+    }
+
+    public void setDownVoteList(String downVoteList) {
+        this.downVoteList = downVoteList;
+    }
+
+    public String getSignalList() {
+        return signalList;
+    }
+
+    public void setSignalList(String signalList) {
+        this.signalList = signalList;
+    }
+
+    public String getUpVoteList() {
+        return upVoteList;
+    }
+
+    public void setUpVoteList(String upVoteList) {
+        this.upVoteList = upVoteList;
+    }
+
     public void afficherPost() {
         System.out.println("📌 Post ID: " + postId);
         System.out.println("📜 Forum ID: " + forumId);
@@ -121,6 +151,9 @@ public class Post {
         System.out.println("📖 Type: " + type);
         System.out.println("📌 Status: " + status);
         System.out.println("🔢 Signal Count: " + nbrSignal);
+        System.out.println("📖 upVoteList: "+ upVoteList);
+        System.out.println("📖 downVoteList: "+ downVoteList);
+        System.out.println("📖 signalList: "+ signalList);
 
     }
 }

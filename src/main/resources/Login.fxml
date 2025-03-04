@@ -465,7 +465,7 @@
                               </TableView>
                               <ComboBox layoutX="669.0" layoutY="42.0" prefWidth="150.0" />
                               <TextField layoutX="985.0" layoutY="43.0" promptText="CHERCHER" />
-                              <Button layoutX="867.0" layoutY="17.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="TRI" />
+                              <Button fx:id="sharefb" layoutX="867.0" layoutY="17.0" mnemonicParsing="false" onAction="#onShareButtonClick" prefHeight="26.0" prefWidth="82.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Share" />
                               <Button fx:id="page_activite_bt_ajouter" layoutX="209.0" layoutY="17.0" mnemonicParsing="false" onAction="#changeForum" prefHeight="52.0" prefWidth="104.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Ajouter" />
                               <Button fx:id="page_activite_retour" layoutX="25.0" layoutY="25.0" mnemonicParsing="false" onAction="#changeForum" style="-fx-background-color: transparent;">
                                  <graphic>
@@ -507,6 +507,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button fx:id="weather_sess" layoutX="525.0" layoutY="18.0" mnemonicParsing="false" onAction="#showWeather" prefHeight="52.0" prefWidth="120.0" styleClass="submit-button" stylesheets="@styles/style.css" text="Weather" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="page_acceuil_gestion_location" layoutX="10.0" layoutY="10.0" prefHeight="662.0" prefWidth="1500.0" visible="false">
@@ -1109,6 +1110,13 @@
                         </AnchorPane>
                      </children>
                   </StackPane>
+                  <VBox fx:id="weather_view" layoutX="587.0" layoutY="228.0" prefHeight="241.0" prefWidth="339.0">
+                     <children>
+                        <ImageView fx:id="weatherIcon" fitHeight="169.0" fitWidth="343.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="weatherDescription" prefHeight="17.0" prefWidth="292.0" text="Label" />
+                        <Label fx:id="weatherTemperature" text="Label" />
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
             </children>

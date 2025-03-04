@@ -1,12 +1,22 @@
 package com.wolfs.controllers.user;
 
+import com.google.api.client.util.DateTime;
+import com.google.auth.oauth2.AccessToken;
 import com.wolfs.models.*;
-import com.wolfs.services.ActiviteService2;
-import com.wolfs.models.CalendarView;
+import com.wolfs.services.*;
+
+
+import java.awt.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpRequest;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.time.LocalDate;
-import com.wolfs.services.SessionService;
+
 import com.wolfs.services.ActiviteService2;
-import com.wolfs.services.HotelService;
+import com.wolfs.models.GoogleCalendar;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,18 +26,28 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import com.wolfs.services.ClientServices;
-
+import com.wolfs.models.WeatherParser;
+import com.wolfs.models.WeatherService;
+import com.wolfs.models.WeatherDisplay;
 import javafx.event.ActionEvent;
 import javafx.util.StringConverter;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.awt.event.KeyEvent;
@@ -35,9 +55,8 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +65,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.HttpResponse;
-
+import org.json.JSONObject;
+import javafx.scene.image.Image;
 
 public class CrudUser {
     @FXML
@@ -340,7 +360,9 @@ private Button page_hotel_bt_go_to_hotel;
 
     @FXML
     private TableColumn<Activite, Void> act_col_supp    ;
-
+    private static final String APP_ID = "654796463732563";
+@FXML
+private Button sharefb;
 
 
     private ObservableList<Activite> ActiviteData = FXCollections.observableArrayList();
@@ -402,10 +424,21 @@ private Button page_hotel_bt_go_to_hotel;
 // calendar button
     @FXML
     private Button calendar_sess;
+    @FXML
+    private VBox weather_view;  // The VBox where weather icons and data will be displayed
+
+    @FXML
+    private ImageView weatherIcon;  // The ImageView for displaying the weather icon
+
+    @FXML
+    private Label weatherDescription;  // Label to display the weather description
+
+    @FXML
+    private Label weatherTemperature;
 
 
-
-
+@FXML
+private Button weather_sess;
 
 
 
@@ -413,7 +446,7 @@ private Button page_hotel_bt_go_to_hotel;
     public void initialize() {
         startAnimation();
         loadComboBoxActivites(); // Load the activities into the ComboBox
-
+        addSessionsToCalendar();
         // Assuming ActiviteService2 is defined elsewhere
         ActiviteService2 activiteService = new ActiviteService2();
 
@@ -1802,21 +1835,103 @@ private Button page_hotel_bt_go_to_hotel;
         page_session.setVisible(true);
     }
 
-    @FXML
-    private void showCalendar(ActionEvent event) {
-        if (TableView_Session.getItems().isEmpty()) {
-            showAlert("Erreur", "Aucune session disponible", Alert.AlertType.ERROR);
-            return;
+    // Method to add all sessions to Google Calendar
+    private void addSessionsToCalendar() {
+        try {
+            // Fetch all sessions from the database
+            List<Session> sessions = getSessionsFromDatabase();
+
+            // Check if all sessions have valid id_act (not 0)
+            for (Session session : sessions) {
+                if (session.getIdAct() == 0) {
+                    showError("Invalid Session", "Session ID " + session.getId_sess() + " has an invalid activity ID (id_act = 0).");
+                    return;
+                }
+            }
+
+            if (sessions.isEmpty()) {
+                showError("No Sessions Found", "There are no sessions available to add to Google Calendar.");
+                return;
+            }
+
+            GoogleCalendar.AjouterSessionsDansCalendrier(sessions);
+            showInfo("Success", "All sessions were successfully added to Google Calendar.");
+
+        } catch (Exception ex) {
+            showError("Error adding sessions", "An error occurred: " + ex.getMessage());
+            ex.printStackTrace();  // Debugging purposes
+        }
+    }
+
+
+    // Fetch all sessions from the database
+    private List<Session> getSessionsFromDatabase() {
+        SessionService sessionService = new SessionService();
+        List<Session> sessions = sessionService.getAllSessions();
+
+        if (sessions == null || sessions.isEmpty()) {
+            System.out.println("⚠ No sessions found in the database.");
         }
 
-        Stage calendarStage = new Stage();
-        CalendarView calendarView = new CalendarView();
-        calendarView.loadSessionsFromTableView(TableView_Session); // Load date and time directly
+        return sessions;
+    }
 
-        Scene calendarScene = new Scene(calendarView, 600, 600);
-        calendarStage.setTitle("Sessions Calendar");
-        calendarStage.setScene(calendarScene);
-        calendarStage.show();
+    // This method will be called when the "Show Calendar" button is clicked
+    @FXML
+    private void showCalendar(ActionEvent event) {
+        addSessionsAndDisplayCalendar();
+    }
+
+    // Method to add all sessions to Google Calendar and display the full calendar
+    private void addSessionsAndDisplayCalendar() {
+        try {
+            // Fetch all sessions
+            List<Session> sessions = getSessionsFromDatabase();
+
+            if (sessions.isEmpty()) {
+                showError("No Sessions Found", "There are no sessions available to add.");
+                return;
+            }
+
+            // Add sessions to Google Calendar
+            GoogleCalendar.AjouterSessionsDansCalendrier(sessions);
+            showInfo("Success", "All sessions were successfully added to Google Calendar.");
+
+            // Open Google Calendar in a browser
+            openGoogleCalendar();
+
+        } catch (Exception ex) {
+            showError("Error", "An error occurred while adding sessions: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    // Method to open Google Calendar in the browser
+    private void openGoogleCalendar() {
+        try {
+            Desktop.getDesktop().browse(new URI("https://calendar.google.com"));
+        } catch (Exception e) {
+            showError("Error Opening Calendar", "Could not open Google Calendar.");
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to show info alerts
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Helper method to show error alerts
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 
@@ -1824,26 +1939,121 @@ private Button page_hotel_bt_go_to_hotel;
 
 
 
+    // Method to update the weather information for a session based on the fetched weather data
+    public void updateWeatherForSession(String sessionDate, String weatherData) {
+        if (weatherData != null) {
+            // Parse the weatherData string
+            String weatherDescriptionText = weatherData.split(",")[0].replace("Weather: ", "").trim();
+            double temperature = Double.parseDouble(weatherData.split(",")[1].replace("Temp: ", "").replace("°C", "").trim());
+
+            // Set the weather icon based on the description
+            Image icon = getWeatherIcon(weatherDescriptionText);
+            weatherIcon.setImage(icon);  // Update the ImageView with the appropriate icon
+
+            // Update weather description and temperature labels
+            weatherDescription.setText("Weather: " + weatherDescriptionText);
+            weatherTemperature.setText("Temp: " + temperature + "°C");
+        } else {
+            // Handle the case where no data is available
+            weatherDescription.setText("Weather: Data not available");
+            weatherTemperature.setText("Temp: N/A");
+        }
+    }
+
+    // This method returns the appropriate icon based on weather description
+    private Image getWeatherIcon(String description) {
+        // Return appropriate icons based on the description
+        if (description.contains("clear")) {
+            return new Image(getClass().getResource("/images/sun_icon.png").toExternalForm());  // Path to sun icon
+        } else if (description.contains("cloud")) {
+            return new Image(getClass().getResource("/images/cloud_icon.png").toExternalForm());  // Path to cloud icon
+        } else if (description.contains("rain")) {
+            return new Image(getClass().getResource("/images/rain_icon.png").toExternalForm());  // Path to rain icon
+        } else if (description.contains("overcast clouds")) {
+            return new Image(getClass().getResource("/images/cloud_icon.png").toExternalForm());  // Path to overcast cloud icon
+        } else {
+            return new Image(getClass().getResource("/images/default_icon.png").toExternalForm());  // Default icon (in case description is unknown)
+        }
+    }
 
 
+    // Show weather method when a session is selected from TableView
+    @FXML
+    private void showWeather(ActionEvent event) {
+        // Get the selected session from the TableView
+        Session selectedSession = TableView_Session.getSelectionModel().getSelectedItem();  // Adjust TableView_Session with your actual TableView ID
 
+        if (selectedSession != null) {
+            // Extract the session date (LocalDate)
+            LocalDate sessionDate = selectedSession.getDate_sess();  // Assuming `getDate_sess()` returns a LocalDate
 
+            // Debugging step: Check if the session date changes
+            System.out.println("Selected session date: " + sessionDate);
 
+            // Fetch the weather for the selected session date using the WeatherService
+            String weatherData = WeatherService.getWeather(sessionDate.toString());  // Pass session date as String (YYYY-MM-DD)
 
+            // Now update the weather based on the fetched data
+            updateWeatherForSession(sessionDate.toString(), weatherData);
+        } else {
+            // If no session is selected, display a message
+            weatherDescription.setText("Please select a session first.");
+            weatherTemperature.setText("Temp: N/A");
+        }
+    }
 
+    // Example method to initialize the weather for a specific session
+    public void initializeWeatherForSession(String sessionDate) {
+        // Fetch weather data for the session and pass it to update
+        String weatherData = WeatherService.getWeather(sessionDate);
+        updateWeatherForSession(sessionDate, weatherData);
+    }
 
+    @FXML
+    private void onShareButtonClick(ActionEvent event) {
+        // Get the selected activity from the TableView
+        Activite selectedActivity = TableView_Activite.getSelectionModel().getSelectedItem();
 
+        if (selectedActivity != null) {
+            // Construct a link for Facebook to preview (can be any valid URL)
+            String activityLink = "https://yourapp.com/activity/" + selectedActivity.getNom_act(); // Optional, replace if needed
 
+            // Use a hashtag to categorize the post
+            String hashtag = "#AmazingActivity";
 
+            try {
+                // URL-encode the link and hashtag
+                String encodedLink = URLEncoder.encode(activityLink, StandardCharsets.UTF_8.toString());
+                String encodedHashtag = URLEncoder.encode(hashtag, StandardCharsets.UTF_8.toString());
 
+                // Construct the Facebook Feed Dialog URL
+                String shareUrl = "https://www.facebook.com/dialog/feed?" +
+                        "app_id=" + APP_ID + // Your Facebook App ID
+                        "&display=popup" +
+                        "&link=" + encodedLink + // Facebook requires a valid link for previews
+                        "&hashtag=" + encodedHashtag + // Adds a hashtag to the post
+                        "&redirect_uri=https://www.facebook.com/connect/login_success.html";
 
-
-
-
-
+                // Open Facebook Share Dialog in the browser
+                Desktop.getDesktop().browse(new URI(shareUrl));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No activity selected!");
+        }
+    }
 
 
 }
+
+
+
+
+
+
+
+
 
 
 

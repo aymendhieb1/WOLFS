@@ -89,5 +89,6 @@ public class Session {
                 ", nbr_places_sess=" + nbr_places_sess +
                 '}';
     }
+
 }
 

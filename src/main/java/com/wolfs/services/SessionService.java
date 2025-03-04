@@ -135,4 +135,19 @@ public class SessionService implements IService<Session> {
         }
         return sessions;
     }
+
+    private List<Session> getSessionsFromDatabase() {
+        SessionService sessionService = new SessionService(); // Instantiate session service
+        return sessionService.getAllSessions();  // Fetch all sessions correctly
+    }
+    public List<Session> getAllSessions() {
+        // Create some sample session data for demonstration, with correct types
+        List<Session> sessions = new ArrayList<>();
+
+        // Example session data, replace with actual data fetching logic
+        sessions.add(new Session(LocalDate.of(2025, 3, 5), LocalTime.of(10, 0), 30, 10, 1)); // Sample session 1
+        sessions.add(new Session(LocalDate.of(2025, 3, 6), LocalTime.of(14, 0), 25, 15, 2)); // Sample session 2
+
+        return sessions;
+    }
 }

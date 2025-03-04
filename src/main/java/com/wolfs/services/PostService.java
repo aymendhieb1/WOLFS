@@ -26,47 +26,45 @@ public class PostService {
             pst.setString(7, post.getType());
             pst.setString(8, post.getStatus());
 
-            // Set fields for Survey, Announcement, or Comment
             if (post instanceof Survey survey) {
                 pst.setString(9, survey.getSurveyQuestion());
                 pst.setString(10, survey.getSurveyTags());
                 pst.setString(11, survey.getSurveyUserList());
-                pst.setNull(12, Types.VARCHAR); // announcement_title
-                pst.setNull(13, Types.VARCHAR); // announcement_content
-                pst.setNull(14, Types.VARCHAR); // announcement_tags
-                pst.setNull(15, Types.INTEGER); // parent_id
-                pst.setNull(16, Types.VARCHAR); // comment_content
+                pst.setNull(12, Types.VARCHAR);
+                pst.setNull(13, Types.VARCHAR);
+                pst.setNull(14, Types.VARCHAR);
+                pst.setNull(15, Types.INTEGER);
+                pst.setNull(16, Types.VARCHAR);
             } else if (post instanceof Announcement announcement) {
-                pst.setNull(9, Types.VARCHAR); // survey_question
-                pst.setNull(10, Types.VARCHAR); // survey_tags
-                pst.setNull(11, Types.VARCHAR); // survey_user_list
+                pst.setNull(9, Types.VARCHAR);
+                pst.setNull(10, Types.VARCHAR);
+                pst.setNull(11, Types.VARCHAR);
                 pst.setString(12, announcement.getAnnouncementTitle());
                 pst.setString(13, announcement.getAnnouncementContent());
                 pst.setString(14, announcement.getAnnouncementTags());
-                pst.setNull(15, Types.INTEGER); // parent_id
-                pst.setNull(16, Types.VARCHAR); // comment_content
+                pst.setNull(15, Types.INTEGER);
+                pst.setNull(16, Types.VARCHAR);
             } else if (post instanceof Comment comment) {
-                pst.setNull(9, Types.VARCHAR); // survey_question
-                pst.setNull(10, Types.VARCHAR); // survey_tags
-                pst.setNull(11, Types.VARCHAR); // survey_user_list
-                pst.setNull(12, Types.VARCHAR); // announcement_title
-                pst.setNull(13, Types.VARCHAR); // announcement_content
-                pst.setNull(14, Types.VARCHAR); // announcement_tags
+                pst.setNull(9, Types.VARCHAR);
+                pst.setNull(10, Types.VARCHAR);
+                pst.setNull(11, Types.VARCHAR);
+                pst.setNull(12, Types.VARCHAR);
+                pst.setNull(13, Types.VARCHAR);
+                pst.setNull(14, Types.VARCHAR);
                 pst.setInt(15, comment.getParentId());
                 pst.setString(16, comment.getCommentContent());
             } else {
-                // For generic Post
-                pst.setNull(9, Types.VARCHAR); // survey_question
-                pst.setNull(10, Types.VARCHAR); // survey_tags
-                pst.setNull(11, Types.VARCHAR); // survey_user_list
-                pst.setNull(12, Types.VARCHAR); // announcement_title
-                pst.setNull(13, Types.VARCHAR); // announcement_content
-                pst.setNull(14, Types.VARCHAR); // announcement_tags
-                pst.setNull(15, Types.INTEGER); // parent_id
-                pst.setNull(16, Types.VARCHAR); // comment_content
+
+                pst.setNull(9, Types.VARCHAR);
+                pst.setNull(10, Types.VARCHAR);
+                pst.setNull(11, Types.VARCHAR);
+                pst.setNull(12, Types.VARCHAR);
+                pst.setNull(13, Types.VARCHAR);
+                pst.setNull(14, Types.VARCHAR);
+                pst.setNull(15, Types.INTEGER);
+                pst.setNull(16, Types.VARCHAR);
             }
 
-            // Set the new fields
             pst.setInt(17, post.getNbrSignal());
             pst.setString(18, post.getUpVoteList());
             pst.setString(19, post.getDownVoteList());
@@ -83,7 +81,6 @@ public class PostService {
             System.out.println("❌ Erreur lors de l'ajout du post: " + e.getMessage());
         }
     }
-
 
     public void supprimer(Post post) {
         String req = "DELETE FROM post WHERE post_id=?";
@@ -282,7 +279,6 @@ public class PostService {
             System.out.print("DownVote List: " + post.getDownVoteList() + " ");
             System.out.print("DownVote List: " + post.getSignalList() + " ");
 
-
             if (post instanceof Survey) {
                 Survey survey = (Survey) post;
                 System.out.print("Survey Question: " + survey.getSurveyQuestion() + " ");
@@ -304,7 +300,6 @@ public class PostService {
             System.out.println();
         }
     }
-
 
     public void incrementPostCount(int forumId) {
         String sql = "UPDATE Forum SET post_count = post_count + 1 WHERE forum_id  = ?";

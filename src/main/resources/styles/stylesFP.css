@@ -177,7 +177,6 @@
     -fx-border-width: 2px;
 }
 
-/* Style for text fields */
 .text-field {
     -fx-border-width: 1px;
     -fx-border-color: #ccc;
@@ -193,7 +192,6 @@
     -fx-border-color: #0078D7;
 }
 
-/* Buttons */
 .submit-button, .submit-button2 {
     -fx-padding: 16px;
     -fx-border-width: 0;
@@ -265,7 +263,6 @@
     -fx-border-width: 0 0 2px 0;
 }
 
-/* Table Headers */
 .table-view .column-header .label,
 .table-view2 .column-header .label {
     -fx-text-fill: white;
@@ -282,7 +279,6 @@
     -fx-border-color: #132a3e;
 }
 
-/* Forum Post Specific Styles */
 .post-details {
     -fx-padding: 10px;
     -fx-border-width: 1px;
@@ -307,7 +303,6 @@
     -fx-border-radius: 5px;
 }
 
-/* Base Containers */
 .split-pane {
     -fx-background-color: #18344c;
     -fx-padding: 10;
@@ -345,7 +340,6 @@
     -fx-background-color: transparent;
 }
 
-/* Text Fields and Areas */
 .text-field, .text-area {
     -fx-border-width: 1px;
     -fx-border-color: #ccc;
@@ -361,7 +355,6 @@
     -fx-border-color: #0078D7;
 }
 
-/* Buttons */
 .submit-button2 {
     -fx-padding: 16px;
     -fx-border-width: 0;
@@ -378,7 +371,6 @@
     -fx-background-color: linear-gradient(#e78d1e, #132a3e);
 }
 
-/* List Views */
 .list-view {
     -fx-background-color: #e0e0e0;
     -fx-background-radius: 5px;
@@ -396,7 +388,6 @@
     -fx-text-fill: white;
 }
 
-/* Combo Boxes */
 .combo-box {
     -fx-background-color: white;
     -fx-border-color: #ccc;
@@ -404,19 +395,19 @@
     -fx-background-radius: 5px;
 }
 .combo-box .list-cell {
-    -fx-padding: 5px 10px; /* Adjust padding to change the height and width of each item */
-    -fx-text-fill: #333; /* Text color inside the list */
+    -fx-padding: 5px 10px;
+    -fx-text-fill: #333;
 }
 .combo-box-popup .list-view {
-    -fx-padding: 5px; /* Adjust padding around the list to make it appear smaller */
-    -fx-background-color: white; /* Background color of the dropdown list */
+    -fx-padding: 5px;
+    -fx-background-color: white;
     -fx-background-insets: 0;
-    -fx-background-radius: 5px; /* Rounded corners for the list */
+    -fx-background-radius: 5px;
 
 }
 .combo-box-popup {
-    -fx-pref-width: 100px; /* Preferred width of the dropdown list */
-    -fx-max-height: 180px; /* Maximum height before scrolling occurs */
+    -fx-pref-width: 100px;
+    -fx-max-height: 180px;
     -fx-background-radius: 5px;
 }
 .combo-box:hover {
@@ -424,7 +415,6 @@
     -fx-padding: 5px;
 }
 
-/* Post and Comment Containers */
 .post-container, .comment-container {
     -fx-background-color: #f9f9f9;
     -fx-padding: 10;
@@ -449,14 +439,12 @@
     -fx-border-radius: 5px;
 }
 
-/* Error Labels */
 .error-label {
     -fx-text-fill: #dc3545;
     -fx-font-size: 12px;
     -fx-padding: 2 0 0 0;
 }
 
-/* Scroll Pane */
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -466,7 +454,6 @@
     -fx-background-color: transparent;
 }
 
-/* Forum Members Section */
 .forum-members {
     -fx-background-color: #f9f9f9;
     -fx-padding: 10;
@@ -474,7 +461,6 @@
     -fx-border-radius: 5px;
 }
 
-/* Additional Post Elements */
 .post-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
@@ -491,7 +477,6 @@
     -fx-text-fill: #666;
 }
 
-/* Comment Styling */
 .comment-box {
     -fx-background-color: #f0f0f0;
     -fx-padding: 10;
@@ -513,11 +498,6 @@
     -fx-text-fill: white;
 }
 
-
-/************/
-/* Base Styles */
-
-/* Post Container */
 .post-box {
     -fx-background-color: white;
     -fx-border-color: #ddd;
@@ -527,28 +507,24 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
 }
 
-/* Post Title */
 .post-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #132a3e; /* Dark blue for titles */
+    -fx-text-fill: #132a3e;
 }
 
-/* Post Content */
 .post-content {
     -fx-font-size: 14px;
     -fx-wrap-text: true;
-    -fx-text-fill: #333; /* Dark gray for content */
+    -fx-text-fill: #333;
 }
 
-/* Post Tags */
 .post-tags {
     -fx-font-size: 12px;
-    -fx-text-fill: #666; /* Gray for tags */
+    -fx-text-fill: #666;
     -fx-font-style: italic;
 }
 
-/* Voting Box */
 .vote-box {
     -fx-alignment: center-left;
     -fx-spacing: 5px;
@@ -575,9 +551,8 @@
     -fx-text-fill: #132a3e;
 }
 
-/* Comment Section */
 .comment-box {
-    -fx-background-color: rgba(28, 52, 76, 0.8); /* Light gray for comments */
+    -fx-background-color: rgba(28, 52, 76, 0.8);
     -fx-border-color: #eee;
     -fx-border-radius: 3px;
     -fx-padding: 5px;
@@ -588,9 +563,8 @@
     -fx-text-fill: #666;
 }
 
-/* Buttons */
 .delete-button {
-    -fx-background-color: #ff4444; /* Red for delete button */
+    -fx-background-color: #ff4444;
     -fx-text-fill: white;
     -fx-font-size: 12px;
     -fx-padding: 3px 8px;
@@ -599,11 +573,11 @@
 }
 
 .delete-button:hover {
-    -fx-background-color: #cc0000; /* Darker red on hover */
+    -fx-background-color: #cc0000;
 }
 
 .edit-button {
-    -fx-background-color: #4444ff; /* Blue for edit button */
+    -fx-background-color: #4444ff;
     -fx-text-fill: white;
     -fx-font-size: 12px;
     -fx-padding: 3px 8px;
@@ -612,10 +586,9 @@
 }
 
 .edit-button:hover {
-    -fx-background-color: #3333cc; /* Darker blue on hover */
+    -fx-background-color: #3333cc;
 }
 
-/* Survey Choices */
 .choice-box {
     -fx-spacing: 5px;
 }
@@ -630,24 +603,19 @@
     -fx-text-fill: #666;
 }
 
-/* Error Styling */
 .error-label {
-    -fx-text-fill: #dc3545; /* Red for error messages */
+    -fx-text-fill: #dc3545;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
-/* Image Styling */
 .image-view {
     -fx-border-radius: 5px;
     -fx-border-color: #ddd;
 }
 
-
-
-/* Add Post Button */
 .add-post-button {
-    -fx-background-color: #4CAF50; /* Green for add post button */
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 8px 15px;
@@ -656,7 +624,7 @@
 }
 
 .add-post-button:hover {
-    -fx-background-color: #45a049; /* Darker green on hover */
+    -fx-background-color: #45a049;
 }
 
 .add-post-button:disabled {
@@ -664,7 +632,7 @@
     -fx-opacity: 0.7;
 }
 .view-comments-button {
-    -fx-background-color: #4CAF50; /* Green background */
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-font-size: 12px;
     -fx-padding: 5px 10px;
@@ -673,7 +641,7 @@
 }
 
 .view-comments-button:hover {
-    -fx-background-color: #45a049; /* Darker green on hover */
+    -fx-background-color: #45a049;
 }
 
 .modern-alert .dialog-pane {

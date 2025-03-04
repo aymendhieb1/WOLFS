@@ -2384,10 +2384,10 @@ private TableView<Vol> tableViewVols;
                ForumComboxFilter.getItems().addAll("nom","description","créé par","nombre de posts","nombre de membres","date de création","confidentialité","liste des membres" );
                ForumComboxFilter.setValue("nom");
 
-                trieComboPost.getItems().addAll("Date", "Title", "Author", "Vote", "Nombre singal");
+                trieComboPost.getItems().addAll("Date", "Title", "Author", "Vote");
                 trieComboPost.setValue("Vote");
 
-                trieASCDESPost.getItems().addAll("Ascending", "Descending", "inactive");
+                trieASCDESPost.getItems().addAll("Ascending", "Descending");
                 trieASCDESPost.setValue("Descending");
 
                 trieComboPost.valueProperty().addListener((observable, oldValue, newValue) -> refreshPosts());
@@ -2826,6 +2826,10 @@ private TableView<Vol> tableViewVols;
             label_mail.setText(client.getEmail());
             label_nom.setText(client.getName().toUpperCase());
             CurrentUser = new Client(client.getId(), client.getName(), client.getPrenom(), client.getEmail(), client.getPassword(), client.getNum_tel(), client.getRole(), client.getStatus(), client.getPhoto_profile());
+       if(CurrentUser.getRole()==0) {
+          trieASCDESPost.getItems().addAll("inactive");
+          trieComboPost.getItems().addAll("Nombre singal");
+       }
         } catch (Exception e) {
             showAlert("Erreur", "Une erreur est survenue lors de la vérification de l'utilisateur.", Alert.AlertType.ERROR);
             e.printStackTrace();
@@ -5319,7 +5323,27 @@ private void handlePostTypeChange() {
             }
          }
       } else {
-         System.err.println("L'utilisateur actuel n'est pas membre de ce forum ou le forum sélectionné est invalide.");
+          Post newPost = new Announcement(
+                    0,
+                    selectedForum.getForumId(),
+                    0,
+                    0,
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    "",
+                    "active",
+                    0,
+                    "Aucun publication disponible",
+                    "Ce forum est privé. Tu n'es actuellement pas membre de ce forum.",
+                    "",
+                    "",
+                    "",
+                    ""
+            );
+
+            VBox postBox = displayFakePost(newPost);
+            postsVBox.getChildren().add(postBox);
+
       }
    }
 
@@ -5345,7 +5369,7 @@ private void handlePostTypeChange() {
       postBox.getChildren().addAll(postTitle, postContent, postDate);
       return postBox;
    }
-
+   
    private List<Post> sortPosts(List<Post> posts, String sortCriteria, String sortOrder) {
   Comparator<Post> comparator = null;
 

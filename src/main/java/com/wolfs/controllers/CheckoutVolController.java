@@ -20,9 +20,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,20 +271,46 @@ public class CheckoutVolController {
     @FXML
     private void addCheckoutVol(ActionEvent event) {
         try {
+            // Validation de l'ID du vol
             if (cbFlightID.getValue() == null) {
                 showAlert("Erreur", "Veuillez sélectionner un ID de vol!", Alert.AlertType.ERROR);
                 return;
             }
+
+            // Validation de la date de réservation
             if (dpReservationDate.getValue() == null) {
                 showAlert("Erreur", "Veuillez sélectionner une date de réservation!", Alert.AlertType.ERROR);
                 return;
             }
+
+            // Validation de l'heure de réservation
             if (tfReservationTime.getText() == null || tfReservationTime.getText().trim().isEmpty()) {
                 showAlert("Erreur", "Veuillez saisir une heure de réservation (HH:mm)!", Alert.AlertType.ERROR);
                 return;
             }
+
+            // Validation du statut de réservation
             if (cbReservationStatus.getValue() == null) {
                 showAlert("Erreur", "Veuillez sélectionner un statut de réservation!", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Contrôle de saisie: s'assurer que la date et l'heure de réservation ne sont pas dans le passé.
+            LocalDate reservationDate = dpReservationDate.getValue();
+            String reservationTimeStr = tfReservationTime.getText().trim();
+
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime reservationTime;
+            try {
+                reservationTime = LocalTime.parse(reservationTimeStr, timeFormatter);
+            } catch (DateTimeParseException e) {
+                showAlert("Erreur", "Format d'heure invalide. Veuillez utiliser le format HH:mm!", Alert.AlertType.ERROR);
+                return;
+            }
+
+            LocalDateTime reservationDateTime = LocalDateTime.of(reservationDate, reservationTime);
+            if (reservationDateTime.isBefore(LocalDateTime.now())) {
+                showAlert("Erreur", "La date et l'heure de réservation ne peuvent pas être dans le passé!", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -294,7 +322,7 @@ public class CheckoutVolController {
             }
 
             // Parse the time entered by the user
-            LocalTime reservationTime;
+
             try {
                 reservationTime = LocalTime.parse(tfReservationTime.getText(), timeFormatter);
             } catch (Exception e) {
@@ -302,8 +330,7 @@ public class CheckoutVolController {
                 return;
             }
 
-            // Combine date and time from the FXML fields
-            LocalDateTime reservationDateTime = LocalDateTime.of(dpReservationDate.getValue(), reservationTime);
+
 
             CheckoutVol newCheckoutVol = new CheckoutVol(
                     flightID,
@@ -325,6 +352,8 @@ public class CheckoutVolController {
     }
 
     // Open a modify dialog for the selected CheckoutVol
+
+
     private void openModifyDialog(CheckoutVol selected) {
         Dialog<CheckoutVol> dialog = new Dialog<>();
         dialog.setTitle("Modifier CheckoutVol");
@@ -358,6 +387,9 @@ public class CheckoutVolController {
         // DatePicker for reservation date
         DatePicker reservationDatePicker = new DatePicker();
         reservationDatePicker.setValue(selected.getReservationDate().toLocalDate());
+
+        // TimeFormatter for time display/parsing
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         // TextField for reservation time
         TextField timeField = new TextField(selected.getReservationDate().toLocalTime().format(timeFormatter));
@@ -412,7 +444,7 @@ public class CheckoutVolController {
                 try {
                     selected.setFlightID(flightIDComboBox.getValue());
 
-                    // Parse and set new reservation time from dialog input
+                    // Parse and validate new reservation time from dialog input
                     LocalTime newTime;
                     try {
                         newTime = LocalTime.parse(timeField.getText(), timeFormatter);
@@ -420,12 +452,27 @@ public class CheckoutVolController {
                         showAlert("Erreur", "Veuillez saisir une heure valide (HH:mm)!", Alert.AlertType.ERROR);
                         return null;
                     }
-                    LocalDateTime newReservationDateTime = LocalDateTime.of(reservationDatePicker.getValue(), newTime);
+
+                    LocalDate selectedDate = reservationDatePicker.getValue();
+                    if (selectedDate == null) {
+                        showAlert("Erreur", "Veuillez sélectionner une date de réservation!", Alert.AlertType.ERROR);
+                        return null;
+                    }
+
+                    LocalDateTime newReservationDateTime = LocalDateTime.of(selectedDate, newTime);
+
+                    // Control de saisie: vérifier que la date et l'heure de réservation ne sont pas dans le passé
+                    if (newReservationDateTime.isBefore(LocalDateTime.now())) {
+                        showAlert("Erreur", "La date et l'heure de réservation ne peuvent pas être dans le passé!", Alert.AlertType.ERROR);
+                        return null;
+                    }
+
                     selected.setReservationDate(newReservationDateTime);
                     selected.setTotalPassengers(totalPassengersComboBox.getValue());
                     selected.setReservationStatus(statusComboBox.getValue());
                     selected.setTotalPrice(Integer.parseInt(totalPriceField.getText()));
 
+                    // Save modifications and refresh table
                     checkoutVolService.modifierCheckoutVol(selected);
                     refreshTable();
                 } catch (Exception e) {
@@ -438,6 +485,7 @@ public class CheckoutVolController {
 
         dialog.showAndWait();
     }
+
 
     @FXML
     private void deleteCheckoutVol(ActionEvent event) {

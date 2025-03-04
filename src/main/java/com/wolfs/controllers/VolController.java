@@ -195,6 +195,7 @@ public class VolController {
             return;
         }
 
+        // Parse numeric fields
         try {
             flightPrice = Double.parseDouble(tfFlightPrice.getText());
             availableSeats = Integer.parseInt(tfAvailableSeats.getText());
@@ -209,10 +210,29 @@ public class VolController {
         try {
             LocalTime depTime = LocalTime.parse(tfDepartureTime.getText(), timeFormatter);
             departureTime = LocalDateTime.of(dpDepartureDate.getValue(), depTime);
+
             LocalTime arrTime = LocalTime.parse(tfArrivalTime.getText(), timeFormatter);
             arrivalTime = LocalDateTime.of(dpArrivalDate.getValue(), arrTime);
         } catch (Exception e) {
             showAlert("Erreur", "Format de l'heure incorrect (doit être HH:mm) !");
+            return;
+        }
+
+        // Input control: Departure date and time must not be in the past.
+        if (departureTime.isBefore(LocalDateTime.now())) {
+            showAlert("Erreur", "La date et l'heure de départ ne peuvent pas être dans le passé !");
+            return;
+        }
+
+        // Input control: Arrival date and time must not be in the past.
+        if (arrivalTime.isBefore(LocalDateTime.now())) {
+            showAlert("Erreur", "La date et l'heure d'arrivée ne peuvent pas être dans le passé !");
+            return;
+        }
+
+        // Input control: Arrival must be after departure.
+        if (arrivalTime.isBefore(departureTime)) {
+            showAlert("Erreur", "La date et l'heure d'arrivée doivent être postérieures à celles de départ !");
             return;
         }
 
@@ -239,6 +259,7 @@ public class VolController {
             showAlert("Erreur", "Impossible d'ajouter le vol !");
         }
     }
+
 
     private void editVol(Vol vol) {
         System.out.println("Modifier: " + vol);

@@ -446,7 +446,7 @@ private Button weather_sess;
     public void initialize() {
         startAnimation();
         loadComboBoxActivites(); // Load the activities into the ComboBox
-        addSessionsToCalendar();
+
         // Assuming ActiviteService2 is defined elsewhere
         ActiviteService2 activiteService = new ActiviteService2();
 
@@ -1835,106 +1835,28 @@ private Button weather_sess;
         page_session.setVisible(true);
     }
 
-    // Method to add all sessions to Google Calendar
-    private void addSessionsToCalendar() {
-        try {
-            // Fetch all sessions from the database
-            List<Session> sessions = getSessionsFromDatabase();
-
-            // Check if all sessions have valid id_act (not 0)
-            for (Session session : sessions) {
-                if (session.getIdAct() == 0) {
-                    showError("Invalid Session", "Session ID " + session.getId_sess() + " has an invalid activity ID (id_act = 0).");
-                    return;
-                }
-            }
-
-            if (sessions.isEmpty()) {
-                showError("No Sessions Found", "There are no sessions available to add to Google Calendar.");
-                return;
-            }
-
-            GoogleCalendar.AjouterSessionsDansCalendrier(sessions);
-            showInfo("Success", "All sessions were successfully added to Google Calendar.");
-
-        } catch (Exception ex) {
-            showError("Error adding sessions", "An error occurred: " + ex.getMessage());
-            ex.printStackTrace();  // Debugging purposes
-        }
-    }
 
 
-    // Fetch all sessions from the database
-    private List<Session> getSessionsFromDatabase() {
-        SessionService sessionService = new SessionService();
-        List<Session> sessions = sessionService.getAllSessions();
 
-        if (sessions == null || sessions.isEmpty()) {
-            System.out.println("⚠ No sessions found in the database.");
-        }
 
-        return sessions;
-    }
 
-    // This method will be called when the "Show Calendar" button is clicked
     @FXML
     private void showCalendar(ActionEvent event) {
-        addSessionsAndDisplayCalendar();
-    }
-
-    // Method to add all sessions to Google Calendar and display the full calendar
-    private void addSessionsAndDisplayCalendar() {
         try {
-            // Fetch all sessions
-            List<Session> sessions = getSessionsFromDatabase();
-
-            if (sessions.isEmpty()) {
-                showError("No Sessions Found", "There are no sessions available to add.");
-                return;
-            }
-
-            // Add sessions to Google Calendar
-            GoogleCalendar.AjouterSessionsDansCalendrier(sessions);
-            showInfo("Success", "All sessions were successfully added to Google Calendar.");
-
-            // Open Google Calendar in a browser
-            openGoogleCalendar();
-
-        } catch (Exception ex) {
-            showError("Error", "An error occurred while adding sessions: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    // Method to open Google Calendar in the browser
-    private void openGoogleCalendar() {
-        try {
-            Desktop.getDesktop().browse(new URI("https://calendar.google.com"));
-        } catch (Exception e) {
-            showError("Error Opening Calendar", "Could not open Google Calendar.");
+            // First add all sessions to the calendar
+            GoogleCalendar.AjouterSessionsDansCalendrier();
+            
+            // Then display the calendar
+            GoogleCalendar.AfficherCalendrierComplet();
+            
+            // Show success message to user
+            showAlert("Success", "Calendar has been updated with all sessions", Alert.AlertType.INFORMATION);
+            
+        } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
+            showAlert("Error", "Failed to update or display calendar: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
-    // Helper method to show info alerts
-    private void showInfo(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    // Helper method to show error alerts
-    private void showError(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-
 
 
 

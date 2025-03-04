@@ -150,4 +150,32 @@ public class SessionService implements IService<Session> {
 
         return sessions;
     }
+    public List<Session> getSessionsByActivityId(int idAct) {
+        List<Session> sessions = new ArrayList<>();
+        String req = "SELECT * FROM session WHERE id_act = ?"; // SQL query to fetch sessions by activity ID
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
+            pst.setInt(1, idAct);  // Set the activity ID in the query
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                // Create a new Session object using the constructor, passing the necessary fields
+                Session session = new Session(
+                        rs.getInt("id_sess"), // id_sess (primary key, passed to the constructor)
+                        rs.getDate("date_sess").toLocalDate(), // Convert date_sess to LocalDate
+                        rs.getTime("time_sess").toLocalTime(), // Convert time_sess to LocalTime
+                        rs.getInt("cap_sess"), // cap_sess
+                        rs.getInt("nbr_places_sess"), // nbr_places_sess
+                        rs.getInt("id_act") // id_act (activity ID)
+                );
+                sessions.add(session); // Add the session to the list
+            }
+        } catch (SQLException e) {
+            System.out.println("Error while fetching sessions by activity ID: " + e.getMessage());
+        }
+
+        return sessions;  // Return the list of sessions
+    }
+
+
 }

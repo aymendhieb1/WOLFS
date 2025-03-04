@@ -140,6 +140,32 @@ public class ActiviteService2 implements IService<Activite> {
 
         return act;
     }
+    public List<Activite> getAllActivites() {
+        List<Activite> activities = new ArrayList<>();
+        String query = "SELECT * FROM activite"; // Adjust this query to match your database table name
+
+        try (PreparedStatement pst = connection.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+                int idAct = rs.getInt("id_act");
+                String nomAct = rs.getString("nom_act");
+                String localisation = rs.getString("localisation");
+                String descript = rs.getString("descript");
+                String type = rs.getString("type");
+                float prixAct = rs.getFloat("prix_act");
+
+                // Creating Activite object using the full constructor
+                Activite activite = new Activite(idAct, nomAct, descript, localisation, type, prixAct);
+                activities.add(activite);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+
+        return activities;
+    }
 
 
 

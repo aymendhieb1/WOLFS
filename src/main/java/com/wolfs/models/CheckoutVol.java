@@ -5,32 +5,38 @@ import java.time.LocalDateTime;
 public class CheckoutVol {
 
     private int CheckoutID;
-    private int FlightID;
-    private int UserID;
+    private int FlightID;  // Now stores the FlightID instead of the Vol object
+    private String Aircraft;
+    private int FlightCrew;
+    private String Gate;
     private LocalDateTime ReservationDate;
     private int TotalPassengers;
-    private ReservationStatus ReservationStatus;  // Now it's the ENUM
+    private ReservationStatus ReservationStatus;
     private int TotalPrice;
 
-    // Constructor for retrieval (includes CheckoutID)
-    public CheckoutVol(int checkoutID, int flightID, int userID, LocalDateTime reservationDate,
-                       int totalPassengers, ReservationStatus reservationStatus, int totalPrice) {
+    // Constructor for retrieval (includes CheckoutID and FlightID)
+    public CheckoutVol(int checkoutID, int flightID, String aircraft, int flightCrew, String gate,
+                       LocalDateTime reservationDate, int totalPassengers,
+                       ReservationStatus reservationStatus, int totalPrice) {
         this.CheckoutID = checkoutID;
-        this.FlightID = flightID;
-        this.UserID = userID;
+        this.FlightID = flightID;  // Changed from Vol to FlightID
+        this.Aircraft = aircraft;
+        this.FlightCrew = flightCrew;
+        this.Gate = gate;
         this.ReservationDate = reservationDate;
         this.TotalPassengers = totalPassengers;
         this.ReservationStatus = reservationStatus;
         this.TotalPrice = totalPrice;
     }
 
-
-
     // Constructor for creation (without CheckoutID)
-    public CheckoutVol(int flightID, int userID, LocalDateTime reservationDate,
-                       int totalPassengers, ReservationStatus reservationStatus, int totalPrice) {
-        this.FlightID = flightID;
-        this.UserID = userID;
+    public CheckoutVol(int flightID, String aircraft, int flightCrew, String gate,
+                       LocalDateTime reservationDate, int totalPassengers,
+                       ReservationStatus reservationStatus, int totalPrice) {
+        this.FlightID = flightID;  // Changed from Vol to FlightID
+        this.Aircraft = aircraft;
+        this.FlightCrew = flightCrew;
+        this.Gate = gate;
         this.ReservationDate = reservationDate;
         this.TotalPassengers = totalPassengers;
         this.ReservationStatus = reservationStatus;
@@ -39,10 +45,10 @@ public class CheckoutVol {
 
     // Enum for ReservationStatus
     public enum ReservationStatus {
-        CONFIRMEE, EN_ATTENTE, En_Attente, ANNULEE
+        CONFIRMEE, EN_ATTENTE, ANNULEE
     }
 
-    // Getter and Setter methods for all fields
+    // Getter and Setter methods
     public int getCheckoutID() {
         return CheckoutID;
     }
@@ -59,12 +65,28 @@ public class CheckoutVol {
         this.FlightID = flightID;
     }
 
-    public int getUserID() {
-        return UserID;
+    public String getAircraft() {
+        return Aircraft;
     }
 
-    public void setUserID(int userID) {
-        this.UserID = userID;
+    public void setAircraft(String aircraft) {
+        this.Aircraft = aircraft;
+    }
+
+    public int getFlightCrew() {
+        return FlightCrew;
+    }
+
+    public void setFlightCrew(int flightCrew) {
+        this.FlightCrew = flightCrew;
+    }
+
+    public String getGate() {
+        return Gate;
+    }
+
+    public void setGate(String gate) {
+        this.Gate = gate;
     }
 
     public LocalDateTime getReservationDate() {
@@ -99,13 +121,15 @@ public class CheckoutVol {
         this.TotalPrice = totalPrice;
     }
 
-    // Override toString method for displaying the CheckoutVol details
+    // Override toString() to show the flight route ("Departure to Destination") for end-user display.
     @Override
     public String toString() {
         return "CheckoutVol{" +
                 "CheckoutID=" + CheckoutID +
                 ", FlightID=" + FlightID +
-                ", UserID=" + UserID +
+                ", Aircraft='" + Aircraft + '\'' +
+                ", FlightCrew=" + FlightCrew +
+                ", Gate='" + Gate + '\'' +
                 ", ReservationDate=" + ReservationDate +
                 ", TotalPassengers=" + TotalPassengers +
                 ", ReservationStatus=" + ReservationStatus +

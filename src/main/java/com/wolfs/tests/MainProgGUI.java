@@ -15,10 +15,20 @@ public class MainProgGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vol.fxml"));
-            primaryStage.setScene(new Scene(root));
-            primaryStage.setTitle("Vol App");
-            primaryStage.show();
+            // Load the first FXML (Vol.fxml)
+            Parent root1 = FXMLLoader.load(getClass().getResource("/Vol.fxml"));
+            Stage stage1 = new Stage();
+            stage1.setScene(new Scene(root1));
+            stage1.setTitle("Gestion des Vols");
+            stage1.show();
+
+            // Load the second FXML (CheckoutVol.fxml)
+            Parent root2 = FXMLLoader.load(getClass().getResource("/CheckoutVol.fxml"));
+            Stage stage2 = new Stage();
+            stage2.setScene(new Scene(root2));
+            stage2.setTitle("Checkout Vol");
+            stage2.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

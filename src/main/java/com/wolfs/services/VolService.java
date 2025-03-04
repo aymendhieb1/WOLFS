@@ -4,10 +4,7 @@ import com.wolfs.models.Vol;
 import com.wolfs.models.ClasseChaise;
 import com.wolfs.utils.DataSource;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +52,35 @@ public class VolService implements IVolService {
             System.out.println(e.getMessage());
         }
     }
+
+    public Vol getVolByID(int flightID) {
+        Vol vol = null;
+        String query = "SELECT * FROM vol WHERE FlightID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, flightID);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                vol = new Vol(
+                        rs.getInt("FlightID"),
+                        rs.getString("Departure"),
+                        rs.getString("Destination"),
+                        rs.getTimestamp("DepartureTime").toLocalDateTime(),
+                        rs.getTimestamp("ArrivalTime").toLocalDateTime(),
+                        ClasseChaise.valueOf(rs.getString("ClasseChaise")),
+                        rs.getString("Airline"),
+                        rs.getInt("FlightPrice"),
+                        rs.getInt("AvailableSeats"),
+                        rs.getString("Description")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching Vol: " + e.getMessage());
+        }
+        return vol;
+    }
+
 
     @Override
     public List<Vol> rechercherVol() {

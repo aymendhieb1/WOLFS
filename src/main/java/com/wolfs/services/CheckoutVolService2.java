@@ -1,6 +1,7 @@
 package com.wolfs.services;
 
 import com.wolfs.models.CheckoutVol;
+import com.wolfs.models.Vol;
 import com.wolfs.utils.DataSource;
 
 import java.sql.*;
@@ -12,40 +13,79 @@ public class CheckoutVolService2 {
 
     Connection connection = DataSource.getInstance().getConnection();
 
+    // Helper method to retrieve a full Vol object by FlightID
+    private Vol getVolById(int flightID) {
+        String query = "SELECT * FROM vol WHERE FlightID = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, flightID);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                Vol vol = new Vol(
+                        rs.getInt("FlightID"),
+                        rs.getString("Departure"),
+                        rs.getString("Destination"),
+                        rs.getTimestamp("DepartureTime").toLocalDateTime(),
+                        rs.getTimestamp("ArrivalTime").toLocalDateTime(),
+                        com.wolfs.models.ClasseChaise.valueOf(rs.getString("ClasseChaise")),
+                        rs.getString("Airline"),
+                        rs.getInt("FlightPrice"),
+                        rs.getInt("AvailableSeats"),
+                        rs.getString("Description")
+                );
+                return vol;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching Vol: " + e.getMessage());
+        }
+        return null;
+    }
+
     // Ajouter un CheckoutVol
     public void ajouterCheckoutVol(CheckoutVol checkoutVol) {
-        String req = "INSERT INTO checkoutvol (FlightID, UserID, ReservationDate, TotalPassengers, ReservationStatus, TotalPrice) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
+        String req = "INSERT INTO checkoutvol (FlightID, Aircraft, FlightCrew, Gate, ReservationDate, TotalPassengers, ReservationStatus, TotalPrice) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setInt(1, checkoutVol.getFlightID());
-            pst.setInt(2, checkoutVol.getUserID());
-            pst.setObject(3, checkoutVol.getReservationDate());
-            pst.setInt(4, checkoutVol.getTotalPassengers());
-            pst.setString(5, checkoutVol.getReservationStatus().name());  // Enum as string
-            pst.setInt(6, checkoutVol.getTotalPrice());  // Keep as int
+            pst.setString(2, checkoutVol.getAircraft());
+            pst.setInt(3, checkoutVol.getFlightCrew());
+            pst.setString(4, checkoutVol.getGate());
+            pst.setTimestamp(5, Timestamp.valueOf(checkoutVol.getReservationDate()));
+            pst.setInt(6, checkoutVol.getTotalPassengers());
+            pst.setString(7, checkoutVol.getReservationStatus().toString());
+            pst.setInt(8, checkoutVol.getTotalPrice());
+
             pst.executeUpdate();
             System.out.println("CheckoutVol ajouté");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error during insert: " + e.getMessage());
         }
     }
 
+    // Modifier un CheckoutVol
     public void modifierCheckoutVol(CheckoutVol checkoutVol) {
-        String req = "UPDATE checkoutvol SET FlightID=?, UserID=?, ReservationDate=?, TotalPassengers=?, ReservationStatus=?, TotalPrice=? WHERE CheckoutID=?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
+        String req = "UPDATE checkoutvol SET " +
+                "FlightID = ?, " +
+                "Aircraft = ?, " +
+                "FlightCrew = ?, " +
+                "Gate = ?, " +
+                "ReservationDate = ?, " +
+                "TotalPassengers = ?, " +
+                "ReservationStatus = ?, " +
+                "TotalPrice = ? " +
+                "WHERE CheckoutID = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setInt(1, checkoutVol.getFlightID());
-            pst.setInt(2, checkoutVol.getUserID());
-            pst.setObject(3, checkoutVol.getReservationDate());
-            pst.setInt(4, checkoutVol.getTotalPassengers());
-            pst.setString(5, checkoutVol.getReservationStatus().name().replace("_", " ")); // Replace underscores with spaces
-            pst.setInt(6, checkoutVol.getTotalPrice());
-            pst.setInt(7, checkoutVol.getCheckoutID());
+            pst.setString(2, checkoutVol.getAircraft());
+            pst.setInt(3, checkoutVol.getFlightCrew());
+            pst.setString(4, checkoutVol.getGate());
+            pst.setTimestamp(5, Timestamp.valueOf(checkoutVol.getReservationDate()));
+            pst.setInt(6, checkoutVol.getTotalPassengers());
+            pst.setString(7, checkoutVol.getReservationStatus().toString());
+            pst.setInt(8, checkoutVol.getTotalPrice());
+            pst.setInt(9, checkoutVol.getCheckoutID());
 
-            // Debug: Print the SQL query and parameters
             System.out.println("Executing SQL: " + pst.toString());
-
             int rowsAffected = pst.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("CheckoutVol updated successfully. Rows affected: " + rowsAffected);
@@ -60,48 +100,40 @@ public class CheckoutVolService2 {
     // Supprimer un CheckoutVol
     public void supprimerCheckoutVol(CheckoutVol checkoutVol) {
         String req = "DELETE FROM checkoutvol WHERE CheckoutID=?";
-        try {
-            PreparedStatement pst = connection.prepareStatement(req);
+        try (PreparedStatement pst = connection.prepareStatement(req)) {
             pst.setInt(1, checkoutVol.getCheckoutID());
             pst.executeUpdate();
             System.out.println("CheckoutVol supprimé");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error during delete: " + e.getMessage());
         }
     }
 
+    // Rechercher tous les CheckoutVol
     public List<CheckoutVol> rechercherCheckoutVol() {
         List<CheckoutVol> checkoutVols = new ArrayList<>();
         String req = "SELECT * FROM checkoutvol";
-        try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(req);
-
+        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(req)) {
             while (rs.next()) {
                 int checkoutID = rs.getInt("CheckoutID");
                 int flightID = rs.getInt("FlightID");
-                int userID = rs.getInt("UserID");
+                String aircraft = rs.getString("Aircraft");
+                int flightCrew = rs.getInt("FlightCrew");
+                String gate = rs.getString("Gate");
                 Timestamp ts = rs.getTimestamp("ReservationDate");
                 LocalDateTime reservationDate = (ts != null) ? ts.toLocalDateTime() : null;
                 int totalPassengers = rs.getInt("TotalPassengers");
                 String reservationStatusString = rs.getString("ReservationStatus");
                 int totalPrice = rs.getInt("TotalPrice");
 
-                // Convert database value to Java enum
-                CheckoutVol.ReservationStatus reservationStatusEnum = null;
-                try {
-                    if (reservationStatusString != null) {
-                        reservationStatusEnum = CheckoutVol.ReservationStatus.valueOf(reservationStatusString.replace(" ", "_"));
-                    }
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Unknown reservation status: " + reservationStatusString);
-                    reservationStatusEnum = CheckoutVol.ReservationStatus.En_Attente;
-                }
+                CheckoutVol.ReservationStatus reservationStatusEnum = CheckoutVol.ReservationStatus.valueOf(reservationStatusString.toUpperCase());
 
                 CheckoutVol checkoutVol = new CheckoutVol(
                         checkoutID,
                         flightID,
-                        userID,
+                        aircraft,
+                        flightCrew,
+                        gate,
                         reservationDate,
                         totalPassengers,
                         reservationStatusEnum,
@@ -109,13 +141,10 @@ public class CheckoutVolService2 {
                 );
                 checkoutVols.add(checkoutVol);
             }
-            rs.close();
-            st.close();
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
         }
 
         return checkoutVols;
     }
-
 }

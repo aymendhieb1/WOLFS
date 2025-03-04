@@ -77,64 +77,92 @@ public class MainProg {
 
         /* ------------------------------------------- Debut Partie Amine ------------------------------------ */
 
-        // Initialize CheckoutVolService
+        // Initialize the services
         CheckoutVolService checkoutVolService = new CheckoutVolService();
 
-        /*CheckoutVol checkoutVolToAdd = new CheckoutVol(
-                2,  // Flight ID
-                1,  // User ID
-                LocalDateTime.parse("12/12/2025 10:00", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                2,  // Total passengers
-                CheckoutVol.ReservationStatus.Confirmee,  // Correct enum reference with CheckoutVol prefix
-                3600  // Total price
-        );
-
-        // Print the checkoutVol object to verify
-        System.out.println(checkoutVolToAdd);
-        checkoutVolService.ajouterCheckoutVol(checkoutVolToAdd);
-        System.out.println("Checkout Vol ajouté: " + checkoutVolToAdd);*/
-
-        // Uncomment this section to modify a CheckoutVol
-        /*CheckoutVol checkoutVolToModify = new CheckoutVol(
-                2,  // Flight ID (new value)
-                1,  // User ID (new value)
-                LocalDateTime.parse("12/12/2025 15:00", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), // Modified reservation date
-                30,  // Modified total passengers
-                CheckoutVol.ReservationStatus.En_Attente,  // Modified reservation status (use the nested enum)
-                4500  // Modified total price
-        );
 
 
-// (The null-check is optional if you’re sure the status is set.)
-        if (checkoutVolToModify.getReservationStatus() == null) {
-            checkoutVolToModify.setReservationStatus(CheckoutVol.ReservationStatus.En_Attente);
+        // -------------------
+        // Fetch an existing Vol from the database
+        // -------------------
+        int flightID = 1; // Change this ID to one that exists in your database
+        Vol volFromDB = volService.getVolByID(flightID);
+        if (volFromDB == null) {
+            System.out.println("No Vol found with ID " + flightID);
+            return; // Stop execution if no Vol is found
         }
 
-// Call the service method to modify the checkout
+        // -------------------
+        // Test: Adding a new CheckoutVol
+        // -------------------
+        CheckoutVol checkoutVolToAdd = new CheckoutVol(
+                flightID,                           // Use fetched Vol object
+                "A320",                               // Aircraft
+                5,                                    // Flight crew
+                "Gate 1",                             // Gate
+                LocalDateTime.parse("12/12/2025 10:00", formatter), // Reservation date
+                200,                                  // Total passengers
+                CheckoutVol.ReservationStatus.CONFIRMEE,  // Reservation status
+                3600                                  // Total price
+        );
+
+        System.out.println("Adding CheckoutVol: " + checkoutVolToAdd);
+        checkoutVolService.ajouterCheckoutVol(checkoutVolToAdd);
+        System.out.println("CheckoutVol ajouté.");
+
+        // -------------------
+        // Test: Modifying an existing CheckoutVol
+        // -------------------
+        int checkoutID = 2; // Change this to a valid ID from your database
+        Vol newVolFromDB = volService.getVolByID(2); // Fetch another Vol for modification
+        if (newVolFromDB == null) {
+            System.out.println("No Vol found with ID 2");
+            return;
+        }
+
+        CheckoutVol checkoutVolToModify = new CheckoutVol(
+                checkoutID,                           // Existing CheckoutID
+                flightID,                         // New Vol object with FlightID = 2
+                "B737",                               // Modified Aircraft
+                10,                                   // Modified Flight crew
+                "Gate 2",                             // Modified Gate
+                LocalDateTime.parse("12/12/2025 15:00", formatter), // Modified Reservation date
+                150,                                  // Modified Total passengers
+                CheckoutVol.ReservationStatus.EN_ATTENTE,  // Modified Reservation status
+                4500                                  // Modified Total price
+        );
+
         checkoutVolService.modifierCheckoutVol(checkoutVolToModify);
-        System.out.println("Checkout Vol modifié: " + checkoutVolToModify);*/
+        System.out.println("CheckoutVol modifié: " + checkoutVolToModify);
 
+        // -------------------
+        // Test: Deleting a CheckoutVol
+        // -------------------
+        int checkoutToDeleteID = 9; // Change to an actual ID that exists
+        checkoutVolService.supprimerCheckoutVol(checkoutToDeleteID);
+        System.out.println("CheckoutVol supprimé avec ID: " + checkoutToDeleteID);
 
-        // Uncomment this section to delete a CheckoutVol
-        CheckoutVol checkoutVolToDelete = new CheckoutVol(9, 0, 0, null, 0, CheckoutVol.ReservationStatus.ANNULEE, 0);
-        checkoutVolService.supprimerCheckoutVol(checkoutVolToDelete);
-        System.out.println("Checkout Vol supprimé: " + checkoutVolToDelete);
-
-        // List all CheckoutVol entries from the checkout table
+        // -------------------
+        // Test: Retrieving and listing all CheckoutVol entries
+        // -------------------
         List<CheckoutVol> checkoutVols = checkoutVolService.rechercherCheckoutVol();
         System.out.println("-----------------------------------");
-        System.out.println("List of Checkout Flights");
+        System.out.println("List of Checkout Vols");
         System.out.println("-----------------------------------");
-        for (CheckoutVol checkoutVol : checkoutVols) {
-            System.out.println("Checkout ID: " + checkoutVol.getCheckoutID());
-            System.out.println("Flight ID: " + checkoutVol.getFlightID());
-            System.out.println("User ID: " + checkoutVol.getUserID());
-            System.out.println("Reservation Date: " + checkoutVol.getReservationDate());
-            System.out.println("Total Passengers: " + checkoutVol.getTotalPassengers());
-            System.out.println("Reservation Status: " + checkoutVol.getReservationStatus());
-            System.out.println("Total Price: " + checkoutVol.getTotalPrice());
+        for (CheckoutVol cv : checkoutVols) {
+            System.out.println("Checkout ID: " + cv.getCheckoutID());
+            System.out.println("Flight ID: " + cv.getFlightID());
+            System.out.println("Aircraft: " + cv.getAircraft());
+            System.out.println("Flight Crew: " + cv.getFlightCrew());
+            System.out.println("Gate: " + cv.getGate());
+            System.out.println("Reservation Date: " + cv.getReservationDate());
+            System.out.println("Total Passengers: " + cv.getTotalPassengers());
+            System.out.println("Reservation Status: " + cv.getReservationStatus());
+            System.out.println("Total Price: " + cv.getTotalPrice());
             System.out.println("-----------------------------------");
         }
+
+
 
         /* ------------------------------------------- Fin Partie Amine ------------------------------------ */
     }

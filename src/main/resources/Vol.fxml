@@ -1,59 +1,202 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+
 <?import com.wolfs.models.ClasseChaise?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TextArea?>
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.VolController">
 
-<TabPane fx:id="tabPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wolfs.controllers.VolController">
-    <tabs>
-        <Tab text="Ajouter Vol">
-            <AnchorPane>
-                <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10">
-                    <TextField fx:id="tfDeparture" promptText="Départ"/>
-                    <TextField fx:id="tfDestination" promptText="Destination"/>
-                    <TextField fx:id="tfDepartureTime" promptText="Heure de départ (yyyy-MM-ddTHH:mm)"/>
-                    <TextField fx:id="tfArrivalTime" promptText="Heure d'arrivée (yyyy-MM-ddTHH:mm)"/>
-                    <ComboBox fx:id="cbClasseChaise" promptText="Classe de Chaise">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <ClasseChaise fx:value="ECONOMY"/>
-                                <ClasseChaise fx:value="PREMIUM_ECONOMY"/>
-                                <ClasseChaise fx:value="BUSINESS"/>
-                                <ClasseChaise fx:value="FIRST_CLASS"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                    <TextField fx:id="tfAirline" promptText="Compagnie aérienne"/>
-                    <TextField fx:id="tfFlightPrice" promptText="Prix du vol"/>
-                    <TextField fx:id="tfAvailableSeats" promptText="Sièges disponibles"/>
-                    <TextField fx:id="tfDescription" promptText="Description"/>
-                    <Button text="Ajouter Vol" onAction="#addVol"/>
-                </VBox>
-            </AnchorPane>
-        </Tab>
+    <!-- TabPane for Multiple Tabs -->
+    <TabPane AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
 
-        <Tab text="Afficher Vol">
-            <AnchorPane>
-                <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10">
-                    <TableView fx:id="tableViewVols" prefWidth="800">
+        <!-- First Tab - Form for Adding Flights -->
+        <Tab text="Ajouter un Vol">
+            <VBox layoutX="14.0" layoutY="14.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+
+                <HBox spacing="20.0">
+                    <!-- Form Elements Section -->
+                    <VBox spacing="10.0" prefWidth="250.0">
+                        <Label text="Ajouter un Vol" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+
+                        <!-- Departure Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Départ:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfDeparture" promptText="Départ" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Destination Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Destination:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfDestination" promptText="Destination" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Departure Date and Time Fields -->
+                        <HBox spacing="10.0">
+                            <VBox spacing="5.0" prefWidth="100.0" alignment="CENTER_RIGHT">
+                                <Label text="Départ" />
+                                <Label text="Date/Heure:" />
+                            </VBox>
+                            <VBox spacing="5.0">
+                                <DatePicker fx:id="dpDepartureDate" prefWidth="150.0" />
+                                <HBox spacing="5.0">
+                                    <TextField fx:id="tfDepartureTime" promptText="HH:MM" prefWidth="150.0" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Arrival Date and Time Fields -->
+                        <HBox spacing="10.0">
+                            <VBox spacing="5.0" prefWidth="100.0" alignment="CENTER_RIGHT">
+                                <Label text="Arrivée" />
+                                <Label text="Date/Heure:" />
+                            </VBox>
+                            <VBox spacing="5.0">
+                                <DatePicker fx:id="dpArrivalDate" prefWidth="150.0" />
+                                <HBox spacing="5.0">
+                                    <TextField fx:id="tfArrivalTime" promptText="HH:MM" prefWidth="150.0" />
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <!-- Chair Class Selection -->
+                        <HBox spacing="10.0">
+                            <Label text="Classe de Chaise:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <ComboBox fx:id="cbClasseChaise" promptText="Classe de Chaise" prefWidth="150.0">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <ClasseChaise fx:value="ECONOMY"/>
+                                        <ClasseChaise fx:value="PREMIUM_ECONOMY"/>
+                                        <ClasseChaise fx:value="BUSINESS"/>
+                                        <ClasseChaise fx:value="FIRST_CLASS"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </HBox>
+
+                        <!-- Airline Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Compagnie aérienne:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfAirline" promptText="Compagnie aérienne" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Flight Price Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Prix du vol:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfFlightPrice" promptText="Prix du vol" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Available Seats Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Sièges disponibles:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfAvailableSeats" promptText="Sièges disponibles" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Description Field -->
+                        <HBox spacing="10.0">
+                            <Label text="Description:" prefWidth="100.0" alignment="CENTER_RIGHT" />
+                            <TextField fx:id="tfDescription" promptText="Description" prefWidth="150.0" />
+                        </HBox>
+
+                        <!-- Add Flight Button -->
+                        <VBox spacing="10.0" alignment="CENTER">
+                            <Button text="Ajouter Vol" onAction="#addVol" prefWidth="100.0" />
+                        </VBox>
+                    </VBox>
+
+                    <!-- Table for displaying flight details -->
+                    <TableView fx:id="tableViewVols" prefHeight="500.0" HBox.hgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colDeparture" text="Départ" />
-                            <TableColumn fx:id="colDestination" text="Destination" />
-                            <TableColumn fx:id="colDepartureTime" text="Heure de départ" />
-                            <TableColumn fx:id="colArrivalTime" text="Heure d'arrivée" />
-                            <TableColumn fx:id="colClasseChaise" text="Classe de Chaise" />
-                            <TableColumn fx:id="colAirline" text="Compagnie aérienne" />
-                            <TableColumn fx:id="colFlightPrice" text="Prix du vol" />
-                            <TableColumn fx:id="colAvailableSeats" text="Sièges disponibles" />
-                            <TableColumn fx:id="colDescription" text="Description" />
-                            <TableColumn fx:id="colModify" text="Modifier" />
-                            <TableColumn fx:id="colDelete" text="Supprimer" />
+                            <TableColumn fx:id="colDeparture" text="Départ" prefWidth="100.0" />
+                            <TableColumn fx:id="colDestination" text="Destination" prefWidth="100.0" />
+                            <TableColumn fx:id="colDepartureTime" text="Heure de départ" prefWidth="150.0" />
+                            <TableColumn fx:id="colArrivalTime" text="Heure d'arrivée" prefWidth="150.0" />
+                            <TableColumn fx:id="colClasseChaise" text="Classe de Chaise" prefWidth="120.0" />
+                            <TableColumn fx:id="colAirline" text="Compagnie aérienne" prefWidth="150.0" />
+                            <TableColumn fx:id="colFlightPrice" text="Prix du vol" prefWidth="100.0" />
+                            <TableColumn fx:id="colAvailableSeats" text="Sièges disponibles" prefWidth="120.0" />
+                            <TableColumn fx:id="colDescription" text="Description" prefWidth="150.0" />
+                            <TableColumn fx:id="colModify" text="Modifier" prefWidth="80.0" />
+                            <TableColumn fx:id="colDelete" text="Supprimer" prefWidth="80.0" />
                         </columns>
                     </TableView>
-                </VBox>
-            </AnchorPane>
+                </HBox>
+            </VBox>
         </Tab>
-    </tabs>
-</TabPane>
+
+        <!-- Second Tab - Weather Map -->
+        <Tab text="Aviation News">
+            <VBox spacing="20.0" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+
+                <!-- Title Label with styling -->
+                <Label text="Aviation News" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #2c3e50;" />
+
+                <!-- Divider Line -->
+                <Separator orientation="HORIZONTAL" />
+
+                <!-- ListView Container -->
+                <VBox spacing="15.0" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="lvNews" prefHeight="400.0" VBox.vgrow="ALWAYS" style="-fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-radius: 5px;">
+                        <!-- News items will be dynamically added from the Controller -->
+                    </ListView>
+                </VBox>
+
+                <!-- Divider Line -->
+                <Separator orientation="HORIZONTAL" />
+
+                <!-- Refresh Button with styled padding and spacing -->
+                <HBox>
+                    <Button fx:id="btnRefreshNews" text="Refresh News" onAction="#fetchNews" prefWidth="150.0" />
+                </HBox>
+
+            </VBox>
+        </Tab>
+
+        <!-- Second Tab - Weather Map -->
+        <Tab text="Rest Countries">
+            <VBox spacing="10.0" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+
+                <!-- Title Label -->
+                <Label text="Rest Countries" style="-fx-font-weight: bold; -fx-font-size: 18px;" />
+
+                <!-- TextField to input country name -->
+                <TextField fx:id="txtCountry" promptText="Enter country name" prefWidth="200.0" />
+
+                <!-- Button to fetch country info -->
+                <Button fx:id="btnFetchCountry" text="Fetch Country Info" onAction="#fetchCountryInfo" prefWidth="200.0" alignment="CENTER" />
+
+                <!-- Label to display country name -->
+                <Label fx:id="lblCountryName" style="-fx-font-size: 14px;" />
+
+                <!-- Label to display capital -->
+                <Label fx:id="lblCapital" style="-fx-font-size: 14px;" />
+
+                <!-- ImageView to display the country flag -->
+                <ImageView fx:id="imgFlag" fitHeight="150.0" fitWidth="250.0" />
+
+                <TextArea fx:id="txtCountryDetails" editable="false" wrapText="true" prefHeight="200.0" prefWidth="400.0" />
+
+            </VBox>
+        </Tab>
+
+
+
+
+    </TabPane>
+
+</AnchorPane>

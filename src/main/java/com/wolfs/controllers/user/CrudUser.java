@@ -7734,7 +7734,7 @@ private static boolean containsBadWords(String text) {
            + "Choix: " + String.join(", ", choices);
   }
 
- // botComment = DeepSeekService.generateComment(prompt_ai + postContent);
+  botComment = DeepSeekService.generateComment(prompt_ai + postContent);
 
   String FinalComment =
           "Bonjour et bienvenue sur le forum " + forumComboBox.getValue().getName() + " !\n"
